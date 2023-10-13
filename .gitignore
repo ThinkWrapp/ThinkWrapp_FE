@@ -24,7 +24,6 @@ dist-ssr
 *.sw?
 
 # Custom
-.env
 .env.*
 public
 src/components/3DModels
