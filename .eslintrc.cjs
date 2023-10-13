@@ -17,6 +17,25 @@ module.exports = {
         ecmaVersion: 2018,
         sourceType: 'module',
     },
+    settings: {
+        react: {
+            version: 'detect',
+        },
+        'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+        'import/parsers': {
+            '@typescript-eslint/parser': ['.js', '.jsx', '.ts', '.tsx'],
+        },
+        'import/resolver': {
+            node: {
+                extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+                paths: ['src'],
+            },
+            alias: {
+                extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+                map: [['@react-three/fiber', './packages/fiber/src/web']],
+            },
+        },
+    },
     plugins: ['react-refresh'],
     rules: {
         'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
