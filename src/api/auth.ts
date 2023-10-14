@@ -2,7 +2,7 @@ import { instance } from '.';
 import { z } from 'zod';
 import { loginUserData, registerUserData } from '../types/auth';
 import { userStorage } from '../utils/userStorage';
-import { messageSchema } from '../types/schema';
+import { messageSchema } from '../schemas/schema';
 
 // Get Request
 
