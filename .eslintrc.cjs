@@ -32,7 +32,10 @@ module.exports = {
             },
             alias: {
                 extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-                map: [['@react-three/fiber', './packages/fiber/src/web']],
+                map: [
+                    ['@react-three/fiber', './packages/fiber/src/web'],
+                    ['@', './src'],
+                ],
             },
         },
     },
