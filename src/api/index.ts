@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { userStorage } from '../utils/userStorage';
 import { refreshToken } from './auth';
+import { userStorage } from '@/utils/userStorage';
 
 export const instance = axios.create({
     baseURL: import.meta.env.VITE_SEVER_BASE_URL,

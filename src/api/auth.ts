@@ -1,8 +1,8 @@
-import { instance } from '.';
 import { z } from 'zod';
-import { loginUserData, registerUserData } from '../types/auth';
-import { userStorage } from '../utils/userStorage';
-import { messageSchema } from '../schemas/schema';
+import { instance } from '.';
+import { userStorage } from '@/utils/userStorage';
+import { messageSchema } from '@/schemas/@Share';
+import { LoginSchema, RegisterSchema } from '@/types/auth';
 
 // Get Request
 
@@ -22,7 +22,7 @@ export const profile = async () => {
 };
 
 // Post Request
-export const register = async (formData: registerUserData) => {
+export const register = async (formData: RegisterSchema) => {
     const response = await instance.post('/auth/register', formData);
     return messageSchema.parse(response.data);
 };
@@ -31,7 +31,7 @@ const loginSchema = messageSchema.extend({
     access_token: z.string(),
 });
 
-export const login = async (formData: loginUserData) => {
+export const login = async (formData: LoginSchema) => {
     const response = await instance.post('/auth/login', formData, { withCredentials: true });
     return loginSchema.parse(response.data);
 };

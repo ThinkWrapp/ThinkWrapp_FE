@@ -2,9 +2,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import RootLayOut from './components/Layout/RootLayOut';
+
+import RootLayOut from './layout/RootLayout';
 import Lobby from './pages/Lobby';
-import LoadAuth from './components/SocialLogin/LoadAuth';
+import GoogleLogin from './pages/GoogleLogin';
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
         element: <RootLayOut />,
         children: [
             { index: true, element: <Lobby /> },
-            { path: 'social-auth', element: <LoadAuth /> },
+            { path: 'social-auth', element: <GoogleLogin /> },
         ],
     },
 ]);
