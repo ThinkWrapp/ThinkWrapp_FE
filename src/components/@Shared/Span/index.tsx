@@ -1,12 +1,10 @@
+import { CommonProps } from '@/styles';
 import { StyledSpan } from './style';
 
 export type SpanProps = {
     children: React.ReactNode;
-    fw?: 'thin' | 'normal' | 'bold';
-    fs?: 'sm' | 'md' | 'lg';
-    fc?: 'white' | 'black';
-};
+} & CommonProps;
 
-export default function Span({ children }: SpanProps) {
-    return <StyledSpan>{children}</StyledSpan>;
+export default function Span({ children, ...props }: SpanProps) {
+    return <StyledSpan {...props}>{children}</StyledSpan>;
 }

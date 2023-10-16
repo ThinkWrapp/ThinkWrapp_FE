@@ -2,11 +2,7 @@ import styled from 'styled-components';
 import { SpanProps } from '.';
 import { commonAttributes } from '@/styles';
 
-type SpanStyleProps = {
-    fs: SpanProps['fontSize'];
-    fc: SpanProps['fontColor'];
-    fw: SpanProps['fontWeight'];
-};
+type SpanStyleProps = Omit<SpanProps, 'children'>;
 
 const CommonSpan = commonAttributes('span');
 export const StyledSpan = styled(CommonSpan)<SpanStyleProps>`

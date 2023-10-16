@@ -1,13 +1,12 @@
 import { StyledButton } from './style';
+import { CommonProps } from '@/styles';
 
 export type ButtonProps = {
     children: React.ReactNode;
     as?: 'a' | 'button';
     href?: string;
-    fw?: 'thin' | 'normal' | 'bold';
-    fs?: 'sm' | 'md' | 'lg';
-    fc?: 'white' | 'black';
-};
+    onClick?: () => void;
+} & CommonProps;
 
 export default function Button({ children, as, href, ...props }: ButtonProps) {
     return (
