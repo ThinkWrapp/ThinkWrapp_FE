@@ -2,13 +2,13 @@ module.exports = {
     root: true,
     env: { browser: true, es6: true },
     extends: [
-        'plugin:prettier/recommended',
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
         'plugin:import/recommended',
         'plugin:react-hooks/recommended',
         'plugin:@react-three/recommended',
+        'plugin:prettier/recommended',
     ],
     ignorePatterns: ['dist', '.eslintrc.cjs'],
     parser: '@typescript-eslint/parser',
@@ -26,20 +26,12 @@ module.exports = {
             '@typescript-eslint/parser': ['.js', '.jsx', '.ts', '.tsx'],
         },
         'import/resolver': {
-            node: {
-                extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-                paths: ['src'],
-            },
             alias: {
-                extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-                map: [
-                    ['@react-three/fiber', './packages/fiber/src/web'],
-                    ['@', './src'],
-                ],
+                map: [['@', './src']],
             },
         },
     },
-    plugins: ['react-refresh'],
+    plugins: ['react-refresh', '@typescript-eslint', 'react', 'import', 'react-hooks', '@react-three', 'prettier'],
     rules: {
         'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
         'react/react-in-jsx-scope': 'off',
