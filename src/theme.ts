@@ -26,6 +26,7 @@ const theme = {
         secondary: '#6c757d',
         success: '#28a745',
         danger: '#dc3545',
+        point: '#7c3aed',
         out: 'transparent',
     } as const,
 } as const;
