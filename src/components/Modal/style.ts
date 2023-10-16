@@ -8,6 +8,8 @@ export const Dimmed = styled.div`
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    backdrop-filter: blur(5px);
 `;
 
 export const ModalContainer = styled.div<ModalContainerProps>`

@@ -63,7 +63,7 @@ export default function AuthForm() {
                 </P>
                 <SocialLogInBtns />
             </SocialLogin>
-            <DivideLogInType />
+            <DivideLogInType authState={authState} />
             <AuthFormContainer>{authState === '로그인' ? loginInputs : registerInputs}</AuthFormContainer>
             <LoginFooter>
                 <HasAccount>
@@ -74,7 +74,9 @@ export default function AuthForm() {
                         {authState === '로그인' ? '회원가입' : '로그인'}
                     </Button>
                 </HasAccount>
-                <Button $fc="light">{authState}</Button>
+                <Button $bg="point" $fc="light" size="md">
+                    {authState}
+                </Button>
             </LoginFooter>
         </Modal>
     );

@@ -20,14 +20,6 @@ export const AuthFormContainer = styled.form`
     padding: 1.6rem 0.8rem;
 `;
 
-export const LoginFooter = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    padding: 3.2rem 0 0.8rem;
-`;
-
 export const HasAccount = styled.div`
     display: flex;
     align-items: center;
@@ -35,4 +27,12 @@ export const HasAccount = styled.div`
     p + button {
         margin-left: 0.5rem;
     }
+`;
+
+export const LoginFooter = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 3.2rem 0 0.8rem;
 `;

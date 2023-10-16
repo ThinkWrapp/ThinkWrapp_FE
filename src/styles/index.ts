@@ -65,19 +65,21 @@ export const commonAttributes = (Component: ComponentType) => styled(Component)<
     background-color: ${({ theme, $bg }) => {
         switch ($bg) {
             case 'dark':
-                return theme.bc.dark;
+                return theme.bg.dark;
             case 'light':
-                return theme.bc.light;
+                return theme.bg.light;
             case 'primary':
-                return theme.bc.primary;
+                return theme.bg.primary;
             case 'secondary':
-                return theme.bc.secondary;
+                return theme.bg.secondary;
             case 'success':
-                return theme.bc.success;
+                return theme.bg.success;
             case 'danger':
-                return theme.bc.danger;
+                return theme.bg.danger;
+            case 'point':
+                return theme.bg.point;
             case 'out':
-                return theme.bc.out;
+                return theme.bg.out;
             default:
                 return 'transparent';
         }
@@ -98,6 +100,8 @@ export const commonAttributes = (Component: ComponentType) => styled(Component)<
                     return theme.bg.success;
                 case 'danger':
                     return theme.bg.danger;
+                case 'point':
+                    return theme.bg.point;
                 default:
                     return 'transparent';
             }
