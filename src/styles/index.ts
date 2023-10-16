@@ -1,18 +1,20 @@
 import styled from 'styled-components';
-import theme from '@/theme';
+import { LinkProps } from 'react-router-dom';
+import { ThemeType } from '@/theme';
 
-type ThemeType = typeof theme;
-type CommonProps = {
-    fs?: keyof ThemeType['fs'];
-    fc?: keyof ThemeType['fc'];
-    fw?: keyof ThemeType['fw'];
+export type CommonProps = {
+    $fs?: keyof ThemeType['fs'];
+    $fc?: keyof ThemeType['fc'];
+    $fw?: keyof ThemeType['fw'];
+    $bg?: keyof ThemeType['bg'];
+    $bc?: Omit<keyof ThemeType['bg'], 'out'>;
 };
 
-type ComponentType = keyof JSX.IntrinsicElements | React.ComponentType<CommonProps>;
+type ComponentType = keyof JSX.IntrinsicElements | React.ComponentType<CommonProps & LinkProps>;
 
 export const commonAttributes = (Component: ComponentType) => styled(Component)<CommonProps>`
-    font-size: ${({ theme, fs }) => {
-        switch (fs) {
+    font-size: ${({ theme, $fs }) => {
+        switch ($fs) {
             case 'sm':
                 return theme.fs.sm;
             case 'md':
@@ -24,19 +26,31 @@ export const commonAttributes = (Component: ComponentType) => styled(Component)<
         }
     }};
 
-    color: ${({ theme, fc }) => {
-        switch (fc) {
-            case 'black':
-                return theme.fc.black;
-            case 'white':
-                return theme.fc.white;
+    color: ${({ theme, $fc }) => {
+        switch ($fc) {
+            case 'dark':
+                return theme.fc.dark;
+            case 'outDark':
+                return theme.fc.outDark;
+            case 'light':
+                return theme.fc.light;
+            case 'outLight':
+                return theme.fc.outLight;
+            case 'primary':
+                return theme.fc.primary;
+            case 'secondary':
+                return theme.fc.secondary;
+            case 'success':
+                return theme.fc.success;
+            case 'danger':
+                return theme.fc.danger;
             default:
-                return theme.fc.black;
+                return theme.fc.dark;
         }
     }};
 
-    font-weight: ${({ theme, fw }) => {
-        switch (fw) {
+    font-weight: ${({ theme, $fw }) => {
+        switch ($fw) {
             case 'thin':
                 return theme.fw.thin;
             case 'normal':
@@ -47,4 +61,45 @@ export const commonAttributes = (Component: ComponentType) => styled(Component)<
                 return theme.fw.normal;
         }
     }};
+
+    background-color: ${({ theme, $bg }) => {
+        switch ($bg) {
+            case 'dark':
+                return theme.bc.dark;
+            case 'light':
+                return theme.bc.light;
+            case 'primary':
+                return theme.bc.primary;
+            case 'secondary':
+                return theme.bc.secondary;
+            case 'success':
+                return theme.bc.success;
+            case 'danger':
+                return theme.bc.danger;
+            case 'out':
+                return theme.bc.out;
+            default:
+                return 'transparent';
+        }
+    }};
+
+    border: 1px solid
+        ${({ theme, $bc }) => {
+            switch ($bc) {
+                case 'dark':
+                    return theme.bg.dark;
+                case 'light':
+                    return theme.bg.light;
+                case 'primary':
+                    return theme.bg.primary;
+                case 'secondary':
+                    return theme.bg.secondary;
+                case 'success':
+                    return theme.bg.success;
+                case 'danger':
+                    return theme.bg.danger;
+                default:
+                    return 'transparent';
+            }
+        }};
 `;
