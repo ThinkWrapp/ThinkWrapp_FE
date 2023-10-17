@@ -40,7 +40,9 @@ export const ModalContainer = styled.div<ModalContainerProps>`
          #ff2770 50%
      )`;
     }};
-    animation: modal 4s linear infinite;
+    animation:
+        modal 4s linear infinite,
+        openModal 0.3s ease-in-out;
     border-radius: 0.2rem;
     backdrop-filter: blur(10px);
 
@@ -56,6 +58,17 @@ export const ModalContainer = styled.div<ModalContainerProps>`
         }
         100% {
             --a: 360deg;
+        }
+    }
+
+    @keyframes openModal {
+        0% {
+            transform-origin: 0%;
+            scale: 0;
+        }
+        100% {
+            transform-origin: 0%;
+            scale: 1;
         }
     }
 

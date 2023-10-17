@@ -4,6 +4,10 @@ export const LabelInputContainer = styled.div`
     position: relative;
     width: 35rem;
 
+    p {
+        margin-top: 0.5rem;
+    }
+
     & + & {
         margin-top: 3.5rem;
     }

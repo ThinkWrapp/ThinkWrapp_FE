@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const LoginHeader = styled.div`
+export const AuthHeader = styled.div`
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -29,7 +29,7 @@ export const HasAccount = styled.div`
     }
 `;
 
-export const LoginFooter = styled.div`
+export const AuthFooter = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
