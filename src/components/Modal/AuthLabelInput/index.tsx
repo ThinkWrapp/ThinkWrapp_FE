@@ -1,11 +1,12 @@
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 import { Input, Label, LabelInputContainer } from './style';
 import P from '@/components/@Shared/P';
+import { LoginSchema, RegisterSchema } from '@/types/auth';
 
 type AuthLabelInputProps = {
     labelText: string;
     type: React.InputHTMLAttributes<HTMLInputElement>['type'];
-    register: UseFormRegister<FieldValues>;
+    register: UseFormRegister<LoginSchema | RegisterSchema>;
     id: 'email' | 'password' | 'username' | 'confirmPassword';
     required?: boolean;
     errors: FieldErrors<FieldValues>;
