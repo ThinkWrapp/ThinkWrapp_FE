@@ -1,10 +1,12 @@
 import { StyledLink } from './style';
 import { CommonProps } from '@/styles';
+import { LinkProps } from 'react-router-dom';
 
-export type LinkProps = {
-    children: React.ReactNode;
-} & CommonProps;
+export type StyleLinkProps = LinkProps &
+    CommonProps & {
+        children: React.ReactNode;
+    };
 
-export default function Link({ children, ...props }: LinkProps) {
+export default function Link({ children, ...props }: StyleLinkProps) {
     return <StyledLink {...props}>{children}</StyledLink>;
 }

@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import { ButtonProps } from '.';
 import { commonAttributes } from '@/styles';
 
-type ButtonStyleProps = Omit<ButtonProps, 'children' | 'as' | 'href'>;
+type ButtonStyleProps = {
+    $size?: ButtonProps['size'];
+};
 
 const CommonButton = commonAttributes('button');
 export const StyledButton = styled(CommonButton)<ButtonStyleProps>`
