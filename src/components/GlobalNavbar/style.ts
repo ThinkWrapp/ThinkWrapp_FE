@@ -113,6 +113,10 @@ export const NavigationUl = styled.ul<NavigationUlProps>`
     transition-delay: 0.26s;
     box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.05);
 
+    @media screen and (max-width: 768px) {
+        width: ${({ $toggle }) => ($toggle ? '80vw' : '6rem')};
+    }
+
     ${({ $toggle, theme }) =>
         $toggle &&
         `
