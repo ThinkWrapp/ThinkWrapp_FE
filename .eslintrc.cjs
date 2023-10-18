@@ -1,32 +1,28 @@
 module.exports = {
     root: true,
-    env: { browser: true, es6: true },
+    env: { browser: true, es2020: true },
     extends: [
-        'prettier',
         'plugin:@typescript-eslint/recommended',
         'plugin:import/recommended',
         'plugin:react-hooks/recommended',
         'plugin:@react-three/recommended',
+        'prettier',
+        'plugin:prettier/recommended',
     ],
-    ignorePatterns: ['dist', '.eslintrc.cjs'],
+    ignorePatterns: ['dist', '.eslintrc.cjs', 'node_modules', 'package.json', 'yarn.lock'],
     parser: '@typescript-eslint/parser',
-    parserOptions: {
-        ecmaFeatures: { jsx: true },
-        ecmaVersion: 2018,
-        sourceType: 'module',
-    },
     settings: {
         react: {
             version: 'detect',
         },
-        'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+        'import/extensions': ['.ts', '.tsx'],
         'import/parsers': {
-            '@typescript-eslint/parser': ['.js', '.jsx', '.ts', '.tsx'],
+            '@typescript-eslint/parser': ['.ts', '.tsx'],
         },
         'import/resolver': {
-            node: { extensions: ['.js', '.jsx', '.ts', '.tsx'], paths: ['src'] },
+            node: { extensions: ['.ts', '.tsx'], paths: ['src'] },
             alias: {
-                extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+                extensions: ['.ts', '.tsx', '.json'],
                 map: [['@', './src']],
             },
         },
