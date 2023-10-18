@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import ReactPortalDom from 'react-dom';
 import App from './App.tsx';
 import './index.css';
+
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -12,7 +14,7 @@ import store from './store.ts';
 
 const queryClient = new QueryClient();
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
@@ -20,7 +22,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <App />
                 </ThemeProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
-                <Toaster richColors />
+                {ReactPortalDom.createPortal(
+                    <Toaster richColors />,
+                    document.getElementById('toast-root') as HTMLElement,
+                )}
             </QueryClientProvider>
         </Provider>
     </React.StrictMode>,
