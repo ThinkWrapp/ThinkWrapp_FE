@@ -1,17 +1,23 @@
-import P from '@/components/@Shared/P';
-import Modal from '..';
-import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
-import Button from '@/components/@Shared/Button';
-import SocialLogInBtns from '../SocialLogInBtns';
-import DivideLogInType from '../DivideLogInType';
+import { useMutation } from '@tanstack/react-query';
 import { SubmitHandler, UseFormRegister, useForm } from 'react-hook-form';
-import { LoginSchema, RegisterSchema } from '@/types/auth';
-import { loginSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/reducers';
+import { toast } from 'sonner';
+import { login } from '@/api/auth';
+import P from '@/components/@Shared/P';
+import { userLoginChecking } from '@/redux/actions/userAction';
 import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAction';
+import { userStorage } from '@/utils/userStorage';
+import Modal from '..';
+import Button from '@/components/@Shared/Button';
+import SocialLogInBtns from '../SocialLogInBtns';
 import AuthLabelInput from '../AuthLabelInput';
+import { LoginSchema, RegisterSchema } from '@/types/auth';
+import DivideLogInType from '../DivideLogInType';
+import { loginSchema } from '@/schemas/auth';
+import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
+import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
 
 export default function LoginModal() {
     const authState = useSelector((state: RootState) => state.modal.authState);
@@ -27,9 +33,23 @@ export default function LoginModal() {
         resolver: zodResolver(loginSchema),
     });
 
+    const { mutate: Login } = useMutation(login, {
+        onSuccess: ({ message, access_token }) => {
+            toast.success(message);
+            userStorage.set(access_token);
+            dispatch(userLoginChecking(true));
+        },
+        onError: () => {
+            toast.error(AUTH.login.failMessage);
+        },
+        onSettled: () => {
+            dispatch(closeModal());
+        },
+    });
+
     const authStateHandler = () => {
         dispatch(closeModal());
-        dispatch(changeAuthState(authState === '로그인' ? '회원가입' : '로그인'));
+        dispatch(changeAuthState(REGISTER));
         dispatch(openModal());
         reset();
     };
@@ -40,7 +60,8 @@ export default function LoginModal() {
     };
 
     const onSubmit: SubmitHandler<LoginSchema> = (data) => {
-        console.log(data);
+        Login(data);
+        reset();
     };
 
     return (
@@ -94,7 +115,7 @@ export default function LoginModal() {
                         아직 계정이 없으신가요?
                     </P>
                     <Button $fs="sm" $fc="light" $fw="bold" onClick={authStateHandler}>
-                        {authState}
+                        {authState === LOGIN && REGISTER}
                     </Button>
                 </HasAccount>
                 <Button

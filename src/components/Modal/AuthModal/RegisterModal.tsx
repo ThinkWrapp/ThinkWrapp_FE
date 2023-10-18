@@ -12,6 +12,10 @@ import P from '@/components/@Shared/P';
 import Button from '@/components/@Shared/Button';
 import SocialLogInBtns from '../SocialLogInBtns';
 import DivideLogInType from '../DivideLogInType';
+import { register as userRegister } from '@/api/auth';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { LOGIN, REGISTER } from '@/constants/auth';
 
 export default function RegisterModal() {
     const authState = useSelector((state: RootState) => state.modal.authState);
@@ -27,9 +31,20 @@ export default function RegisterModal() {
         resolver: zodResolver(registerSchema),
     });
 
+    const { mutate: Register } = useMutation(userRegister, {
+        onSuccess: (response) => {
+            toast.success(response.message);
+            dispatch(changeAuthState(LOGIN));
+        },
+        onError: () => {
+            toast.error(AUTH.register.failMessage);
+            dispatch(closeModal());
+        },
+    });
+
     const authStateHandler = () => {
         dispatch(closeModal());
-        dispatch(changeAuthState(authState === '로그인' ? '회원가입' : '로그인'));
+        dispatch(changeAuthState(LOGIN));
         dispatch(openModal());
         reset();
     };
@@ -40,7 +55,8 @@ export default function RegisterModal() {
     };
 
     const onSubmit: SubmitHandler<RegisterSchema> = (data) => {
-        console.log(data);
+        Register(data);
+        reset();
     };
 
     return (
@@ -110,7 +126,7 @@ export default function RegisterModal() {
                         이미 계정이 있으신가요?
                     </P>
                     <Button $fs="sm" $fc="light" $fw="bold" onClick={authStateHandler}>
-                        {authState}
+                        {authState === REGISTER && LOGIN}
                     </Button>
                 </HasAccount>
                 <Button
