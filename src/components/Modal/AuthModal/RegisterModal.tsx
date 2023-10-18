@@ -12,10 +12,10 @@ import P from '@/components/@Shared/P';
 import Button from '@/components/@Shared/Button';
 import SocialLogInBtns from '../SocialLogInBtns';
 import DivideLogInType from '../DivideLogInType';
-import { register as userRegister } from '@/api/auth';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { LOGIN, REGISTER } from '@/constants/auth';
+import { register as userRegister } from '@/api/auth';
+import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
 
 export default function RegisterModal() {
     const authState = useSelector((state: RootState) => state.modal.authState);

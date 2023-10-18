@@ -9,4 +9,4 @@ export const checkAuthLoader = () => {
     return null;
 };
 
-export const checkAuth = () => !!userStorage.get();
+export const checkAuth = (): boolean | undefined => !!userStorage.get();

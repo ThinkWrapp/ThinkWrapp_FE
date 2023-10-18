@@ -12,4 +12,13 @@ export const AUTH = {
         regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
         regexMessage: '비밀번호는 최소 8자 이상이어야 하며 대문자, 소문자, 숫자가 각각 하나씩 포함되어야 합니다.',
     } as const,
+    login: {
+        failMessage: '로그인에 실패하였습니다.',
+    } as const,
+    register: {
+        failMessage: '회원가입에 실패하였습니다.',
+    } as const,
 } as const;
+
+export const LOGIN = '로그인' as const;
+export const REGISTER = '회원가입' as const;

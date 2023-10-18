@@ -1,6 +1,6 @@
 import Button from '@/components/@Shared/Button';
-import { SocialLogInBtnsContainer } from './style';
 import { GOOGLE_AUTH_URL } from '@/constants/route';
+import { SocialLogInBtnsContainer } from './style';
 
 export default function SocialLogInBtns() {
     return (

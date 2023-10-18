@@ -1,11 +1,11 @@
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ModalContainer, ModalWrapper, Dimmed } from './style';
+import { UseFormReset } from 'react-hook-form';
 import { RootState } from '@/redux/reducers';
 import { closeModal } from '@/redux/actions/modalAction';
-import { UseFormReset } from 'react-hook-form';
-import { LoginSchema, RegisterSchema } from '@/types/auth';
 import { LOGIN } from '@/constants/auth';
+import { LoginSchema, RegisterSchema } from '@/types/auth';
+import { ModalContainer, ModalWrapper, Dimmed } from './style';
 
 type ModalProps = {
     children: React.ReactNode;

@@ -2,8 +2,11 @@ import { IS_AUTH, userLoginChecking } from '@/redux/actions/userAction';
 import { checkAuth } from '@/utils/user';
 
 type UserAction = ReturnType<typeof userLoginChecking>;
+type UserState = {
+    isAuth: boolean | undefined;
+};
 
-const initialState = {
+const initialState: UserState = {
     isAuth: checkAuth(),
 };
 

@@ -1,8 +1,8 @@
-import { refreshToken } from '@/api/auth';
-import { userStorage } from '@/utils/userStorage';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { refreshToken } from '@/api/auth';
+import { userStorage } from '@/utils/userStorage';
 
 export default function GoogleLogin() {
     const navigate = useNavigate();

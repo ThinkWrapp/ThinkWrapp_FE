@@ -1,7 +1,7 @@
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
-import { Input, Label, LabelInputContainer } from './style';
 import P from '@/components/@Shared/P';
 import { LoginSchema, RegisterSchema } from '@/types/auth';
+import { Input, Label, LabelInputContainer } from './style';
 
 type AuthLabelInputProps = {
     labelText: string;
