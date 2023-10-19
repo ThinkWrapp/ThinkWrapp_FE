@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RootLayOut from './layout/RootLayout';
-import Lobby from './pages/Lobby';
+import LobbyPage from './pages/LobbyPage';
 import GoogleLogin from './pages/GoogleLogin';
 
 const router = createBrowserRouter([
@@ -8,7 +8,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <RootLayOut />,
         children: [
-            { index: true, element: <Lobby /> },
+            { index: true, element: <LobbyPage /> },
             { path: 'social-auth', element: <GoogleLogin /> },
         ],
     },

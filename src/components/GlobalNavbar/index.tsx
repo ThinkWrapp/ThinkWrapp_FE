@@ -51,7 +51,7 @@ export default function GlobalNavbar() {
                 ) : (
                     <>
                         <NavigationLi>
-                            <Button $fw="bold">개인정보</Button>
+                            <Button $fw="bold">프로필변경</Button>
                         </NavigationLi>
                         <NavigationLi>
                             <Button $fw="bold" onClick={logoutHandler}>
