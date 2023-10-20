@@ -1,7 +1,11 @@
 import { useRef, useEffect } from 'react';
 import { CameraControls, Cloud, Stars, Sky } from '@react-three/drei';
 
-export default function LobbyBackground() {
+type LobbyBackgroundProps = {
+    loaded: boolean;
+};
+
+export default function LobbyBackground({ loaded }: LobbyBackgroundProps) {
     const controls = useRef<CameraControls | null>(null);
 
     useEffect(() => {
@@ -9,17 +13,15 @@ export default function LobbyBackground() {
         controls.current.setPosition(0, 8, 2);
         controls.current.setTarget(0, 8, 0);
 
-        setTimeout(() => {
-            if (!controls.current) return;
-
+        if (loaded) {
             controls.current.setPosition(0, 8, 2);
             controls.current.setTarget(0, 8, 0);
             controls.current.setPosition(0, 0, 2, true);
             controls.current.setTarget(0, 0, 0, true);
-        }, 1000);
+            return;
+        }
+    }, [loaded]);
 
-        return;
-    }, []);
     return (
         <>
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
