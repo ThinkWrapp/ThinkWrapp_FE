@@ -4,7 +4,7 @@ type NavigationUlProps = {
     $toggle: boolean;
 };
 
-export const GlobalNavbarContainer = styled.div`
+export const GlobalNavbarContainer = styled.nav`
     display: flex;
     justify-content: center;
     align-items: center;
