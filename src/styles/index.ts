@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { LinkProps } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 import { ThemeType } from '@/theme';
+import { Link } from 'react-router-dom';
 
 export type CommonProps = {
     $fs?: keyof ThemeType['fs'];
@@ -10,9 +10,10 @@ export type CommonProps = {
     $bc?: Omit<keyof ThemeType['bg'], 'out'>;
 };
 
-type ComponentType = keyof JSX.IntrinsicElements | React.ComponentType<CommonProps & LinkProps>;
+type ComponentType = keyof JSX.IntrinsicElements;
+type ComponentLinkType = typeof Link;
 
-export const commonAttributes = (Component: ComponentType) => styled(Component)<CommonProps>`
+const commonAttributesStyle = css<CommonProps>`
     font-size: ${({ theme, $fs }) => {
         switch ($fs) {
             case 'sm':
@@ -106,4 +107,12 @@ export const commonAttributes = (Component: ComponentType) => styled(Component)<
                     return 'transparent';
             }
         }};
+`;
+
+export const commonAttributes = (Component: ComponentType) => styled(Component)<CommonProps>`
+    ${commonAttributesStyle}
+`;
+
+export const commonAttributesLink = (Component: ComponentLinkType) => styled(Component)<CommonProps>`
+    ${commonAttributesStyle}
 `;

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { StyledButton } from '../@Shared/Button/style';
+import { StyledLink } from '../@Shared/Link/style';
+import { InterfaceLinkButton } from '@/styles/mixin/InterfaceLinkButton';
 
 export const Container = styled.div`
     display: flex;
@@ -14,13 +16,12 @@ export const Container = styled.div`
 `;
 
 export const InterFaceButton = styled(StyledButton)`
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: 100%;
-    background-color: #6366f1;
-    margin: 0.5rem;
+    ${InterfaceLinkButton}
+`;
 
-    &:hover {
-        background-color: #3730a3;
-    }
+export const InterFaceLink = styled(StyledLink)`
+    ${InterfaceLinkButton}
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;

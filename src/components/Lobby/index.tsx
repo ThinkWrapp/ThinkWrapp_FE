@@ -1,6 +1,6 @@
 import { Suspense, useMemo } from 'react';
 import * as THREE from 'three';
-import { AccumulativeShadows, Html, RandomizedLight, useFont } from '@react-three/drei';
+import { AccumulativeShadows, RandomizedLight, useFont } from '@react-three/drei';
 import { Castle } from '../3DModels/Castle';
 import { King } from '../3DModels/King';
 import LobbyBackground from './Background';

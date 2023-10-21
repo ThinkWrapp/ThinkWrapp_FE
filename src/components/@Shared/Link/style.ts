@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import { LinkProps } from '.';
-import { commonAttributes } from '@/styles';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
+import { commonAttributesLink } from '@/styles';
 
-type LinkStyleProps = Omit<LinkProps, 'children'>;
-
-const CommonLink = commonAttributes(Link);
-export const StyledLink = styled(CommonLink)<LinkStyleProps>``;
+const CommonLink = commonAttributesLink(Link);
+export const StyledLink = styled(CommonLink)<LinkProps>``;

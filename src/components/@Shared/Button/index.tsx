@@ -1,8 +1,8 @@
 import { StyledButton } from './style';
 import { CommonProps } from '@/styles';
 
-export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
-    CommonProps & {
+export type ButtonProps = CommonProps &
+    React.ButtonHTMLAttributes<HTMLButtonElement> & {
         children: React.ReactNode;
         size?: 'sm' | 'md' | 'lg';
         as?: 'a' | 'button';

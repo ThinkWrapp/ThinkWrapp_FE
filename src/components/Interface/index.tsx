@@ -1,12 +1,12 @@
 import MetaRoomControlButton from './MetaRoomControlButton';
-import SelectAvatarButton from './SelectAvatarButton';
+import SelectAvatarLink from './SelectAvatarLink';
 import { Container } from './style';
 
 export default function Interface() {
     return (
         <Container>
             <MetaRoomControlButton />
-            <SelectAvatarButton />
+            <SelectAvatarLink />
         </Container>
     );
 }
