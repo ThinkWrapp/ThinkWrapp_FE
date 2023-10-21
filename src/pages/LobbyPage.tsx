@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { EffectComposer, N8AO, Bloom } from '@react-three/postprocessing';
 import Lobby from '@/components/Lobby';
 import Loader from '@/components/Loader';
+import Interface from '@/components/Interface';
 
 export default function LobbyPage() {
     const { progress } = useProgress();
@@ -32,6 +33,7 @@ export default function LobbyPage() {
                 </EffectComposer>
             </Canvas>
             <Loader loaded={loaded} />
+            {loaded && <Interface />}
         </>
     );
 }
