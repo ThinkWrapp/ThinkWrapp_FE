@@ -1,20 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useProgress } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, N8AO, Bloom } from '@react-three/postprocessing';
 import Lobby from '@/components/Lobby';
 import Loader from '@/components/Loader';
-import Interface from '@/components/Interface';
+import { useLoading } from '@/hooks/useLoading';
 
 export default function LobbyPage() {
-    const { progress } = useProgress();
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        if (progress === 100) {
-            setLoaded(true);
-        }
-    }, [progress]);
+    const loaded = useLoading();
 
     return (
         <>
@@ -33,7 +24,6 @@ export default function LobbyPage() {
                 </EffectComposer>
             </Canvas>
             <Loader loaded={loaded} />
-            {loaded && <Interface />}
         </>
     );
 }
