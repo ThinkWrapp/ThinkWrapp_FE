@@ -4,9 +4,12 @@ import SelectAvatarLink from './SelectAvatarLink';
 import { InterfaceContainer } from './style';
 import AvatarSelectButton from './AvatarSelectButton';
 import HomeLink from './HomeLink';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/reducers';
 
 export default function Interface() {
     const location = useLocation();
+    const isAuth = useSelector((state: RootState) => state.user.isAuth);
 
     const lobby = location.pathname === '/';
     const character = location.pathname === '/character';
@@ -14,7 +17,7 @@ export default function Interface() {
     const lobbyContent = lobby && (
         <>
             <MetaRoomControlButton />
-            <SelectAvatarLink />
+            {isAuth && <SelectAvatarLink />}
         </>
     );
 
