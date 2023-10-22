@@ -3,7 +3,7 @@ import { StyledButton } from '../@Shared/Button/style';
 import { StyledLink } from '../@Shared/Link/style';
 import { InterfaceLinkButton } from '@/styles/mixin/InterfaceLinkButton';
 
-export const Container = styled.div`
+export const InterfaceContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
