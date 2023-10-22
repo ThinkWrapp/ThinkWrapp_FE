@@ -3,7 +3,7 @@ import { ButtonProps } from '.';
 import { commonAttributes } from '@/styles';
 
 type ButtonStyleProps = {
-    $size?: ButtonProps['size'];
+    $size?: ButtonProps['$size'];
 };
 
 const CommonButton = commonAttributes('button');
