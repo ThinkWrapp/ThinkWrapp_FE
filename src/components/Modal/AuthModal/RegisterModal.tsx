@@ -135,7 +135,7 @@ export default function RegisterModal() {
                     disabled={isSubmitting}
                     $bg="point"
                     $fc="light"
-                    size="md"
+                    $size="md"
                 >
                     {authState}
                 </Button>
