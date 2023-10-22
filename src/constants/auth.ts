@@ -20,5 +20,12 @@ export const AUTH = {
     } as const,
 } as const;
 
+export const AVATAR = {
+    gender: {
+        male: '남자',
+        female: '여자',
+    } as const,
+} as const;
+
 export const LOGIN = '로그인' as const;
 export const REGISTER = '회원가입' as const;
