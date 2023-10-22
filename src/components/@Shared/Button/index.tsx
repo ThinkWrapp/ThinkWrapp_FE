@@ -9,9 +9,9 @@ export type ButtonProps = CommonProps &
         href?: string;
     };
 
-export default function Button({ children, as, href, $size, ...props }: ButtonProps) {
+export default function Button({ children, as, href, type = 'button', $size, ...props }: ButtonProps) {
     return (
-        <StyledButton as={as} href={href} $size={$size} {...props}>
+        <StyledButton type={as ? undefined : type} as={as} href={href} $size={$size} {...props}>
             {children}
         </StyledButton>
     );
