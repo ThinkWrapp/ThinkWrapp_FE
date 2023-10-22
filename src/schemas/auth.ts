@@ -1,15 +1,17 @@
 import { z } from 'zod';
 import { AUTH } from '@/constants/auth';
 
+export const emailSchema = z
+    .string()
+    .nonempty(AUTH.email.requireMessage)
+    .email(AUTH.email.regexMessage)
+    .min(AUTH.email.minLength, AUTH.email.minMessage)
+    .max(AUTH.email.maxLength, AUTH.email.maxMessage);
+
 export const registerSchema = z
     .object({
         username: z.string().trim().nonempty(AUTH.username.requireMessage),
-        email: z
-            .string()
-            .nonempty(AUTH.email.requireMessage)
-            .email(AUTH.email.regexMessage)
-            .min(AUTH.email.minLength, AUTH.email.minMessage)
-            .max(AUTH.email.maxLength, AUTH.email.maxMessage),
+        email: emailSchema,
         password: z.string().regex(AUTH.password.regex, AUTH.password.regexMessage),
         confirmPassword: z.string().regex(AUTH.password.regex, AUTH.password.regexMessage),
     })
