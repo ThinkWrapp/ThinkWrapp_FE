@@ -10,23 +10,26 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'sonner';
 import { ThemeProvider } from 'styled-components';
 import theme from './theme.ts';
-import store from './store.ts';
+import store, { persistor } from './store.ts';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <ThemeProvider theme={theme}>
-                    <App />
-                </ThemeProvider>
-                <ReactQueryDevtools initialIsOpen={false} />
-                {ReactPortalDom.createPortal(
-                    <Toaster richColors />,
-                    document.getElementById('toast-root') as HTMLElement,
-                )}
-            </QueryClientProvider>
+            <PersistGate loading={null} persistor={persistor}>
+                <QueryClientProvider client={queryClient}>
+                    <ThemeProvider theme={theme}>
+                        <App />
+                    </ThemeProvider>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                    {ReactPortalDom.createPortal(
+                        <Toaster richColors />,
+                        document.getElementById('toast-root') as HTMLElement,
+                    )}
+                </QueryClientProvider>
+            </PersistGate>
         </Provider>
     </React.StrictMode>,
 );

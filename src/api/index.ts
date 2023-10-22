@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { refreshToken } from './auth';
 import { userStorage } from '@/utils/userStorage';
+import { AVATAR_SELECT } from '@/constants/auth';
 
 export const instance = axios.create({
     baseURL: import.meta.env.VITE_SEVER_BASE_URL,
@@ -41,6 +42,7 @@ instance.interceptors.response.use(
                 return instance(config);
             } catch (error) {
                 userStorage.remove();
+                window.localStorage.removeItem('persist:' + AVATAR_SELECT);
                 return window.location.replace('/');
             }
         }

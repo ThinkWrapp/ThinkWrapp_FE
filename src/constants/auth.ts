@@ -29,3 +29,4 @@ export const AVATAR = {
 
 export const LOGIN = '로그인' as const;
 export const REGISTER = '회원가입' as const;
+export const AVATAR_SELECT = 'AVATAR_SELECT' as const;

@@ -1,10 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { SubmitHandler, UseFormRegister, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/reducers';
 import { toast } from 'sonner';
-import { login } from '@/api/auth';
+import { login, profile } from '@/api/auth';
 import P from '@/components/@Shared/P';
 import { userLoginChecking } from '@/redux/actions/userAction';
 import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAction';
@@ -18,10 +18,17 @@ import DivideLogInType from '../DivideLogInType';
 import { loginSchema } from '@/schemas/auth';
 import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
 import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { saveAvatar } from '@/redux/actions/avatarPersistAction';
 
 export default function LoginModal() {
     const authState = useSelector((state: RootState) => state.modal.authState);
+    const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    const avatarState = useSelector((state: RootState) => state.avatar.avatarState);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
 
     const {
         register,
@@ -31,6 +38,12 @@ export default function LoginModal() {
     } = useForm<LoginSchema>({
         mode: 'onChange',
         resolver: zodResolver(loginSchema),
+    });
+
+    const { data: userData, isSuccess } = useQuery(['user'], profile, {
+        enabled: isAuth,
+        staleTime: Infinity,
+        cacheTime: Infinity,
     });
 
     const { mutate: Login } = useMutation(login, {
@@ -63,6 +76,19 @@ export default function LoginModal() {
         Login(data);
         reset();
     };
+
+    useEffect(() => {
+        if (!isSuccess) return;
+        if (isAuth && !avatarState && !userData?.avatar && pathname !== '/character') {
+            navigate('/character');
+        }
+    }, [isSuccess, avatarState, pathname, isAuth, userData?.avatar]);
+
+    useEffect(() => {
+        if (isAuth && userData?.avatar) {
+            dispatch(saveAvatar(userData.avatar));
+        }
+    }, [isAuth, userData?.avatar]);
 
     return (
         <Modal reset={reset}>
