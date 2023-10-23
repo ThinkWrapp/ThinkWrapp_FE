@@ -11,16 +11,16 @@ import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAct
 import { userStorage } from '@/utils/userStorage';
 import Modal from '..';
 import Button from '@/components/@Shared/Button';
-import SocialLogInBtns from '../SocialLogInBtns';
-import AuthLabelInput from '../LabelInput';
 import { LoginSchema, RegisterSchema } from '@/types/auth';
-import DivideLogInType from '../DivideLogInType';
 import { loginSchema } from '@/schemas/auth';
 import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
 import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { saveAvatar } from '@/redux/actions/avatarPersistAction';
+import SocialLogInBtns from './SocialLogInBtns';
+import DivideLogInType from './DivideLogInType';
+import AuthLabelInput from './AuthLabelInput';
 
 export default function LoginModal() {
     const authState = useSelector((state: RootState) => state.modal.modalValueState);

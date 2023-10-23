@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema } from '@/schemas/auth';
 import { LoginSchema, RegisterSchema } from '@/types/auth';
 import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAction';
-import AuthLabelInput from '../LabelInput';
 import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
 import P from '@/components/@Shared/P';
 import Button from '@/components/@Shared/Button';
@@ -16,6 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { register as userRegister } from '@/api/auth';
 import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
+import AuthLabelInput from './AuthLabelInput';
 
 export default function RegisterModal() {
     const authState = useSelector((state: RootState) => state.modal.modalValueState);
