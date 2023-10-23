@@ -11,10 +11,10 @@ import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAct
 import { userStorage } from '@/utils/userStorage';
 import Modal from '..';
 import Button from '@/components/@Shared/Button';
-import SocialLogInBtns from './SocialLogInBtns';
-import AuthLabelInput from './AuthLabelInput';
+import SocialLogInBtns from '../SocialLogInBtns';
+import AuthLabelInput from '../LabelInput';
 import { LoginSchema, RegisterSchema } from '@/types/auth';
-import DivideLogInType from './DivideLogInType';
+import DivideLogInType from '../DivideLogInType';
 import { loginSchema } from '@/schemas/auth';
 import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
 import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
@@ -23,7 +23,7 @@ import { useEffect } from 'react';
 import { saveAvatar } from '@/redux/actions/avatarPersistAction';
 
 export default function LoginModal() {
-    const authState = useSelector((state: RootState) => state.modal.authState);
+    const authState = useSelector((state: RootState) => state.modal.modalValueState);
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
     const avatarState = useSelector((state: RootState) => state.avatar.avatarState);
     const dispatch = useDispatch();
@@ -63,7 +63,7 @@ export default function LoginModal() {
     const authStateHandler = () => {
         dispatch(closeModal());
         dispatch(changeAuthState(REGISTER));
-        dispatch(openModal());
+        dispatch(openModal(REGISTER));
         reset();
     };
 
@@ -116,7 +116,7 @@ export default function LoginModal() {
                 </P>
                 <SocialLogInBtns />
             </SocialLogin>
-            <DivideLogInType authState={authState} />
+            <DivideLogInType authState={authState as string} />
             <AuthFormContainer>
                 <AuthLabelInput
                     id="email"

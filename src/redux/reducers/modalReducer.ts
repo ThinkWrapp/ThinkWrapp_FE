@@ -8,10 +8,14 @@ import {
 } from '@/redux/actions/modalAction';
 
 type ModalAction = ReturnType<typeof openModal> | ReturnType<typeof closeModal> | ReturnType<typeof changeAuthState>;
+type ModalState = {
+    modalState: boolean;
+    modalValueState: string | undefined;
+};
 
-const initialState = {
+const initialState: ModalState = {
     modalState: false,
-    authState: '로그인',
+    modalValueState: undefined,
 };
 
 const modalReducer = (state = initialState, action: ModalAction) => {
@@ -20,17 +24,18 @@ const modalReducer = (state = initialState, action: ModalAction) => {
             return {
                 ...state,
                 modalState: action.payload.modalState,
+                modalValueState: action.payload.modalValueState,
             };
         case CLOSE_MODAL:
             return {
                 ...state,
                 modalState: action.payload.modalState,
-                authState: '로그인',
+                modalValueState: action.payload.modalValueState,
             };
         case CHANGE_AUTH_STATE:
             return {
                 ...state,
-                authState: action.payload.authState,
+                modalValueState: action.payload.modalValueState,
             };
         default:
             return state;

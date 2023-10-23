@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema } from '@/schemas/auth';
 import { LoginSchema, RegisterSchema } from '@/types/auth';
 import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAction';
-import AuthLabelInput from './AuthLabelInput';
+import AuthLabelInput from '../LabelInput';
 import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
 import P from '@/components/@Shared/P';
 import Button from '@/components/@Shared/Button';
@@ -18,7 +18,7 @@ import { register as userRegister } from '@/api/auth';
 import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
 
 export default function RegisterModal() {
-    const authState = useSelector((state: RootState) => state.modal.authState);
+    const authState = useSelector((state: RootState) => state.modal.modalValueState);
     const dispatch = useDispatch();
 
     const {
@@ -45,7 +45,7 @@ export default function RegisterModal() {
     const authStateHandler = () => {
         dispatch(closeModal());
         dispatch(changeAuthState(LOGIN));
-        dispatch(openModal());
+        dispatch(openModal(LOGIN));
         reset();
     };
 
@@ -85,7 +85,7 @@ export default function RegisterModal() {
                 </P>
                 <SocialLogInBtns />
             </SocialLogin>
-            <DivideLogInType authState={authState} />
+            <DivideLogInType authState={authState as string} />
             <AuthFormContainer>
                 <AuthLabelInput
                     id="username"

@@ -10,6 +10,7 @@ import { userLoginChecking } from '@/redux/actions/userAction';
 import { StyledLink } from '../@Shared/Link/style';
 import { GlobalNavbarContainer, NavigationLi, NavigationToggleBtn, NavigationUl } from './style';
 import { resetAvatar } from '@/redux/actions/avatarPersistAction';
+import { LOGIN } from '@/constants/auth';
 
 export default function GlobalNavbar() {
     const [toggle, setToggle] = useState(false);
@@ -27,7 +28,7 @@ export default function GlobalNavbar() {
     };
 
     const openModalHandler = () => {
-        dispatch(openModal());
+        dispatch(openModal(LOGIN));
     };
 
     const logoutHandler = () => {
