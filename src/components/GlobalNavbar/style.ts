@@ -11,7 +11,7 @@ export const GlobalNavbarContainer = styled.nav`
     position: fixed;
     top: 3rem;
     width: 100%;
-    z-index: 100;
+    z-index: 100000000;
 `;
 
 export const NavigationToggleBtn = styled.button`
