@@ -11,10 +11,10 @@ import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAct
 import { userStorage } from '@/utils/userStorage';
 import Modal from '..';
 import Button from '@/components/@Shared/Button';
-import SocialLogInBtns from '../SocialLogInBtns';
-import AuthLabelInput from '../AuthLabelInput';
+import SocialLogInBtns from './SocialLogInBtns';
+import AuthLabelInput from './AuthLabelInput';
 import { LoginSchema, RegisterSchema } from '@/types/auth';
-import DivideLogInType from '../DivideLogInType';
+import DivideLogInType from './DivideLogInType';
 import { loginSchema } from '@/schemas/auth';
 import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
 import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
