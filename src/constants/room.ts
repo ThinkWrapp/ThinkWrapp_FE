@@ -1,0 +1,1 @@
+export const MAX_ROOM_PERSONNEL =  6 as const;
