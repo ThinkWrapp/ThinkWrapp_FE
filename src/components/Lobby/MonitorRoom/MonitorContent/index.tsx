@@ -5,9 +5,10 @@ import { ChooseRoom, CreateRoomButton, MonitorRoomContainer, MonitorTitle, Monit
 type MonitorRoomProps = {
     isSafari: boolean;
     navigate: NavigateFunction;
+    modalOpen: () => void;
 };
 
-export default function MonitorContent({ isSafari, navigate }: MonitorRoomProps) {
+export default function MonitorContent({ isSafari, navigate, modalOpen }: MonitorRoomProps) {
     return (
         <MonitorRoomContainer $isSafari={isSafari}>
             <MonitorWrapper>
@@ -18,7 +19,7 @@ export default function MonitorContent({ isSafari, navigate }: MonitorRoomProps)
                 </MonitorTitle>
                 <ChooseRoom>들어가실 방을 선택해 주세요</ChooseRoom>
                 <MonitorRoomLists navigate={navigate} />
-                <CreateRoomButton>방 생성하기</CreateRoomButton>
+                <CreateRoomButton onClick={modalOpen}>방 생성하기</CreateRoomButton>
             </MonitorWrapper>
         </MonitorRoomContainer>
     );
