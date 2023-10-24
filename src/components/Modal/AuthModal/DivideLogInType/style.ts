@@ -7,7 +7,7 @@ export const DivideLogInTypeContainer = styled.div`
 
     hr {
         display: flex;
-        aling-items: center;
+        align-items: center;
         flex: 2;
         width: 100%;
         height: 0.1rem;
