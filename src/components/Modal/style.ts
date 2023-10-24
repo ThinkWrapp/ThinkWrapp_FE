@@ -107,3 +107,9 @@ export const ModalWrapper = styled.div`
     padding: 3rem 3.5rem;
     z-index: 10;
 `;
+
+export const ModalTitle = styled.h2`
+    color: ${({ theme }) => theme.fc.light};
+    font-size: ${({ theme }) => theme.fs.md};
+    font-weight: ${({ theme }) => theme.fw.bold};
+`;

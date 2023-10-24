@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { register as userRegister } from '@/api/auth';
 import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
 import AuthLabelInput from './AuthLabelInput';
+import { ModalTitle } from '../style';
 
 export default function RegisterModal() {
     const authState = useSelector((state: RootState) => state.modal.modalValueState);
@@ -62,9 +63,9 @@ export default function RegisterModal() {
     return (
         <Modal reset={reset}>
             <AuthHeader>
-                <P $fc="light" $fw="bold">
+                <ModalTitle $fc="light" $fw="bold">
                     {authState}
-                </P>
+                </ModalTitle>
                 <Button $fc="light" onClick={closeModalHandler}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

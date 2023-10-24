@@ -21,6 +21,7 @@ import { saveAvatar } from '@/redux/actions/avatarPersistAction';
 import SocialLogInBtns from './SocialLogInBtns';
 import DivideLogInType from './DivideLogInType';
 import AuthLabelInput from './AuthLabelInput';
+import { ModalTitle } from '../style';
 
 export default function LoginModal() {
     const authState = useSelector((state: RootState) => state.modal.modalValueState);
@@ -93,9 +94,7 @@ export default function LoginModal() {
     return (
         <Modal reset={reset}>
             <AuthHeader>
-                <P $fc="light" $fw="bold">
-                    {authState}
-                </P>
+                <ModalTitle>{authState}</ModalTitle>
                 <Button $fc="light" onClick={closeModalHandler}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
