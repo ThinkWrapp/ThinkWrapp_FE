@@ -1,36 +1,27 @@
 import { NavigateFunction } from 'react-router-dom';
-import { MAX_ROOM_PERSONNEL } from '@/constants/room';
 import { ROOM } from '@/constants/route';
 import { RoomCharacterCheckCircle, RoomList, RoomPersonnelDescription, RoomTitle } from './style';
-
-const rooms = [
-    { id: '1', name: 'thinkWrapp1', nbCharacters: 3 },
-    { id: '2', name: 'thinkWrapp2', nbCharacters: 4 },
-    { id: '3', name: 'thinkWrapp3', nbCharacters: 5 },
-    { id: '4', name: 'thinkWrapp4', nbCharacters: 6 },
-    { id: '5', name: 'thinkWrapp5', nbCharacters: 2 },
-    { id: '6', name: 'thinkWrapp6', nbCharacters: 1 },
-    { id: '7', name: 'thinkWrapp7', nbCharacters: 3 },
-    { id: '8', name: 'thinkWrapp8', nbCharacters: 1 },
-];
+import useRooms from '@/hooks/useRooms';
 
 type MonitorRoomListProps = {
     navigate: NavigateFunction;
 };
 
 export default function MonitorRoomList({ navigate }: MonitorRoomListProps) {
+    const { rooms } = useRooms();
     const moveLinkHandler = (roomId: string) => {
         navigate(`/${ROOM}/${roomId}`);
     };
 
+    console.log(rooms);
     return (
         <>
-            {rooms.map((room) => (
+            {rooms?.map((room) => (
                 <RoomList key={room.id} onClick={() => moveLinkHandler(room.id)}>
                     <RoomTitle>{room.name}</RoomTitle>
                     <RoomPersonnelDescription>
                         <RoomCharacterCheckCircle $nbCharacters={room.nbCharacters} />
-                        {room.nbCharacters}명 참여중 ({room.nbCharacters}/{MAX_ROOM_PERSONNEL})
+                        {room.nbCharacters}명 참여중 ({room.nbCharacters}/{room.roomLimitPeople})
                     </RoomPersonnelDescription>
                 </RoomList>
             ))}

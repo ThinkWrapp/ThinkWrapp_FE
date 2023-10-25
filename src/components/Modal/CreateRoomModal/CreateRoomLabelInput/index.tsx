@@ -1,18 +1,24 @@
-import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { CreateRoomModalContainer, Input, Label } from './style';
+import { CreateRoomSchema } from '@/types/room';
 
 type CreateRoomLabelInputProps = {
     id: 'roomName' | 'roomLimitPeople' | 'password';
     type: React.InputHTMLAttributes<HTMLInputElement>['type'];
     labelText: string;
-    register: UseFormRegister<FieldValues>;
+    register: UseFormRegister<CreateRoomSchema>;
     required?: boolean;
-    min?: number;
-    max?: number;
-    step?: number;
+    errors: FieldErrors<CreateRoomSchema>;
 };
 
-export default function CreateRoomLabelInput({ labelText, id, type, register, required }: CreateRoomLabelInputProps) {
+export default function CreateRoomLabelInput({
+    labelText,
+    id,
+    type,
+    register,
+    required,
+    errors,
+}: CreateRoomLabelInputProps) {
     const splitLabelText = labelText.split('').map((char, idx) => (
         <span key={idx} style={{ transitionDelay: idx * 30 + 'ms', filter: `hue-rotate(${idx * 60}deg)` }}>
             {char}
@@ -21,7 +27,7 @@ export default function CreateRoomLabelInput({ labelText, id, type, register, re
 
     return (
         <CreateRoomModalContainer>
-            <Input id={id} type={type} required {...register(id, { required })} />
+            <Input id={id} type={type} required {...register(id, { required })} $errors={errors} />
             <Label htmlFor={id}>{splitLabelText}</Label>
         </CreateRoomModalContainer>
     );

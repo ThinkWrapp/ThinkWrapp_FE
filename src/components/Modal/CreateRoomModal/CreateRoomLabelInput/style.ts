@@ -1,4 +1,6 @@
 import { ModalInput, ModalLabel } from '@/styles/mixin/modalInputLabel';
+import { CreateRoomSchema } from '@/types/room';
+import { FieldErrors } from 'react-hook-form';
 import styled from 'styled-components';
 
 export const CreateRoomModalContainer = styled.div`
@@ -14,8 +16,14 @@ export const CreateRoomModalContainer = styled.div`
     }
 `;
 
-export const Input = styled.input`
+type CreateRoomModalProps = {
+    $errors: FieldErrors<CreateRoomSchema>;
+    id: 'roomName' | 'roomLimitPeople' | 'password';
+};
+
+export const Input = styled.input<CreateRoomModalProps>`
     ${ModalInput}
+    border-color: ${({ theme, $errors, id }) => $errors[id] && theme.bg.danger} !important;
 `;
 
 export const Label = styled.label`
