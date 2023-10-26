@@ -1,10 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { SubmitHandler, UseFormRegister, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/reducers';
 import { toast } from 'sonner';
-import { login, profile } from '@/api/auth';
+import { login } from '@/api/auth';
 import P from '@/components/@Shared/P';
 import { userLoginChecking } from '@/redux/actions/userAction';
 import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAction';
@@ -22,14 +22,16 @@ import SocialLogInBtns from './SocialLogInBtns';
 import DivideLogInType from './DivideLogInType';
 import AuthLabelInput from './AuthLabelInput';
 import { ModalTitle } from '../style';
+import { useLoginUserInfo } from '@/hooks/useLoginUserInfo';
 
 export default function LoginModal() {
-    const authState = useSelector((state: RootState) => state.modal.modalValueState);
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    const authState = useSelector((state: RootState) => state.modal.modalValueState);
     const avatarState = useSelector((state: RootState) => state.avatar.avatarState);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    const { userData, isSuccess } = useLoginUserInfo();
 
     const {
         register,
@@ -39,12 +41,6 @@ export default function LoginModal() {
     } = useForm<LoginSchema>({
         mode: 'onChange',
         resolver: zodResolver(loginSchema),
-    });
-
-    const { data: userData, isSuccess } = useQuery(['user'], profile, {
-        enabled: isAuth,
-        staleTime: Infinity,
-        cacheTime: Infinity,
     });
 
     const { mutate: Login } = useMutation(login, {
@@ -79,11 +75,10 @@ export default function LoginModal() {
     };
 
     useEffect(() => {
-        if (!isSuccess) return;
-        if (isAuth && !avatarState && !userData?.avatar && pathname !== '/character') {
+        if (isAuth && !avatarState && pathname !== '/character') {
             navigate('/character');
         }
-    }, [isSuccess, avatarState, pathname, isAuth, userData?.avatar]);
+    }, [isSuccess, avatarState, pathname, isAuth]);
 
     useEffect(() => {
         if (isAuth && userData?.avatar) {

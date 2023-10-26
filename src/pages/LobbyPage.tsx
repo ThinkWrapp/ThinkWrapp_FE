@@ -7,13 +7,14 @@ import Lobby from '@/components/Lobby';
 import socket from '@/socket';
 import useRooms from '@/hooks/useRooms';
 import { Room } from '@/types/room';
+import { useLoginUserInfo } from '@/hooks/useLoginUserInfo';
 
 export default function LobbyPage() {
     const loaded = useLoading();
     const { rooms, setRooms } = useRooms();
+    const { userData, isSuccess } = useLoginUserInfo();
 
     const onWelcome = (welcomeValue: Room) => {
-        console.log(welcomeValue);
         if (!welcomeValue) return;
         setRooms([...rooms, welcomeValue]);
     };
@@ -22,6 +23,12 @@ export default function LobbyPage() {
         if (!roomUpdateValue) return;
         setRooms([...rooms, roomUpdateValue]);
     };
+
+    useEffect(() => {
+        if (!isSuccess) return;
+
+        socket.emit('clientEmail', userData?.email);
+    }, [userData?.email, isSuccess]);
 
     useEffect(() => {
         socket.on('welcome', onWelcome);
