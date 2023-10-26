@@ -16,7 +16,7 @@ export default function LobbyAvatar({ isMobile, goldenRatio }: LobbyAvatarProps)
 
     return (
         <>
-            {!isAuth && (
+            {(!isAuth || avatarState === '') && (
                 <DummyHuman
                     position-z={-1}
                     position-x={0.5 * goldenRatio}
@@ -26,6 +26,7 @@ export default function LobbyAvatar({ isMobile, goldenRatio }: LobbyAvatarProps)
             )}
             {isAuth && avatarState === AVATAR.gender.male && (
                 <Man
+                    nameSpace="lobby"
                     position-z={-1}
                     position-x={0.5 * goldenRatio}
                     position-y={isMobile ? -0.4 : 0}
@@ -34,6 +35,7 @@ export default function LobbyAvatar({ isMobile, goldenRatio }: LobbyAvatarProps)
             )}
             {isAuth && avatarState === AVATAR.gender.female && (
                 <Woman
+                    nameSpace="lobby"
                     position-z={-1}
                     position-x={0.5 * goldenRatio}
                     position-y={isMobile ? -0.4 : 0}

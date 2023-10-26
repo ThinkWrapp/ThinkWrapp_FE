@@ -67,6 +67,7 @@ export const SelectAvatar = () => {
                 setHovered={setHovered}
             >
                 <Man
+                    nameSpace="select"
                     scale={1}
                     position-y={-1}
                     hovered={hovered === AVATAR.gender.male}
@@ -81,6 +82,7 @@ export const SelectAvatar = () => {
                 setHovered={setHovered}
             >
                 <Woman
+                    nameSpace="select"
                     scale={1}
                     position-y={-1}
                     hovered={hovered === AVATAR.gender.female}
