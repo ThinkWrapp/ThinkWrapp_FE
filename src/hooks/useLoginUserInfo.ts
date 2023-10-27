@@ -1,10 +1,9 @@
 import { profile } from '@/api/auth';
-import { RootState } from '@/redux/reducers';
 import { useQuery } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
+import useIsAuth from './useIsAuth';
 
 export const useLoginUserInfo = () => {
-    const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    const isAuth = useIsAuth((state) => state.isAuth);
 
     const { data: userData, isSuccess } = useQuery(['user'], profile, {
         enabled: isAuth,

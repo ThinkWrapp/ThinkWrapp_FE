@@ -2,6 +2,7 @@ import { DummyHuman } from '@/components/3DModels/DummyHuman';
 import { Man } from '@/components/3DModels/Man';
 import { Woman } from '@/components/3DModels/Woman';
 import { AVATAR } from '@/constants/auth';
+import useIsAuth from '@/hooks/useIsAuth';
 import { RootState } from '@/redux/reducers';
 import { useSelector } from 'react-redux';
 
@@ -11,7 +12,7 @@ type LobbyAvatarProps = {
 };
 
 export default function LobbyAvatar({ isMobile, goldenRatio }: LobbyAvatarProps) {
-    const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    const isAuth = useIsAuth((state) => state.isAuth);
     const avatarState = useSelector((state: RootState) => state.avatar.avatarState);
 
     return (

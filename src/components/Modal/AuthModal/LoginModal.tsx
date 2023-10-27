@@ -6,7 +6,6 @@ import { RootState } from '@/redux/reducers';
 import { toast } from 'sonner';
 import { login } from '@/api/auth';
 import P from '@/components/@Shared/P';
-import { userLoginChecking } from '@/redux/actions/userAction';
 import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAction';
 import { userStorage } from '@/utils/userStorage';
 import Modal from '..';
@@ -23,9 +22,11 @@ import DivideLogInType from './DivideLogInType';
 import AuthLabelInput from './AuthLabelInput';
 import { ModalTitle } from '../style';
 import { useLoginUserInfo } from '@/hooks/useLoginUserInfo';
+import useIsAuth from '@/hooks/useIsAuth';
 
 export default function LoginModal() {
-    const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    const isAuth = useIsAuth((state) => state.isAuth);
+    const setIsAuth = useIsAuth((state) => state.setIsAuth);
     const authState = useSelector((state: RootState) => state.modal.modalValueState);
     const avatarState = useSelector((state: RootState) => state.avatar.avatarState);
     const dispatch = useDispatch();
@@ -47,7 +48,7 @@ export default function LoginModal() {
         onSuccess: ({ message, access_token }) => {
             toast.success(message);
             userStorage.set(access_token);
-            dispatch(userLoginChecking(true));
+            setIsAuth(true);
         },
         onError: () => {
             toast.error(AUTH.login.failMessage);
