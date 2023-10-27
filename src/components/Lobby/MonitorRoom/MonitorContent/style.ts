@@ -70,3 +70,23 @@ export const CreateRoomButton = styled.button`
         background-color: rgba(127, 27, 35, 0.7);
     }
 `;
+
+export const NoAuthMonitor = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 36rem;
+    background-color: rgba(99, 102, 241, 0.7);
+    border: 1px solid #ececec;
+    color: #fff;
+    font-size: 3.2rem;
+    font-weight: 800;
+    pointer-events: auto;
+    transition: 0.2s ease-in-out;
+    text-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.6);
+
+    &:hover {
+        background-color: rgba(55, 48, 163, 0.7);
+    }
+`;

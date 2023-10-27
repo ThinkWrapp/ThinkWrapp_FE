@@ -1,12 +1,11 @@
 import { Float, Html } from '@react-three/drei';
 import { motion } from 'framer-motion-3d';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '@/redux/reducers';
+import { openModal } from '@/redux/actions/modalAction';
 import { Monitor } from '@/components/3DModels/Monitor';
 import MonitorContent from './MonitorContent';
-import { RootState } from '@/redux/reducers';
-import { useNavigate } from 'react-router-dom';
-import { openModal } from '@/redux/actions/modalAction';
-import { CREATE_ROOM } from '@/constants/room';
 
 type MonitorRoomProps = {
     isMobile: boolean;
@@ -18,8 +17,8 @@ export default function MonitorRoom({ isMobile, goldenRatio }: MonitorRoomProps)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const openCreateRoomModal = () => {
-        dispatch(openModal(CREATE_ROOM));
+    const openCreateRoomModal = (modalKeyword: string) => {
+        dispatch(openModal(modalKeyword));
     };
 
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); // ugly transform position 에 버그가 있어 사파리 수정
