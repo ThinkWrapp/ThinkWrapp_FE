@@ -11,5 +11,8 @@ export const useLoading = () => {
         }
     }, [progress]);
 
-    return loaded;
+    return {
+        loaded,
+        progress,
+    };
 };

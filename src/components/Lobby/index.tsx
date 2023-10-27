@@ -9,11 +9,7 @@ import ThinkWrappWorld3DText from './ThinkWrappWorld3DText';
 import LobbyAvatar from './Avatar';
 import MonitorRoom from './MonitorRoom';
 
-type LobbyProps = {
-    loaded: boolean;
-};
-
-export default function Lobby({ loaded }: LobbyProps) {
+export default function Lobby() {
     const accumulativeShadows = useMemo(
         () => (
             <AccumulativeShadows temporal frames={30} alphaTest={0.85} scale={28} position={[0, 0, 0]}>
@@ -29,7 +25,7 @@ export default function Lobby({ loaded }: LobbyProps) {
 
     return (
         <>
-            <LobbyBackground loaded={loaded} />
+            <LobbyBackground />
             <spotLight
                 color="#fff"
                 intensity={0.45}

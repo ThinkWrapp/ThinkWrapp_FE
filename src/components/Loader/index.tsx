@@ -1,13 +1,10 @@
-import { useProgress } from '@react-three/drei';
 import { LoaderContainer, LoaderTitle, LoaderWrapper, ProgressBar, ProgressBarContainer } from './style';
 import P from '../@Shared/P';
+import { useLoading } from '@/hooks/useLoading';
 
-type LoaderProps = {
-    loaded: boolean;
-};
+export default function Loader() {
+    const { loaded, progress } = useLoading();
 
-export default function Loader({ loaded }: LoaderProps) {
-    const { progress } = useProgress();
     return (
         <LoaderContainer>
             <LoaderWrapper $loaded={loaded}>
