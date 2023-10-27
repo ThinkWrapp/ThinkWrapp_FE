@@ -10,10 +10,11 @@ import { ModalTitle } from '../style';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createRoomSchema } from '@/schemas/room';
 import { CreateRoomSchema } from '@/types/room';
-import socket from '@/socket';
+import { useSocket } from '@/hooks/useSocket';
 
 export default function CreateRoomModal() {
     const dispatch = useDispatch();
+    const socket = useSocket();
 
     const {
         register,
@@ -29,7 +30,7 @@ export default function CreateRoomModal() {
         const roomId = uuidv4();
         roomData.id = roomId;
 
-        socket.emit('createRoom', roomData);
+        socket?.emit('createRoom', roomData);
         reset();
         dispatch(closeModal());
     };
