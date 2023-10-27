@@ -1,20 +1,23 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Modal from '..';
 import CreateRoomLabelInput from './CreateRoomLabelInput';
-import { CreateRoomButtonGroup, CreateRoomModalForm, CreateRoomModalHeader } from './style';
 import Button from '@/components/@Shared/Button';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '@/redux/actions/modalAction';
-import { ModalTitle } from '../style';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSocket } from '@/hooks/useSocket';
+import { ROOM } from '@/constants/route';
 import { createRoomSchema } from '@/schemas/room';
 import { CreateRoomSchema } from '@/types/room';
-import { useSocket } from '@/hooks/useSocket';
+import { ModalTitle } from '../style';
+import { CreateRoomButtonGroup, CreateRoomModalForm, CreateRoomModalHeader } from './style';
 
 export default function CreateRoomModal() {
     const dispatch = useDispatch();
     const socket = useSocket();
+    const navigate = useNavigate();
 
     const {
         register,
@@ -33,6 +36,7 @@ export default function CreateRoomModal() {
         socket?.emit('createRoom', roomData);
         reset();
         dispatch(closeModal());
+        navigate(`/${ROOM}/${roomId}`);
     };
 
     const closeModalHandler = () => {

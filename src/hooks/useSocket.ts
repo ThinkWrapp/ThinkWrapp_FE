@@ -1,16 +1,28 @@
 import io, { Socket } from 'socket.io-client';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { profile } from '@/api/auth';
 import useIsAuth from './useIsAuth';
-import { useEffect, useRef } from 'react';
 
 export function useSocket() {
-    const getEmail = useIsAuth((state) => state.getEmail);
-    const socketRef = useRef<Socket | null>(null);
+    const isAuth = useIsAuth((state) => state.isAuth);
+    const {
+        data: userData,
+        isLoading,
+        isError,
+    } = useQuery(['user'], profile, {
+        enabled: isAuth,
+        staleTime: Infinity,
+        cacheTime: Infinity,
+    });
+    const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
-        if (socketRef.current === null) {
-            socketRef.current = io('http://localhost:3000', { query: { email: getEmail } });
+        if (!isLoading && !isError && userData.email) {
+            const s = io('http://localhost:3000', { query: { email: userData.email } });
+            setSocket(s);
         }
-    }, []);
+    }, [isLoading, isError, userData?.email]);
 
-    return socketRef.current;
+    return socket;
 }
