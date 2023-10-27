@@ -1,10 +1,12 @@
 import { useRef, useEffect } from 'react';
 import { CameraControls, Cloud, Stars, Sky } from '@react-three/drei';
-import { useLoading } from '@/hooks/useLoading';
 
-export default function LobbyBackground() {
+type LobbyBackgroundProps = {
+    loaded: boolean;
+};
+
+export default function LobbyBackground({ loaded }: LobbyBackgroundProps) {
     const controls = useRef<CameraControls | null>(null);
-    const { loaded } = useLoading();
 
     useEffect(() => {
         if (!controls.current) return;

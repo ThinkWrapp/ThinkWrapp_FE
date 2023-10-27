@@ -1,10 +1,12 @@
 import { useRef, useEffect } from 'react';
 import { CameraControls, Stars, Sky } from '@react-three/drei';
-import { useLoading } from '@/hooks/useLoading';
 
-export default function RoomBackground() {
+type RoomBackgroundProps = {
+    loaded: boolean;
+};
+
+export default function RoomBackground({ loaded }: RoomBackgroundProps) {
     const controls = useRef<CameraControls | null>(null);
-    const { loaded } = useLoading();
 
     useEffect(() => {
         if (!controls.current) return;
