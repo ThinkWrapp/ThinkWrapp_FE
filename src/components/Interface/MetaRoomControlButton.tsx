@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { closeMonitor, openMonitor } from '@/redux/actions/interfaceAction';
 import { RootState } from '@/redux/reducers';
-import { InterFaceButton } from '../style';
+import { InterFaceButton } from './style';
 
 export default function MetaRoomControlButton() {
     const monitorState = useSelector((state: RootState) => state.interface.monitorState);

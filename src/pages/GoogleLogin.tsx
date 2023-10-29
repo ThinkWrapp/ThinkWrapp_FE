@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { refreshToken } from '@/api/auth';
 import { userStorage } from '@/utils/userStorage';
 
-export default function GoogleLogin() {
+const GoogleLogin = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,4 +22,6 @@ export default function GoogleLogin() {
     }, []);
 
     return null;
-}
+};
+
+export default GoogleLogin;

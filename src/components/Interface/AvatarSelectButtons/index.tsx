@@ -1,18 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '@/components/@Shared/Button';
+import { toast } from 'sonner';
+import { useMutation } from '@tanstack/react-query';
 import { RootState } from '@/redux/reducers';
 import { avatarSelectButtonDisplay } from '@/redux/actions/interfaceAction';
-import { AvatarSelectButtonContainer } from './style';
-import { useMutation } from '@tanstack/react-query';
-import { updateAvatar } from '@/api/auth';
-import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
+import { linkHome } from '@/redux/actions/RoutePerstistAction';
 import { resetAvatar, saveAvatar } from '@/redux/actions/avatarPersistAction';
+import { updateAvatar } from '@/api/auth';
+import Button from '@/components/@Shared/Button';
+import { AvatarSelectButtonContainer } from './style';
 
-export default function AvatarSelectButton() {
+export default function AvatarSelectButtons() {
     const avatarButtonDisplay = useSelector((state: RootState) => state.interface.avatarButtonDisplay);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const avatarDisplayHandler = (value: string | null) => {
         dispatch(avatarSelectButtonDisplay(value));
@@ -28,7 +27,7 @@ export default function AvatarSelectButton() {
             dispatch(resetAvatar());
         },
         onSettled: () => {
-            navigate('/');
+            dispatch(linkHome());
         },
     });
 

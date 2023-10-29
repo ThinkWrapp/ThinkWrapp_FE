@@ -4,22 +4,28 @@ import LobbyPage from './pages/LobbyPage';
 import GoogleLogin from './pages/GoogleLogin';
 import SelectAvatarPage from './pages/SelectAvatarPage';
 import RoomPage from './pages/RoomPage';
+import MetaPage from './pages/MetaPage';
+import { ThemeProvider } from 'styled-components';
+import theme from './theme';
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <RootLayOut />,
         children: [
-            { index: true, element: <LobbyPage /> },
-            { path: 'character', element: <SelectAvatarPage /> },
-            { path: 'room/:roomId', children: [{ index: true, element: <RoomPage /> }] },
+            { index: true, element: <MetaPage /> },
             { path: 'social-auth', element: <GoogleLogin /> },
         ],
     },
 ]);
 
 const App = () => {
-    return <RouterProvider router={router} />;
+    return (
+        // @ts-ignore
+        <ThemeProvider theme={theme}>
+            <RouterProvider router={router} />
+        </ThemeProvider>
+    );
 };
 
 export default App;

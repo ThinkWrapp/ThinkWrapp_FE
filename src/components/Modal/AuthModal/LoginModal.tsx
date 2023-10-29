@@ -50,8 +50,8 @@ export default function LoginModal() {
             userStorage.set(access_token);
             setIsAuth(true);
         },
-        onError: () => {
-            toast.error(AUTH.login.failMessage);
+        onError: (error: { response: { data: { message: string } } }) => {
+            toast.error(error.response.data.message);
         },
         onSettled: () => {
             dispatch(closeModal());

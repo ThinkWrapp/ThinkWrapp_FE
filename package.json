@@ -29,6 +29,7 @@
     "react-router-dom": "^6.16.0",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
+    "redux-saga": "^1.2.3",
     "socket.io-client": "^4.7.2",
     "sonner": "^1.0.3",
     "styled-components": "^5",

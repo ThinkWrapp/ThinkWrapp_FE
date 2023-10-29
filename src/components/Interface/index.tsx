@@ -1,36 +1,37 @@
-import { useLocation } from 'react-router-dom';
 import MetaRoomControlButton from './MetaRoomControlButton';
-import SelectAvatarLink from './SelectAvatarLink';
-import { InterfaceContainer } from './style';
-import AvatarSelectButton from './AvatarSelectButton';
-import HomeLink from './HomeLink';
+import SelectAvatarLink from './SelectAvatarButton';
+import AvatarSelectButton from './AvatarSelectButtons';
 import useIsAuth from '@/hooks/useIsAuth';
+import { InterfaceContainer } from './style';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/reducers';
+import { CHARACTER, ROOM } from '@/redux/actions/RoutePerstistAction';
+import HomeButton from './HomeButton';
 
 export default function Interface() {
-    const location = useLocation();
     const isAuth = useIsAuth((state) => state.isAuth);
+    const routeState = useSelector((state: RootState) => state.route.routeState);
 
-    const lobby = location.pathname === '/';
-    const character = location.pathname === '/character';
+    const routeResponseInterface = () => {
+        switch (routeState) {
+            case ROOM:
+                return <></>;
+            case CHARACTER:
+                return (
+                    <>
+                        <HomeButton />
+                        <AvatarSelectButton />
+                    </>
+                );
+            default:
+                return (
+                    <>
+                        <MetaRoomControlButton />
+                        {isAuth && <SelectAvatarLink />}
+                    </>
+                );
+        }
+    };
 
-    const lobbyContent = lobby && (
-        <>
-            <MetaRoomControlButton />
-            {isAuth && <SelectAvatarLink />}
-        </>
-    );
-
-    const characterContent = character && (
-        <>
-            <HomeLink />
-            <AvatarSelectButton />
-        </>
-    );
-
-    return (
-        <InterfaceContainer>
-            {lobbyContent}
-            {characterContent}
-        </InterfaceContainer>
-    );
+    return <InterfaceContainer>{routeResponseInterface()}</InterfaceContainer>;
 }
