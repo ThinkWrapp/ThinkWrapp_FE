@@ -1,6 +1,6 @@
-import { LoaderContainer, LoaderTitle, LoaderWrapper, ProgressBar, ProgressBarContainer } from './style';
-import P from '../@Shared/P';
 import { useProgress } from '@react-three/drei';
+import P from '../@Shared/P';
+import { LoaderContainer, LoaderTitle, LoaderWrapper, ProgressBar, ProgressBarContainer } from './style';
 
 type LoaderProps = {
     loaded: boolean;

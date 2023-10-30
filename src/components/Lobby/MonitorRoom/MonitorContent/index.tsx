@@ -1,6 +1,7 @@
 import { NavigateFunction } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import MonitorRoomLists from '../MonitorRoomLists';
-import useIsAuth from '@/hooks/useIsAuth';
+import { RootState } from '@/redux/reducers';
 import { LOGIN } from '@/constants/auth';
 import { CREATE_ROOM } from '@/constants/room';
 import {
@@ -19,7 +20,7 @@ type MonitorRoomProps = {
 };
 
 export default function MonitorContent({ isSafari, navigate, modalOpen }: MonitorRoomProps) {
-    const isAuth = useIsAuth((state) => state.isAuth);
+    const isAuth = useSelector((state: RootState) => state.user.isAuth);
 
     return (
         <MonitorRoomContainer $isSafari={isSafari}>

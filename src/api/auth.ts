@@ -13,7 +13,7 @@ const profileSchema = z.object({
     email: emailSchema,
     sub: z.string(),
     roles: z.array(z.string()),
-    avatar: z.string().nullable(),
+    avatarUrl: z.string().nullable(),
 });
 
 export const profile = async () => {
@@ -59,7 +59,7 @@ export const refreshToken = async () => {
 
 const avatarSchema = z.string();
 
-export const updateAvatar = async (avatar: UpdateAvatarSchema) => {
-    const response = await instance.patch('/auth/avatar', avatar);
+export const updateAvatar = async (avatarUrl: UpdateAvatarSchema) => {
+    const response = await instance.patch('/auth/avatarUrl', avatarUrl);
     return avatarSchema.parse(response.data);
 };

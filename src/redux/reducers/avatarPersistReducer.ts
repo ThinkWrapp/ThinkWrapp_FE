@@ -3,11 +3,11 @@ import { RESET_AVATAR, SAVE_AVATAR, resetAvatar, saveAvatar } from '../actions/a
 type AvatarPersistAction = ReturnType<typeof saveAvatar> | ReturnType<typeof resetAvatar>;
 
 type AvatarState = {
-    avatarState: string;
+    avatarUrl: string;
 };
 
 const initialState: AvatarState = {
-    avatarState: '',
+    avatarUrl: '',
 };
 
 const avatarPersistReducer = (state = initialState, action: AvatarPersistAction) => {
@@ -15,12 +15,12 @@ const avatarPersistReducer = (state = initialState, action: AvatarPersistAction)
         case SAVE_AVATAR:
             return {
                 ...state,
-                avatarState: action.payload.avatar,
+                avatarUrl: action.payload.avatarUrl,
             };
         case RESET_AVATAR:
             return {
                 ...state,
-                avatarState: action.payload.avatar,
+                avatarUrl: action.payload.avatarUrl,
             };
         default:
             return state;

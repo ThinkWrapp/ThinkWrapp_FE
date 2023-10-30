@@ -1,12 +1,17 @@
-import { AccumulativeShadows, Cloud, RandomizedLight } from '@react-three/drei';
-import { Suspense, useMemo } from 'react';
-import * as THREE from 'three';
+import { AccumulativeShadows, RandomizedLight } from '@react-three/drei';
+import { Suspense, useMemo, useEffect } from 'react';
 import ThinkWrappWorld3DText from './ThinkWrappWorld3DText';
 import { King } from '@/components/3DModels/King';
 import { Castle } from '@/components/3DModels/Castle';
 import Ground from './Ground';
 import Monitor from './Monitor';
 import LobbyAvatar from './LobbyAvatar';
+import Background from './Background';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/redux/reducers';
+import { saveAvatar } from '@/redux/actions/avatarPersistAction';
+import { profile } from '@/api/auth';
+import { linkCharacter } from '@/redux/actions/RoutePerstistAction';
 
 const Lobby = () => {
     const accumulativeShadows = useMemo(
@@ -18,29 +23,29 @@ const Lobby = () => {
         ),
         [],
     );
+    const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
+    const dispatch = useDispatch();
 
-    const clouds = useMemo(
-        () => (
-            <>
-                <Cloud color="#c0c0dd" position={[10, 3, 8]} scale={[3, 1.3, 23]} />
-                <Cloud color="#c0c0dd" position={[-8, 4, 5]} scale={[1, 0.5, 23]} />
-            </>
-        ),
-        [],
-    );
+    useEffect(() => {
+        (async () => {
+            if (isAuth && !avatarUrl) {
+                const userData = await profile();
+
+                if (!userData?.avatarUrl) {
+                    dispatch(linkCharacter());
+                }
+
+                if (userData.avatarUrl) {
+                    dispatch(saveAvatar(userData.avatarUrl));
+                }
+            }
+        })();
+    }, [isAuth, avatarUrl]);
 
     return (
         <>
-            {clouds}
-            <spotLight
-                color="#fff"
-                intensity={0.45}
-                position={[5, 1, 2.4]}
-                target-position={[0, 0, 0]}
-                distance={0}
-                angle={THREE.MathUtils.degToRad(35)}
-                penumbra={0.2}
-            />
+            <Background />
             <group position-y={-1.5}>
                 <Monitor />
                 <group position-z={-8} rotation-y={Math.PI / 6}>

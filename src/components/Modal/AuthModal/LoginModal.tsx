@@ -2,37 +2,27 @@ import { useMutation } from '@tanstack/react-query';
 import { SubmitHandler, UseFormRegister, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/reducers';
 import { toast } from 'sonner';
-import { login } from '@/api/auth';
 import P from '@/components/@Shared/P';
-import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAction';
-import { userStorage } from '@/utils/userStorage';
 import Modal from '..';
 import Button from '@/components/@Shared/Button';
-import { LoginSchema, RegisterSchema } from '@/types/auth';
-import { loginSchema } from '@/schemas/auth';
-import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
-import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { saveAvatar } from '@/redux/actions/avatarPersistAction';
 import SocialLogInBtns from './SocialLogInBtns';
 import DivideLogInType from './DivideLogInType';
 import AuthLabelInput from './AuthLabelInput';
+import { login } from '@/api/auth';
+import { RootState } from '@/redux/reducers';
+import { userLoginChecking } from '@/redux/actions/userAction';
+import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAction';
+import { userStorage } from '@/utils/userStorage';
+import { LoginSchema, RegisterSchema } from '@/types/auth';
+import { loginSchema } from '@/schemas/auth';
+import { LOGIN, REGISTER } from '@/constants/auth';
 import { ModalTitle } from '../style';
-import { useLoginUserInfo } from '@/hooks/useLoginUserInfo';
-import useIsAuth from '@/hooks/useIsAuth';
+import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
 
 export default function LoginModal() {
-    const isAuth = useIsAuth((state) => state.isAuth);
-    const setIsAuth = useIsAuth((state) => state.setIsAuth);
     const authState = useSelector((state: RootState) => state.modal.modalValueState);
-    const avatarState = useSelector((state: RootState) => state.avatar.avatarState);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
-    const { userData, isSuccess } = useLoginUserInfo();
 
     const {
         register,
@@ -48,7 +38,7 @@ export default function LoginModal() {
         onSuccess: ({ message, access_token }) => {
             toast.success(message);
             userStorage.set(access_token);
-            setIsAuth(true);
+            dispatch(userLoginChecking(true));
         },
         onError: (error: { response: { data: { message: string } } }) => {
             toast.error(error.response.data.message);
@@ -74,18 +64,6 @@ export default function LoginModal() {
         Login(data);
         reset();
     };
-
-    useEffect(() => {
-        if (isAuth && !avatarState && pathname !== '/character') {
-            navigate('/character');
-        }
-    }, [isSuccess, avatarState, pathname, isAuth]);
-
-    useEffect(() => {
-        if (isAuth && userData?.avatar) {
-            dispatch(saveAvatar(userData.avatar));
-        }
-    }, [isAuth, userData?.avatar]);
 
     return (
         <Modal reset={reset}>

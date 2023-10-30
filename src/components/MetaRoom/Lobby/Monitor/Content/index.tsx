@@ -1,17 +1,17 @@
-import useIsAuth from '@/hooks/useIsAuth';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/reducers';
+import RoomLists from '../RoomLists';
 import { LOGIN } from '@/constants/auth';
 import { CREATE_ROOM } from '@/constants/room';
 import { ChooseRoom, Container, CreateRoomButton, NoAuthMonitor, Title, Wrapper } from './style';
-import RoomLists from '../RoomLists';
 
 type ContentProps = {
     isSafari: boolean;
+    isAuth: boolean | undefined;
     modalOpen: (modalKeyword: string) => void;
 };
 
-const Content = ({ isSafari, modalOpen }: ContentProps) => {
-    const isAuth = useIsAuth((state) => state.isAuth);
-
+const Content = ({ isSafari, modalOpen, isAuth }: ContentProps) => {
     return (
         <Container $isSafari={isSafari}>
             <Wrapper>

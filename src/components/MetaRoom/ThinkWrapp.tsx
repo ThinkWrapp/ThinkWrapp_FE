@@ -3,10 +3,8 @@ import { useEffect, useRef } from 'react';
 import { Bloom, EffectComposer, N8AO } from '@react-three/postprocessing';
 import CanvasBackground from './CanvasBackground';
 import Lobby from './Lobby';
-import SelectAvatar from './SelectAvatar';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/reducers';
-import { CHARACTER } from '@/redux/actions/RoutePerstistAction';
 
 type ThinkWrappProps = {
     loaded: boolean;
@@ -32,10 +30,10 @@ export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
 
     return (
         <>
-            {/* <EffectComposer>
+            <EffectComposer>
                 <N8AO intensity={0.42} />
                 <Bloom luminanceThreshold={0.85} intensity={1.2} luminanceSmoothing={0.55} mipmapBlur={true} />
-            </EffectComposer> */}
+            </EffectComposer>
             <CanvasBackground />
             <CameraControls
                 ref={controls}
@@ -52,7 +50,6 @@ export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
                 }}
             />
             {!routeState && <Lobby />}
-            {routeState === CHARACTER && <SelectAvatar />}
         </>
     );
 }

@@ -2,16 +2,16 @@ import io, { Socket } from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { profile } from '@/api/auth';
-import useIsAuth from './useIsAuth';
+// import useIsAuth from './useIsAuth';
 
 export function useSocket() {
-    const isAuth = useIsAuth((state) => state.isAuth);
+    // const isAuth = useIsAuth((state) => state.isAuth);
     const {
         data: userData,
         isLoading,
         isError,
     } = useQuery(['user'], profile, {
-        enabled: isAuth,
+        // enabled: isAuth,
         staleTime: Infinity,
         cacheTime: Infinity,
     });

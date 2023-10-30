@@ -8,6 +8,8 @@ import { resetAvatar, saveAvatar } from '@/redux/actions/avatarPersistAction';
 import { updateAvatar } from '@/api/auth';
 import Button from '@/components/@Shared/Button';
 import { AvatarSelectButtonContainer } from './style';
+import { AVATAR } from '@/constants/auth';
+import { MAN_AVATAR_URL, WOMAN_AVATAR_URL } from '@/constants/route';
 
 export default function AvatarSelectButtons() {
     const avatarButtonDisplay = useSelector((state: RootState) => state.interface.avatarButtonDisplay);
@@ -33,7 +35,18 @@ export default function AvatarSelectButtons() {
 
     const selectAvatarHandler = () => {
         if (!avatarButtonDisplay) return;
-        avatarSelect({ avatar: avatarButtonDisplay });
+
+        switch (avatarButtonDisplay) {
+            case AVATAR.gender.male:
+                avatarSelect({ avatarUrl: MAN_AVATAR_URL });
+                dispatch(saveAvatar(MAN_AVATAR_URL));
+                break;
+            case AVATAR.gender.female:
+                avatarSelect({ avatarUrl: WOMAN_AVATAR_URL });
+                dispatch(saveAvatar(WOMAN_AVATAR_URL));
+                break;
+        }
+
         avatarDisplayHandler(null);
     };
 

@@ -1,21 +1,20 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '@/api/auth';
 import Button from '../@Shared/Button';
 import { openModal } from '@/redux/actions/modalAction';
 import { StyledLink } from '../@Shared/Link/style';
-import { GlobalNavbarContainer, NavigationLi, NavigationToggleBtn, NavigationUl } from './style';
 import { resetAvatar } from '@/redux/actions/avatarPersistAction';
+import { RootState } from '@/redux/reducers';
+import { userLoginChecking } from '@/redux/actions/userAction';
 import { LOGIN } from '@/constants/auth';
-import useIsAuth from '@/hooks/useIsAuth';
+import { GlobalNavbarContainer, NavigationLi, NavigationToggleBtn, NavigationUl } from './style';
 
 export default function GlobalNavbar() {
     const [toggle, setToggle] = useState(false);
-    const isAuth = useIsAuth((state) => state.isAuth);
-    const setIsAuth = useIsAuth((state) => state.setIsAuth);
-    const setGetEmail = useIsAuth((state) => state.setGetEmail);
+    const isAuth = useSelector((state: RootState) => state.user.isAuth);
     const dispatch = useDispatch();
 
     const { mutate: Logout } = useMutation(logout, {
@@ -35,8 +34,7 @@ export default function GlobalNavbar() {
     const logoutHandler = () => {
         Logout();
         dispatch(resetAvatar());
-        setIsAuth(false);
-        setGetEmail('');
+        dispatch(userLoginChecking(false));
     };
 
     return (

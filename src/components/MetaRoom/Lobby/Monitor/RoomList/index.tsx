@@ -8,7 +8,6 @@ const RoomList = () => {
         // navigate(`/${ROOM}/${roomId}`);
     };
 
-    console.log(rooms);
     return (
         <>
             {rooms?.map((room) => (
