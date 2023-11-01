@@ -2,12 +2,12 @@ import { eventChannel, EventChannel } from 'redux-saga';
 import { call, take, put } from 'redux-saga/effects';
 import { createSocket } from '@/utils/createSocket';
 import { Socket } from 'socket.io-client';
-import { JoinedRoomData, Room } from '@/types/room';
-import { socketRoomJoined, socketRoomsUpdate, socketWelcome } from '../actions/socketAciton';
+import { Character, JoinedRoomData, Room } from '@/types/room';
+import { socketCharacter, socketRoomJoined, socketRoomsUpdate, socketWelcome } from '../actions/socketAciton';
 
 type SocketEvent = {
     type: string;
-    payload: Room[] | JoinedRoomData;
+    payload: Room[] | JoinedRoomData | Character[];
 };
 
 function* initSocketSaga() {
@@ -28,6 +28,9 @@ function* initSocketSaga() {
                     break;
                 case 'roomJoined':
                     yield put(socketRoomJoined(socketEvent.payload as JoinedRoomData));
+                    break;
+                case 'character':
+                    yield put(socketCharacter(socketEvent.payload as Character[]));
             }
         }
     }
@@ -47,14 +50,20 @@ function createSocketChannel(socket: Socket) {
             emit({ type: 'roomJoined', payload: joinedData });
         };
 
+        const onCharacter = (characterData: Character[]) => {
+            emit({ type: 'character', payload: characterData });
+        };
+
         socket.on('welcome', onWelcome);
         socket.on('roomsUpdate', onRoomsUpdate);
         socket.on('roomJoined', onRoomJoined);
+        socket.on('character', onCharacter);
 
         return () => {
             socket.off('welcome', onWelcome);
             socket.off('roomsUpdate', onRoomsUpdate);
             socket.off('roomJoined', onRoomJoined);
+            socket.off('character', onCharacter);
         };
     });
 }

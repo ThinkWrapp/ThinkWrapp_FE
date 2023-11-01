@@ -1,16 +1,14 @@
-import { ROOM } from '@/constants/route';
-import useRooms from '@/hooks/useRooms';
 import { CharacterCheckCircle, List, PersonnelDescription, Title } from './style';
 import { Room } from '@/types/room';
 
 type RoomListProps = {
     rooms: Room[];
+    joinRoom: (roomId: string) => void;
 };
 
-const RoomList = ({ rooms }: RoomListProps) => {
-    // const { rooms } = useRooms();
+const RoomList = ({ rooms, joinRoom }: RoomListProps) => {
     const moveLinkHandler = (roomId: string) => {
-        // navigate(`/${ROOM}/${roomId}`);
+        joinRoom(roomId);
     };
 
     return (

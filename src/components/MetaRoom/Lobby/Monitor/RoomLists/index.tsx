@@ -4,12 +4,13 @@ import { Lists } from './style';
 
 type RoomListsProps = {
     rooms: Room[];
+    joinRoom: (roomId: string) => void;
 };
 
-const RoomLists = ({ rooms }: RoomListsProps) => {
+const RoomLists = ({ rooms, joinRoom }: RoomListsProps) => {
     return (
         <Lists>
-            <RoomList rooms={rooms} />
+            <RoomList rooms={rooms} joinRoom={joinRoom} />
         </Lists>
     );
 };

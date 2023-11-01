@@ -7,11 +7,14 @@ import { Monitor as LobbyMonitor } from '@/components/3DModels/Monitor';
 import { useResponsive } from '@/hooks/useResponsive';
 import { getDeviceConfig } from '@/utils/getDeviceConfig';
 import Content from './Content';
+import { socketJoinRoom } from '@/redux/actions/socketAciton';
+import { linkRoom } from '@/redux/actions/RoutePerstistAction';
 
 const Monitor = () => {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
     const monitorState = useSelector((state: RootState) => state.interface.monitorState);
     const rooms = useSelector((state: RootState) => state.socket.rooms);
+    const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const dispatch = useDispatch();
     const goldenRatio = Math.min(1, window.innerWidth / 1600);
     const device = useResponsive();
@@ -48,6 +51,11 @@ const Monitor = () => {
         dispatch(openModal(modalKeyword));
     };
 
+    const joinRoom = (roomId: string) => {
+        dispatch(socketJoinRoom(roomId, avatarUrl));
+        dispatch(linkRoom());
+    };
+
     return (
         <>
             <group
@@ -78,7 +86,13 @@ const Monitor = () => {
                         scale={0.121}
                         rotation-y={roomResponsive.rotationY}
                     >
-                        <Content isSafari={isSafari} modalOpen={openCreateRoomModal} isAuth={isAuth} rooms={rooms} />
+                        <Content
+                            isSafari={isSafari}
+                            modalOpen={openCreateRoomModal}
+                            isAuth={isAuth}
+                            rooms={rooms}
+                            joinRoom={joinRoom}
+                        />
                     </Html>
                 </motion.group>
             </group>

@@ -1,13 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/reducers';
 import { InterFaceButton } from './style';
-import { linkHome } from '@/redux/actions/RoutePerstistAction';
+import { ROOM, linkHome } from '@/redux/actions/RoutePerstistAction';
+import { socketLeaveRoom } from '@/redux/actions/socketAciton';
 
 export default function HomeButton() {
     const avatarButtonDisplay = useSelector((state: RootState) => state.interface.avatarButtonDisplay);
+    const routeState = useSelector((state: RootState) => state.route.routeState);
     const dispatch = useDispatch();
 
     const moveToHome = () => {
+        if (routeState === ROOM) {
+            dispatch(socketLeaveRoom());
+        }
         dispatch(linkHome());
     };
 

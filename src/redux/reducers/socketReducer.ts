@@ -1,8 +1,10 @@
 import { JoinedRoomData, Room } from '@/types/room';
 import {
+    SOCKET_CHARACTER,
     SOCKET_ROOMS_UPDATE,
     SOCKET_ROOM_JOINED,
     SOCKET_WELCOME,
+    socketCharacter,
     socketRoomJoined,
     socketRoomsUpdate,
     socketWelcome,
@@ -11,7 +13,8 @@ import {
 type SocketAction =
     | ReturnType<typeof socketWelcome>
     | ReturnType<typeof socketRoomsUpdate>
-    | ReturnType<typeof socketRoomJoined>;
+    | ReturnType<typeof socketRoomJoined>
+    | ReturnType<typeof socketCharacter>;
 type SocketState = {
     rooms: Room[];
     roomJoined: undefined | JoinedRoomData;
@@ -23,6 +26,7 @@ const initialState: SocketState = {
 };
 
 const socketReducer = (state = initialState, action: SocketAction) => {
+    console.log(state.roomJoined);
     switch (action.type) {
         case SOCKET_WELCOME:
             return {
@@ -38,6 +42,14 @@ const socketReducer = (state = initialState, action: SocketAction) => {
             return {
                 ...state,
                 roomJoined: action.payload,
+            };
+        case SOCKET_CHARACTER:
+            return {
+                ...state,
+                roomJoined: {
+                    ...state.roomJoined,
+                    characters: action.payload,
+                },
             };
         default:
             return state;

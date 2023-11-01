@@ -9,14 +9,14 @@ import Ground from './Ground';
 import Background from './Background';
 
 const Room = () => {
-    const dispatch = useDispatch();
-    const roomId = useSelector((state: RootState) => state.room.roomId);
+    // const dispatch = useDispatch();
+    // const roomId = useSelector((state: RootState) => state.room.roomId);
     const roomJoined = useSelector((state: RootState) => state.socket.roomJoined);
     const grid = useGrid() as GridMethodsType;
 
-    useEffect(() => {
-        dispatch(socketLoadRoom(roomId));
-    }, [roomId]);
+    // useEffect(() => {
+    //     dispatch(socketLoadRoom(roomId));
+    // }, [roomId]);
 
     if (!roomJoined || !grid) return null;
     const { map, characters } = roomJoined;

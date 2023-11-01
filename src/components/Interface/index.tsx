@@ -15,7 +15,11 @@ export default function Interface() {
     const routeResponseInterface = () => {
         switch (routeState) {
             case ROOM:
-                return <></>;
+                return (
+                    <>
+                        <HomeButton />
+                    </>
+                );
             case CHARACTER:
                 return (
                     <>

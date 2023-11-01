@@ -9,9 +9,10 @@ type ContentProps = {
     isAuth: boolean | undefined;
     modalOpen: (modalKeyword: string) => void;
     rooms: Room[];
+    joinRoom: (roomId: string) => void;
 };
 
-const Content = ({ isSafari, modalOpen, isAuth, rooms }: ContentProps) => {
+const Content = ({ isSafari, modalOpen, isAuth, rooms, joinRoom }: ContentProps) => {
     return (
         <Container $isSafari={isSafari}>
             <Wrapper>
@@ -23,7 +24,7 @@ const Content = ({ isSafari, modalOpen, isAuth, rooms }: ContentProps) => {
                 <ChooseRoom>들어가실 방을 선택해 주세요</ChooseRoom>
                 {isAuth ? (
                     rooms.length ? (
-                        <RoomLists rooms={rooms} />
+                        <RoomLists rooms={rooms} joinRoom={joinRoom} />
                     ) : (
                         <NoRoomMonitor>입장할 방이 없습니다.</NoRoomMonitor>
                     )

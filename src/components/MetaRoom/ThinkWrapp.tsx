@@ -23,31 +23,33 @@ export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
         controls.current.setPosition(0, 8, 2);
         controls.current.setTarget(0, 8, 0);
 
-        if (loaded) {
+        if (loaded && routeState !== ROOM) {
             controls.current.setPosition(0, 8, 2);
             controls.current.setTarget(0, 8, 0);
             controls.current.setPosition(0, 0, 2, true);
             controls.current.setTarget(0, 0, 0, true);
             return;
         }
-    }, [loaded]);
+    }, [loaded, routeState]);
 
     useFrame(({ scene }) => {
-        if (!roomJoined?.id) {
-            return;
-        }
+        if (routeState === ROOM) {
+            if (!roomJoined?.id) {
+                return;
+            }
 
-        const character = scene.getObjectByName(`character-${roomJoined.id}`);
-        if (!character) {
-            return;
+            const character = scene.getObjectByName(`character-${roomJoined.id}`);
+            if (!character) {
+                return;
+            }
+            controls.current?.setTarget(character.position.x, 0, character.position.z, true);
+            controls.current?.setPosition(
+                character.position.x + 8,
+                character.position.y + 8,
+                character.position.z + 8,
+                true,
+            );
         }
-        controls.current?.setTarget(character.position.x, 0, character.position.z, true);
-        controls.current?.setPosition(
-            character.position.x + 8,
-            character.position.y + 8,
-            character.position.z + 8,
-            true,
-        );
     });
 
     return (
