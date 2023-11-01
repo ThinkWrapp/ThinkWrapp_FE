@@ -11,6 +11,7 @@ import Content from './Content';
 const Monitor = () => {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
     const monitorState = useSelector((state: RootState) => state.interface.monitorState);
+    const rooms = useSelector((state: RootState) => state.socket.rooms);
     const dispatch = useDispatch();
     const goldenRatio = Math.min(1, window.innerWidth / 1600);
     const device = useResponsive();
@@ -77,7 +78,7 @@ const Monitor = () => {
                         scale={0.121}
                         rotation-y={roomResponsive.rotationY}
                     >
-                        <Content isSafari={isSafari} modalOpen={openCreateRoomModal} isAuth={isAuth} />
+                        <Content isSafari={isSafari} modalOpen={openCreateRoomModal} isAuth={isAuth} rooms={rooms} />
                     </Html>
                 </motion.group>
             </group>

@@ -5,6 +5,9 @@ import CanvasBackground from './CanvasBackground';
 import Lobby from './Lobby';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/reducers';
+import { ROOM } from '@/redux/actions/RoutePerstistAction';
+import Room from './Room';
+import { useFrame } from '@react-three/fiber';
 
 type ThinkWrappProps = {
     loaded: boolean;
@@ -13,6 +16,7 @@ type ThinkWrappProps = {
 export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
     const controls = useRef<CameraControls | null>(null);
     const routeState = useSelector((state: RootState) => state.route.routeState);
+    const roomJoined = useSelector((state: RootState) => state.socket.roomJoined);
 
     useEffect(() => {
         if (!controls.current) return;
@@ -27,6 +31,24 @@ export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
             return;
         }
     }, [loaded]);
+
+    useFrame(({ scene }) => {
+        if (!roomJoined?.id) {
+            return;
+        }
+
+        const character = scene.getObjectByName(`character-${roomJoined.id}`);
+        if (!character) {
+            return;
+        }
+        controls.current?.setTarget(character.position.x, 0, character.position.z, true);
+        controls.current?.setPosition(
+            character.position.x + 8,
+            character.position.y + 8,
+            character.position.z + 8,
+            true,
+        );
+    });
 
     return (
         <>
@@ -50,6 +72,7 @@ export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
                 }}
             />
             {!routeState && <Lobby />}
+            {routeState === ROOM && <Room />}
         </>
     );
 }

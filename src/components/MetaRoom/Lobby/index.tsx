@@ -1,5 +1,6 @@
-import { AccumulativeShadows, RandomizedLight } from '@react-three/drei';
 import { Suspense, useMemo, useEffect } from 'react';
+import { AccumulativeShadows, RandomizedLight } from '@react-three/drei';
+import { useDispatch, useSelector } from 'react-redux';
 import ThinkWrappWorld3DText from './ThinkWrappWorld3DText';
 import { King } from '@/components/3DModels/King';
 import { Castle } from '@/components/3DModels/Castle';
@@ -7,10 +8,9 @@ import Ground from './Ground';
 import Monitor from './Monitor';
 import LobbyAvatar from './LobbyAvatar';
 import Background from './Background';
-import { useDispatch, useSelector } from 'react-redux';
+import { profile } from '@/api/auth';
 import { RootState } from '@/redux/reducers';
 import { saveAvatar } from '@/redux/actions/avatarPersistAction';
-import { profile } from '@/api/auth';
 import { linkCharacter } from '@/redux/actions/RoutePerstistAction';
 
 const Lobby = () => {

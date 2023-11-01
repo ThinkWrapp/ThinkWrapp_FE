@@ -17,6 +17,10 @@ const Background = memo(() => {
                     angle={THREE.MathUtils.degToRad(35)}
                     penumbra={0.2}
                 />
+                <ambientLight intensity={0.35} />
+                <directionalLight position={[-6, 2, 7]} castShadow intensity={2.35} shadow-mapSize={[1024, 1024]}>
+                    <orthographicCamera attach={'shadow-camera'} args={[-10, 10, 10, -10]} far={20 + 2} />
+                </directionalLight>
             </>
         ),
         [],

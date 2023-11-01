@@ -10,6 +10,13 @@ export const CreateRoomModalForm = styled.form`
     padding: 2rem 1.5rem;
 `;
 
+export const CheckPasswordWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    margin: 3.5rem 0;
+    gap: 1rem;
+`;
+
 export const CreateRoomButtonGroup = styled.div`
     display: flex;
     justify-content: space-between;

@@ -2,6 +2,7 @@ import { AVATAR_SELECT } from '@/constants/auth';
 import storage from 'redux-persist/lib/storage';
 
 const ROUTE = 'ROUTE' as const;
+const ROOM = 'ROOM' as const;
 
 export const avatarSelectConfig = {
     key: AVATAR_SELECT,
@@ -10,5 +11,10 @@ export const avatarSelectConfig = {
 
 export const routeConfig = {
     key: ROUTE,
+    storage: storage,
+};
+
+export const roomConfig = {
+    key: ROOM,
     storage: storage,
 };

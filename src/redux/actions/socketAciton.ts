@@ -1,0 +1,45 @@
+import { CreateRoomSchema, JoinedRoomData, Room } from '@/types/room';
+
+export const SOCKET_WELCOME = 'SOCKET_WELCOME' as const;
+export const SOCKET_ROOMS_UPDATE = 'SOCKET_ROOMS_UPDATE' as const;
+export const SOCKET_CREATE_ROOM = 'SOCKET_CREATE_ROOM' as const;
+export const SOCKET_LOAD_ROOM = 'SOCKET_LOAD_ROOM' as const;
+export const SOCKET_ROOM_JOINED = 'SOCKET_ROOM_JOINED' as const;
+
+// receive
+export const socketWelcome = (payload: Room[]) => {
+    return {
+        type: SOCKET_WELCOME,
+        payload,
+    };
+};
+
+export const socketRoomsUpdate = (payload: Room[]) => {
+    return {
+        type: SOCKET_ROOMS_UPDATE,
+        payload,
+    };
+};
+
+export const socketRoomJoined = (payload: JoinedRoomData) => {
+    return {
+        type: SOCKET_ROOM_JOINED,
+        payload,
+    };
+};
+
+// emit
+
+export const socketCreateRoom = (payload: CreateRoomSchema) => {
+    return {
+        type: SOCKET_CREATE_ROOM,
+        payload,
+    };
+};
+
+export const socketLoadRoom = (roomId: string) => {
+    return {
+        type: SOCKET_LOAD_ROOM,
+        payload: roomId,
+    };
+};

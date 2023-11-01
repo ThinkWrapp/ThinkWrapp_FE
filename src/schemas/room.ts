@@ -8,4 +8,5 @@ export const createRoomSchema = z.object({
         .string()
         .transform((val) => parseInt(val))
         .refine((n) => !Number.isNaN(n) && n > 0 && n <= 6 && Number.isInteger(n)),
+    avatarUrl: z.string().optional(),
 });

@@ -1,9 +1,14 @@
 import { ROOM } from '@/constants/route';
 import useRooms from '@/hooks/useRooms';
 import { CharacterCheckCircle, List, PersonnelDescription, Title } from './style';
+import { Room } from '@/types/room';
 
-const RoomList = () => {
-    const { rooms } = useRooms();
+type RoomListProps = {
+    rooms: Room[];
+};
+
+const RoomList = ({ rooms }: RoomListProps) => {
+    // const { rooms } = useRooms();
     const moveLinkHandler = (roomId: string) => {
         // navigate(`/${ROOM}/${roomId}`);
     };

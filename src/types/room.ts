@@ -8,3 +8,19 @@ export type Room = {
     nbCharacters: number;
     roomLimitPeople: number;
 };
+export type Chaaracter = {
+    id: string;
+    session: number;
+    position: number[];
+    avatarUrl: string;
+};
+
+export type JoinedRoomData = {
+    map: {
+        gridDivision: number;
+        size: number[];
+    };
+    characters: Chaaracter[];
+    id: string;
+    password?: string;
+};

@@ -1,28 +1,32 @@
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import Modal from '..';
-import CreateRoomLabelInput from './CreateRoomLabelInput';
-import Button from '@/components/@Shared/Button';
-import { useDispatch } from 'react-redux';
-import { closeModal } from '@/redux/actions/modalAction';
+import { useDispatch, useSelector } from 'react-redux';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSocket } from '@/hooks/useSocket';
-import { ROOM } from '@/constants/route';
+import Modal from '..';
+import Button from '@/components/@Shared/Button';
+import CreateRoomLabelInput from './CreateRoomLabelInput';
+import LabelInput from '@/components/@Shared/LabelInput';
+import { RootState } from '@/redux/reducers';
+import { closeModal } from '@/redux/actions/modalAction';
 import { createRoomSchema } from '@/schemas/room';
 import { CreateRoomSchema } from '@/types/room';
 import { ModalTitle } from '../style';
-import { CreateRoomButtonGroup, CreateRoomModalForm, CreateRoomModalHeader } from './style';
+import { CheckPasswordWrapper, CreateRoomButtonGroup, CreateRoomModalForm, CreateRoomModalHeader } from './style';
+import { socketCreateRoom } from '@/redux/actions/socketAciton';
+import { linkRoom } from '@/redux/actions/RoutePerstistAction';
+import { saveRoom } from '@/redux/actions/roomPersistAction';
 
 export default function CreateRoomModal() {
     const dispatch = useDispatch();
-    const socket = useSocket();
-    const navigate = useNavigate();
+    const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
+    const [checkPassword, setCheckPassword] = useState<boolean>(false);
 
     const {
         register,
         handleSubmit,
         reset,
+        unregister,
         formState: { errors },
     } = useForm<CreateRoomSchema>({
         mode: 'onChange',
@@ -32,16 +36,26 @@ export default function CreateRoomModal() {
     const onSubmit: SubmitHandler<CreateRoomSchema> = (roomData) => {
         const roomId = uuidv4();
         roomData.id = roomId;
+        roomData.avatarUrl = avatarUrl;
 
-        socket?.emit('createRoom', roomData);
+        dispatch(socketCreateRoom(roomData));
         reset();
         dispatch(closeModal());
-        navigate(`/${ROOM}/${roomId}`);
+        // TODO: 방 입장
+        dispatch(saveRoom(roomId));
+        dispatch(linkRoom());
     };
 
     const closeModalHandler = () => {
         dispatch(closeModal());
         reset();
+    };
+
+    const checkPasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (checkPassword) {
+            unregister('password');
+        }
+        setCheckPassword(e.target.checked);
     };
 
     return (
@@ -66,13 +80,23 @@ export default function CreateRoomModal() {
                     errors={errors}
                     required
                 />
-                <CreateRoomLabelInput
-                    id="password"
-                    type="password"
-                    labelText="방 비밀번호"
-                    register={register}
-                    errors={errors}
-                />
+                <CheckPasswordWrapper>
+                    <LabelInput
+                        id="checkPassword"
+                        type="checkbox"
+                        labelText="비밀번호 설정"
+                        onChange={checkPasswordHandler}
+                    />
+                </CheckPasswordWrapper>
+                {checkPassword && (
+                    <CreateRoomLabelInput
+                        id="password"
+                        type="password"
+                        labelText="방 비밀번호"
+                        register={register}
+                        errors={errors}
+                    />
+                )}
                 <CreateRoomButtonGroup>
                     <Button type="submit" $bg="point" $size="md" $fc="light" style={{ flex: 2 }}>
                         생성
