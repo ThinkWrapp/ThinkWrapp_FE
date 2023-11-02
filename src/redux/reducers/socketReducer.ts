@@ -1,3 +1,9 @@
+import {
+    SOCKET_PLAYER_CHAT_MESSAGE,
+    SOCKET_PLAYER_CHAT_MESSAGE_RESET,
+    socketPlayerChatMessage,
+    socketPlayerChatMessageReset,
+} from './../actions/socketAciton';
 import { Character, JoinedRoomData, Room } from '@/types/room';
 import {
     SOCKET_CHARACTER,
@@ -11,23 +17,29 @@ import {
     socketRoomsUpdate,
     socketWelcome,
 } from '../actions/socketAciton';
+import { PlayerChatMessage } from '@/types/character';
 
 type SocketAction =
     | ReturnType<typeof socketWelcome>
     | ReturnType<typeof socketRoomsUpdate>
     | ReturnType<typeof socketRoomJoined>
     | ReturnType<typeof socketCharacter>
-    | ReturnType<typeof socketPlayerMove>;
+    | ReturnType<typeof socketPlayerMove>
+    | ReturnType<typeof socketPlayerChatMessage>
+    | ReturnType<typeof socketPlayerChatMessageReset>;
+
 type SocketState = {
     rooms: Room[];
     roomJoined: undefined | JoinedRoomData;
     myCharacter: undefined | Character;
+    myChatMessage: undefined | PlayerChatMessage;
 };
 
 const initialState: SocketState = {
     rooms: [],
     roomJoined: undefined,
     myCharacter: undefined,
+    myChatMessage: undefined,
 };
 
 const socketReducer = (state = initialState, action: SocketAction) => {
@@ -62,6 +74,16 @@ const socketReducer = (state = initialState, action: SocketAction) => {
             return {
                 ...state,
                 myCharacter: action.payload,
+            };
+        case SOCKET_PLAYER_CHAT_MESSAGE:
+            return {
+                ...state,
+                myChatMessage: action.payload,
+            };
+        case SOCKET_PLAYER_CHAT_MESSAGE_RESET:
+            return {
+                ...state,
+                myChatMessage: action.payload,
             };
         default:
             return state;

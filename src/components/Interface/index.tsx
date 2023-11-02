@@ -5,8 +5,10 @@ import SelectAvatarLink from './SelectAvatarLink';
 import AvatarSelectButton from './AvatarSelectButtons';
 import HomeLink from './HomeLink';
 import { RootState } from '@/redux/reducers';
-import { InterfaceContainer } from './style';
-import { ROUTE_CHARACTER } from '@/constants/route';
+import { InterfaceContainer, RouteInterfaceWrapper } from './style';
+import { ROUTE_CHARACTER, ROUTE_ROOM } from '@/constants/route';
+import Chat from './Chat';
+import ChatHistory from './ChatHistory';
 
 export default function Interface() {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
@@ -15,6 +17,7 @@ export default function Interface() {
 
     const isLobbyRoute = location.pathname === '/';
     const isCharacterRoute = location.pathname === `/${ROUTE_CHARACTER}`;
+    const isRoomRoute = location.pathname.includes(`/${ROUTE_ROOM}/`);
 
     const routeResponseInterface = () => {
         if (isLobbyRoute) {
@@ -33,7 +36,18 @@ export default function Interface() {
                 </>
             );
         }
+        if (isRoomRoute) {
+            return <HomeLink />;
+        }
     };
 
-    return <InterfaceContainer>{routeResponseInterface()}</InterfaceContainer>;
+    return (
+        <>
+            {isRoomRoute && <ChatHistory />}
+            <InterfaceContainer>
+                {isRoomRoute && <Chat />}
+                <RouteInterfaceWrapper>{routeResponseInterface()}</RouteInterfaceWrapper>
+            </InterfaceContainer>
+        </>
+    );
 }

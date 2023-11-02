@@ -2,25 +2,27 @@ import { eventChannel, EventChannel } from 'redux-saga';
 import { call, take, put } from 'redux-saga/effects';
 import { createSocket } from '@/utils/createSocket';
 import { Socket } from 'socket.io-client';
-import { Character, JoinedRoomData, Room } from '@/types/room';
 import {
     socketCharacter,
+    socketPlayerChatMessage,
     socketPlayerMove,
     socketRoomJoined,
     socketRoomsUpdate,
     socketWelcome,
 } from '../actions/socketAciton';
+import { Character, JoinedRoomData, Room } from '@/types/room';
+import { PlayerChatMessage } from '@/types/character';
 
 type SocketEvent = {
     type: string;
-    payload: Room[] | JoinedRoomData | Character[] | Character;
+    payload: Room[] | JoinedRoomData | Character[] | Character | PlayerChatMessage;
 };
 
 function* initSocketSaga() {
     const socket: Socket | null = yield call(createSocket);
 
     if (socket) {
-        const socketChannel: EventChannel<Room[] | JoinedRoomData> = yield call(createSocketChannel, socket);
+        const socketChannel: EventChannel<SocketEvent['payload']> = yield call(createSocketChannel, socket);
 
         while (true) {
             const socketEvent: SocketEvent = yield take(socketChannel);
@@ -40,6 +42,9 @@ function* initSocketSaga() {
                     break;
                 case 'playerMove':
                     yield put(socketPlayerMove(socketEvent.payload as Character));
+                    break;
+                case 'playerChatMessage':
+                    yield put(socketPlayerChatMessage(socketEvent.payload as PlayerChatMessage));
                     break;
             }
         }
@@ -68,11 +73,16 @@ function createSocketChannel(socket: Socket) {
             emit({ type: 'playerMove', payload: characterData });
         };
 
+        const onPlayerChatMessage = (message: PlayerChatMessage) => {
+            emit({ type: 'playerChatMessage', payload: message });
+        };
+
         socket.on('welcome', onWelcome);
         socket.on('roomsUpdate', onRoomsUpdate);
         socket.on('roomJoined', onRoomJoined);
         socket.on('character', onCharacter);
         socket.on('playerMove', onPlayerMove);
+        socket.on('playerChatMessage', onPlayerChatMessage);
 
         return () => {
             socket.off('welcome', onWelcome);
@@ -80,6 +90,7 @@ function createSocketChannel(socket: Socket) {
             socket.off('roomJoined', onRoomJoined);
             socket.off('character', onCharacter);
             socket.off('playerMove', onPlayerMove);
+            socket.off('playerChatMessage', onPlayerChatMessage);
         };
     });
 }

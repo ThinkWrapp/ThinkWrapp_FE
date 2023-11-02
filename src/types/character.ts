@@ -3,3 +3,8 @@ export type CharacterProps = {
     avatarButtonDisplay?: boolean | null;
     nameSpace: 'lobby' | 'room' | 'select';
 };
+
+export type PlayerChatMessage = {
+    id: string;
+    message: string;
+};

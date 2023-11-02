@@ -5,14 +5,20 @@ import { InterfaceLinkButton } from '@/styles/mixin/InterfaceLinkButton';
 
 export const InterfaceContainer = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
     position: fixed;
     bottom: 3rem;
     left: 50%;
     transform: translateX(-50%);
     max-width: 20%;
     /* background-color: #fff; */
+`;
+
+export const RouteInterfaceWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
 `;
 
 export const InterFaceButton = styled(StyledButton)`
