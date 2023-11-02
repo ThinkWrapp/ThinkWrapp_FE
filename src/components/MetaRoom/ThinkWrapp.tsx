@@ -5,7 +5,6 @@ import CanvasBackground from './CanvasBackground';
 import Lobby from './Lobby';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/reducers';
-import { ROOM } from '@/redux/actions/RoutePerstistAction';
 import Room from './Room';
 import { useFrame } from '@react-three/fiber';
 
@@ -15,7 +14,6 @@ type ThinkWrappProps = {
 
 export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
     const controls = useRef<CameraControls | null>(null);
-    const routeState = useSelector((state: RootState) => state.route.routeState);
     const roomJoined = useSelector((state: RootState) => state.socket.roomJoined);
 
     useEffect(() => {
@@ -23,34 +21,32 @@ export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
         controls.current.setPosition(0, 8, 2);
         controls.current.setTarget(0, 8, 0);
 
-        if (loaded && routeState !== ROOM) {
+        if (loaded) {
             controls.current.setPosition(0, 8, 2);
             controls.current.setTarget(0, 8, 0);
             controls.current.setPosition(0, 0, 2, true);
             controls.current.setTarget(0, 0, 0, true);
             return;
         }
-    }, [loaded, routeState]);
+    }, [loaded]);
 
-    useFrame(({ scene }) => {
-        if (routeState === ROOM) {
-            if (!roomJoined?.id) {
-                return;
-            }
+    // useFrame(({ scene }) => {
+    //         if (!roomJoined?.id) {
+    //             return;
+    //         }
 
-            const character = scene.getObjectByName(`character-${roomJoined.id}`);
-            if (!character) {
-                return;
-            }
-            controls.current?.setTarget(character.position.x, 0, character.position.z, true);
-            controls.current?.setPosition(
-                character.position.x + 8,
-                character.position.y + 8,
-                character.position.z + 8,
-                true,
-            );
-        }
-    });
+    //         const character = scene.getObjectByName(`character-${roomJoined.id}`);
+    //         if (!character) {
+    //             return;
+    //         }
+    //         controls.current?.setTarget(character.position.x, 0, character.position.z, true);
+    //         controls.current?.setPosition(
+    //             character.position.x + 8,
+    //             character.position.y + 8,
+    //             character.position.z + 8,
+    //             true,
+    //         );
+    // });
 
     return (
         <>
@@ -73,8 +69,8 @@ export default function ThinkWrapp({ loaded }: ThinkWrappProps) {
                     three: 0,
                 }}
             />
-            {!routeState && <Lobby />}
-            {routeState === ROOM && <Room />}
+            {/* {<Lobby />} */}
+            {<Room />}
         </>
     );
 }

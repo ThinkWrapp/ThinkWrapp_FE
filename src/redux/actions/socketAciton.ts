@@ -8,6 +8,8 @@ export const SOCKET_ROOM_JOINED = 'SOCKET_ROOM_JOINED' as const;
 export const SOCKET_LEAVE_ROOM = 'SOCKET_LEAVE_ROOM' as const;
 export const SOCKET_JOIN_ROOM = 'SOCKET_JOIN_ROOM' as const;
 export const SOCKET_CHARACTER = 'SOCKET_CHARACTER' as const;
+export const SOCKET_MOVE = 'SOCKET_MOVE' as const;
+export const SOCKET_PLAYER_MOVE = 'SOCKET_PLAYER_MOVE' as const;
 
 // receive
 export const socketWelcome = (payload: Room[]) => {
@@ -34,6 +36,13 @@ export const socketRoomJoined = (payload: JoinedRoomData) => {
 export const socketCharacter = (payload: Character[]) => {
     return {
         type: SOCKET_CHARACTER,
+        payload,
+    };
+};
+
+export const socketPlayerMove = (payload: Character) => {
+    return {
+        type: SOCKET_PLAYER_MOVE,
         payload,
     };
 };
@@ -67,5 +76,15 @@ export const socketLoadRoom = (roomId: string) => {
 export const socketLeaveRoom = () => {
     return {
         type: SOCKET_LEAVE_ROOM,
+    };
+};
+
+export const socketMove = (from: number[], to: number[]) => {
+    return {
+        type: SOCKET_MOVE,
+        payload: {
+            from,
+            to,
+        },
     };
 };

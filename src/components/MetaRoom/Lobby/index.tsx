@@ -11,9 +11,14 @@ import Background from './Background';
 import { profile } from '@/api/auth';
 import { RootState } from '@/redux/reducers';
 import { saveAvatar } from '@/redux/actions/avatarPersistAction';
-import { linkCharacter } from '@/redux/actions/RoutePerstistAction';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_CHARACTER } from '@/constants/route';
 
-const Lobby = () => {
+type LobbyProps = {
+    loaded: boolean;
+};
+
+const Lobby = ({ loaded }: LobbyProps) => {
     const accumulativeShadows = useMemo(
         () => (
             <AccumulativeShadows temporal frames={30} alphaTest={0.85} scale={28} position={[0, 0, 0]}>
@@ -26,6 +31,7 @@ const Lobby = () => {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -33,7 +39,7 @@ const Lobby = () => {
                 const userData = await profile();
 
                 if (!userData?.avatarUrl) {
-                    dispatch(linkCharacter());
+                    navigate(ROUTE_CHARACTER);
                 }
 
                 if (userData.avatarUrl) {
@@ -45,7 +51,7 @@ const Lobby = () => {
 
     return (
         <>
-            <Background />
+            <Background loaded={loaded} />
             <group position-y={-1.5}>
                 <Monitor />
                 <group position-z={-8} rotation-y={Math.PI / 6}>

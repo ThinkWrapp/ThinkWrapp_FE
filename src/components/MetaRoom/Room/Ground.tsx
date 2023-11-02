@@ -39,7 +39,7 @@ const Ground = () => {
         <mesh
             ref={ground}
             rotation-x={-Math.PI / 2}
-            position-y={-0.003}
+            position-y={-0.041}
             position-x={map.size[0] / 2}
             position-z={map.size[1] / 2}
         >

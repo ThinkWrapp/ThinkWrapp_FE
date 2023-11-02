@@ -3,17 +3,18 @@ import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { RootState } from '@/redux/reducers';
 import { avatarSelectButtonDisplay } from '@/redux/actions/interfaceAction';
-import { linkHome } from '@/redux/actions/RoutePerstistAction';
 import { resetAvatar, saveAvatar } from '@/redux/actions/avatarPersistAction';
 import { updateAvatar } from '@/api/auth';
 import Button from '@/components/@Shared/Button';
 import { AvatarSelectButtonContainer } from './style';
 import { AVATAR } from '@/constants/auth';
 import { MAN_AVATAR_URL, WOMAN_AVATAR_URL } from '@/constants/route';
+import { useNavigate } from 'react-router-dom';
 
 export default function AvatarSelectButtons() {
     const avatarButtonDisplay = useSelector((state: RootState) => state.interface.avatarButtonDisplay);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const avatarDisplayHandler = (value: string | null) => {
         dispatch(avatarSelectButtonDisplay(value));
@@ -29,7 +30,7 @@ export default function AvatarSelectButtons() {
             dispatch(resetAvatar());
         },
         onSettled: () => {
-            dispatch(linkHome());
+            navigate('/');
         },
     });
 

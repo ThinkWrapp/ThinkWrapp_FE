@@ -14,11 +14,13 @@ import { CreateRoomSchema } from '@/types/room';
 import { ModalTitle } from '../style';
 import { CheckPasswordWrapper, CreateRoomButtonGroup, CreateRoomModalForm, CreateRoomModalHeader } from './style';
 import { socketCreateRoom } from '@/redux/actions/socketAciton';
-import { linkRoom } from '@/redux/actions/RoutePerstistAction';
 import { saveRoom } from '@/redux/actions/roomPersistAction';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_ROOM } from '@/constants/route';
 
 export default function CreateRoomModal() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const [checkPassword, setCheckPassword] = useState<boolean>(false);
 
@@ -43,7 +45,7 @@ export default function CreateRoomModal() {
         dispatch(closeModal());
         // TODO: 방 입장
         dispatch(saveRoom(roomId));
-        dispatch(linkRoom());
+        navigate(`${ROUTE_ROOM}/${roomId}}`);
     };
 
     const closeModalHandler = () => {

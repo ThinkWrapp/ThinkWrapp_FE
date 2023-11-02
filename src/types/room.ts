@@ -13,6 +13,7 @@ export type Character = {
     session: number;
     position: number[];
     avatarUrl: string;
+    path?: number[][];
 };
 
 export type JoinedRoomData = {

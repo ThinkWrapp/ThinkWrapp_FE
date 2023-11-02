@@ -1,14 +1,14 @@
-import { CameraControls, Cloud } from '@react-three/drei';
-import { useMemo, useRef } from 'react';
+import { CameraControls } from '@react-three/drei';
+import { useRef } from 'react';
 import Characters from './Characters';
+import Background from './Background';
 
 const SelectAvatar = () => {
     const controlsRef = useRef<CameraControls | null>(null);
-    const cloud = useMemo(() => <Cloud color="#c0c0dd" position={[0, 3, -150]} scale={[5, 3.3, 8]} />, []);
 
     return (
         <>
-            {cloud}
+            <Background />
             <CameraControls
                 ref={controlsRef}
                 maxPolarAngle={Math.PI / 2}

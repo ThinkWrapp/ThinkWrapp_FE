@@ -1,39 +1,37 @@
-import MetaRoomControlButton from './MetaRoomControlButton';
-import SelectAvatarButton from './SelectAvatarButton';
-import AvatarSelectButton from './AvatarSelectButtons';
-import { InterfaceContainer } from './style';
+import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import MetaRoomControlButton from './MetaRoomControlButton';
+import SelectAvatarLink from './SelectAvatarLink';
+import AvatarSelectButton from './AvatarSelectButtons';
+import HomeLink from './HomeLink';
 import { RootState } from '@/redux/reducers';
-import { CHARACTER, ROOM } from '@/redux/actions/RoutePerstistAction';
-import HomeButton from './HomeButton';
+import { InterfaceContainer } from './style';
+import { ROUTE_CHARACTER } from '@/constants/route';
 
 export default function Interface() {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
-    const routeState = useSelector((state: RootState) => state.route.routeState);
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
+    const location = useLocation();
+
+    const isLobbyRoute = location.pathname === '/';
+    const isCharacterRoute = location.pathname === `/${ROUTE_CHARACTER}`;
 
     const routeResponseInterface = () => {
-        switch (routeState) {
-            case ROOM:
-                return (
-                    <>
-                        <HomeButton />
-                    </>
-                );
-            case CHARACTER:
-                return (
-                    <>
-                        {avatarUrl && <HomeButton />}
-                        <AvatarSelectButton />
-                    </>
-                );
-            default:
-                return (
-                    <>
-                        <MetaRoomControlButton />
-                        {isAuth && <SelectAvatarButton />}
-                    </>
-                );
+        if (isLobbyRoute) {
+            return (
+                <>
+                    <MetaRoomControlButton />
+                    {isAuth && <SelectAvatarLink />}
+                </>
+            );
+        }
+        if (isCharacterRoute) {
+            return (
+                <>
+                    {avatarUrl && <HomeLink />}
+                    <AvatarSelectButton />
+                </>
+            );
         }
     };
 

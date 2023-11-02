@@ -1,6 +1,7 @@
 import { Float, Html } from '@react-three/drei';
 import { motion } from 'framer-motion-3d';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from '@/redux/reducers';
 import { openModal } from '@/redux/actions/modalAction';
 import { Monitor as LobbyMonitor } from '@/components/3DModels/Monitor';
@@ -8,7 +9,7 @@ import { useResponsive } from '@/hooks/useResponsive';
 import { getDeviceConfig } from '@/utils/getDeviceConfig';
 import Content from './Content';
 import { socketJoinRoom } from '@/redux/actions/socketAciton';
-import { linkRoom } from '@/redux/actions/RoutePerstistAction';
+import { ROUTE_ROOM } from '@/constants/route';
 
 const Monitor = () => {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
@@ -16,6 +17,7 @@ const Monitor = () => {
     const rooms = useSelector((state: RootState) => state.socket.rooms);
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const goldenRatio = Math.min(1, window.innerWidth / 1600);
     const device = useResponsive();
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); // ugly transform position 에 버그가 있어 사파리 수정
@@ -53,7 +55,7 @@ const Monitor = () => {
 
     const joinRoom = (roomId: string) => {
         dispatch(socketJoinRoom(roomId, avatarUrl));
-        dispatch(linkRoom());
+        navigate(`${ROUTE_ROOM}/${roomId}`);
     };
 
     return (

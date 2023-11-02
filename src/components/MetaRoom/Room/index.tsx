@@ -1,33 +1,47 @@
 import * as THREE from 'three';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/reducers';
-import { socketLoadRoom } from '@/redux/actions/socketAciton';
 import { GridMethodsType, useGrid } from '@/hooks/useGrid';
 import Avatar from '../../3DModels/Avatar';
 import Ground from './Ground';
 import Background from './Background';
+import { useCursor } from '@react-three/drei';
+import { socketMove } from '@/redux/actions/socketAciton';
+import { ThreeEvent, useThree } from '@react-three/fiber';
+import Camera from './Camera';
 
 const Room = () => {
-    // const dispatch = useDispatch();
-    // const roomId = useSelector((state: RootState) => state.room.roomId);
     const roomJoined = useSelector((state: RootState) => state.socket.roomJoined);
     const grid = useGrid() as GridMethodsType;
-
-    // useEffect(() => {
-    //     dispatch(socketLoadRoom(roomId));
-    // }, [roomId]);
+    const dispatch = useDispatch();
+    const scene = useThree((state) => state.scene);
+    const [onFloor, setOnFloor] = useState(false);
+    useCursor(onFloor);
 
     if (!roomJoined || !grid) return null;
-    const { map, characters } = roomJoined;
-    const { gridToVector3 } = grid;
+    const { map, characters, id } = roomJoined;
+    const { gridToVector3, vector3ToGrid } = grid;
+
+    const onPlaneClicked = (e: ThreeEvent<MouseEvent>) => {
+        const character = scene.getObjectByName(`character-${id}`);
+        if (!character) {
+            return;
+        }
+
+        dispatch(socketMove(vector3ToGrid(character.position), vector3ToGrid(e.point)));
+    };
 
     return (
         <>
             <Background />
+            <Camera />
             <mesh
                 rotation-x={-Math.PI / 2}
-                position-y={-0.002}
+                position-y={-0.04}
+                onClick={onPlaneClicked}
+                onPointerEnter={() => setOnFloor(true)}
+                onPointerLeave={() => setOnFloor(false)}
                 position-x={(map.size as number[])[0] / 2}
                 position-z={(map.size as number[])[1] / 2}
                 receiveShadow

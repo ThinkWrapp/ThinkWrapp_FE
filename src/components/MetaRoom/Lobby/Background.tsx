@@ -1,11 +1,18 @@
-import { Cloud } from '@react-three/drei';
-import { useMemo, memo } from 'react';
+import { CameraControls, Cloud } from '@react-three/drei';
+import { useMemo, memo, useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import CanvasBackground from '../CanvasBackground';
 
-const Background = memo(() => {
+type BackgroundProps = {
+    loaded: boolean;
+};
+
+const Background = memo(({ loaded }: BackgroundProps) => {
+    const controls = useRef<CameraControls | null>(null);
     const backgrounds = useMemo(
         () => (
             <>
+                <CanvasBackground />
                 <Cloud color="#c0c0dd" position={[10, 3, 8]} scale={[3, 1.3, 23]} />
                 <Cloud color="#c0c0dd" position={[-8, 4, 5]} scale={[1, 0.5, 23]} />
                 <spotLight
@@ -26,7 +33,39 @@ const Background = memo(() => {
         [],
     );
 
-    return backgrounds;
+    useEffect(() => {
+        if (!controls.current) return;
+        controls.current.setPosition(0, 8, 2);
+        controls.current.setTarget(0, 8, 0);
+
+        if (loaded) {
+            controls.current.setPosition(0, 8, 2);
+            controls.current.setTarget(0, 8, 0);
+            controls.current.setPosition(0, 0, 2, true);
+            controls.current.setTarget(0, 0, 0, true);
+            return;
+        }
+    }, [loaded]);
+
+    return (
+        <>
+            {backgrounds}
+            <CameraControls
+                ref={controls}
+                mouseButtons={{
+                    left: 0,
+                    middle: 0,
+                    right: 0,
+                    wheel: 0,
+                }}
+                touches={{
+                    one: 0,
+                    two: 0,
+                    three: 0,
+                }}
+            />
+        </>
+    );
 });
 
 export default Background;

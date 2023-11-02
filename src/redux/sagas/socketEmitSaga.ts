@@ -5,10 +5,12 @@ import {
     SOCKET_JOIN_ROOM,
     SOCKET_LEAVE_ROOM,
     SOCKET_LOAD_ROOM,
+    SOCKET_MOVE,
     socketCreateRoom,
     socketJoinRoom,
     socketLeaveRoom,
     socketLoadRoom,
+    socketMove,
 } from '../actions/socketAciton';
 import { createSocket } from '@/utils/createSocket';
 
@@ -16,7 +18,8 @@ type SocketEmitSagaAction =
     | ReturnType<typeof socketCreateRoom>
     | ReturnType<typeof socketLoadRoom>
     | ReturnType<typeof socketLeaveRoom>
-    | ReturnType<typeof socketJoinRoom>;
+    | ReturnType<typeof socketJoinRoom>
+    | ReturnType<typeof socketMove>;
 
 function* socketEmitSaga(action: SocketEmitSagaAction) {
     const socket: Socket | null = yield call(createSocket);
@@ -35,6 +38,9 @@ function* socketEmitSaga(action: SocketEmitSagaAction) {
             case SOCKET_JOIN_ROOM:
                 socket.emit('joinRoom', action.payload);
                 break;
+            case SOCKET_MOVE:
+                socket.emit('move', action.payload);
+                break;
         }
     }
 }
@@ -44,4 +50,5 @@ export function* watchEmitSaga() {
     yield takeEvery(SOCKET_LOAD_ROOM, socketEmitSaga);
     yield takeEvery(SOCKET_LEAVE_ROOM, socketEmitSaga);
     yield takeEvery(SOCKET_JOIN_ROOM, socketEmitSaga);
+    yield takeEvery(SOCKET_MOVE, socketEmitSaga);
 }
