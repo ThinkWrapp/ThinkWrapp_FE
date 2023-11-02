@@ -5,17 +5,18 @@ import { Socket } from 'socket.io-client';
 import {
     socketCharacter,
     socketPlayerChatMessage,
+    socketPlayerDance,
     socketPlayerMove,
     socketRoomJoined,
     socketRoomsUpdate,
     socketWelcome,
 } from '../actions/socketAciton';
 import { Character, JoinedRoomData, Room } from '@/types/room';
-import { PlayerChatMessage } from '@/types/character';
+import { PlayerChatMessage, PlayerDance } from '@/types/character';
 
 type SocketEvent = {
     type: string;
-    payload: Room[] | JoinedRoomData | Character[] | Character | PlayerChatMessage;
+    payload: Room[] | JoinedRoomData | Character[] | Character | PlayerChatMessage | PlayerDance;
 };
 
 function* initSocketSaga() {
@@ -45,6 +46,9 @@ function* initSocketSaga() {
                     break;
                 case 'playerChatMessage':
                     yield put(socketPlayerChatMessage(socketEvent.payload as PlayerChatMessage));
+                    break;
+                case 'playerDance':
+                    yield put(socketPlayerDance(socketEvent.payload as PlayerDance));
                     break;
             }
         }
@@ -77,12 +81,17 @@ function createSocketChannel(socket: Socket) {
             emit({ type: 'playerChatMessage', payload: message });
         };
 
+        const onPlayerDance = (playerDance: PlayerDance) => {
+            emit({ type: 'playerDance', payload: playerDance });
+        };
+
         socket.on('welcome', onWelcome);
         socket.on('roomsUpdate', onRoomsUpdate);
         socket.on('roomJoined', onRoomJoined);
         socket.on('character', onCharacter);
         socket.on('playerMove', onPlayerMove);
         socket.on('playerChatMessage', onPlayerChatMessage);
+        socket.on('playerDance', onPlayerDance);
 
         return () => {
             socket.off('welcome', onWelcome);
@@ -91,6 +100,7 @@ function createSocketChannel(socket: Socket) {
             socket.off('character', onCharacter);
             socket.off('playerMove', onPlayerMove);
             socket.off('playerChatMessage', onPlayerChatMessage);
+            socket.off('playerDance', onPlayerDance);
         };
     });
 }

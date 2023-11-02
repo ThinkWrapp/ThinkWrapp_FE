@@ -1,4 +1,4 @@
-import { PlayerChatMessage } from '@/types/character';
+import { PlayerChatMessage, PlayerDance } from '@/types/character';
 import { Character, CreateRoomSchema, JoinedRoomData, Room } from '@/types/room';
 
 export const SOCKET_WELCOME = 'SOCKET_WELCOME' as const;
@@ -14,6 +14,8 @@ export const SOCKET_PLAYER_MOVE = 'SOCKET_PLAYER_MOVE' as const;
 export const SOCKET_CHAT_MESSAGE = 'SOCKET_CHAT_MESSAGE' as const;
 export const SOCKET_PLAYER_CHAT_MESSAGE = 'SOCKET_PLAYER_CHAT_MESSAGE' as const;
 export const SOCKET_PLAYER_CHAT_MESSAGE_RESET = 'SOCKET_PLAYER_CHAT_MESSAGE_RESET' as const;
+export const SOCKET_DANCE = 'SOCKET_DANCE' as const;
+export const SOCKET_PLAYER_DANCE = 'SOCKET_PLAYER_DANCE' as const;
 
 // receive
 export const socketWelcome = (payload: Room[]) => {
@@ -65,6 +67,13 @@ export const socketPlayerChatMessageReset = () => {
     };
 };
 
+export const socketPlayerDance = (payload: PlayerDance) => {
+    return {
+        type: SOCKET_PLAYER_DANCE,
+        payload,
+    };
+};
+
 // emit
 
 export const socketCreateRoom = (payload: CreateRoomSchema) => {
@@ -111,5 +120,12 @@ export const socketChatMessage = (message: string) => {
     return {
         type: SOCKET_CHAT_MESSAGE,
         payload: message,
+    };
+};
+
+export const socketDance = (danceName: string) => {
+    return {
+        type: SOCKET_DANCE,
+        payload: danceName,
     };
 };

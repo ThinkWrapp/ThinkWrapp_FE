@@ -9,6 +9,7 @@ import { InterfaceContainer, RouteInterfaceWrapper } from './style';
 import { ROUTE_CHARACTER, ROUTE_ROOM } from '@/constants/route';
 import Chat from './Chat';
 import ChatHistory from './ChatHistory';
+import Dance from './Dance';
 
 export default function Interface() {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
@@ -37,7 +38,12 @@ export default function Interface() {
             );
         }
         if (isRoomRoute) {
-            return <HomeLink />;
+            return (
+                <>
+                    <HomeLink />
+                    <Dance />
+                </>
+            );
         }
     };
 

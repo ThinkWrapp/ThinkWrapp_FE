@@ -8,3 +8,8 @@ export type PlayerChatMessage = {
     id: string;
     message: string;
 };
+
+export type PlayerDance = {
+    id: string;
+    danceName: string;
+};

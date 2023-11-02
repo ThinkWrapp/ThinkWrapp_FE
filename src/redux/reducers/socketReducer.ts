@@ -1,8 +1,10 @@
 import {
     SOCKET_PLAYER_CHAT_MESSAGE,
     SOCKET_PLAYER_CHAT_MESSAGE_RESET,
+    SOCKET_PLAYER_DANCE,
     socketPlayerChatMessage,
     socketPlayerChatMessageReset,
+    socketPlayerDance,
 } from './../actions/socketAciton';
 import { Character, JoinedRoomData, Room } from '@/types/room';
 import {
@@ -17,7 +19,7 @@ import {
     socketRoomsUpdate,
     socketWelcome,
 } from '../actions/socketAciton';
-import { PlayerChatMessage } from '@/types/character';
+import { PlayerChatMessage, PlayerDance } from '@/types/character';
 
 type SocketAction =
     | ReturnType<typeof socketWelcome>
@@ -26,13 +28,15 @@ type SocketAction =
     | ReturnType<typeof socketCharacter>
     | ReturnType<typeof socketPlayerMove>
     | ReturnType<typeof socketPlayerChatMessage>
-    | ReturnType<typeof socketPlayerChatMessageReset>;
+    | ReturnType<typeof socketPlayerChatMessageReset>
+    | ReturnType<typeof socketPlayerDance>;
 
 type SocketState = {
     rooms: Room[];
     roomJoined: undefined | JoinedRoomData;
     myCharacter: undefined | Character;
     myChatMessage: undefined | PlayerChatMessage;
+    myDance: undefined | PlayerDance;
 };
 
 const initialState: SocketState = {
@@ -40,6 +44,7 @@ const initialState: SocketState = {
     roomJoined: undefined,
     myCharacter: undefined,
     myChatMessage: undefined,
+    myDance: undefined,
 };
 
 const socketReducer = (state = initialState, action: SocketAction) => {
@@ -84,6 +89,11 @@ const socketReducer = (state = initialState, action: SocketAction) => {
             return {
                 ...state,
                 myChatMessage: action.payload,
+            };
+        case SOCKET_PLAYER_DANCE:
+            return {
+                ...state,
+                myDance: action.payload,
             };
         default:
             return state;

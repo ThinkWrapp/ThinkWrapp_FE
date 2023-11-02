@@ -3,12 +3,14 @@ import { call, takeEvery } from 'redux-saga/effects';
 import {
     SOCKET_CHAT_MESSAGE,
     SOCKET_CREATE_ROOM,
+    SOCKET_DANCE,
     SOCKET_JOIN_ROOM,
     SOCKET_LEAVE_ROOM,
     SOCKET_LOAD_ROOM,
     SOCKET_MOVE,
     socketChatMessage,
     socketCreateRoom,
+    socketDance,
     socketJoinRoom,
     socketLeaveRoom,
     socketLoadRoom,
@@ -22,7 +24,8 @@ type SocketEmitSagaAction =
     | ReturnType<typeof socketLeaveRoom>
     | ReturnType<typeof socketJoinRoom>
     | ReturnType<typeof socketMove>
-    | ReturnType<typeof socketChatMessage>;
+    | ReturnType<typeof socketChatMessage>
+    | ReturnType<typeof socketDance>;
 
 function* socketEmitSaga(action: SocketEmitSagaAction) {
     const socket: Socket | null = yield call(createSocket);
@@ -47,6 +50,9 @@ function* socketEmitSaga(action: SocketEmitSagaAction) {
             case SOCKET_CHAT_MESSAGE:
                 socket.emit('chatMessage', action.payload);
                 break;
+            case SOCKET_DANCE:
+                socket.emit('dance', action.payload);
+                break;
         }
     }
 }
@@ -58,4 +64,5 @@ export function* watchEmitSaga() {
     yield takeEvery(SOCKET_JOIN_ROOM, socketEmitSaga);
     yield takeEvery(SOCKET_MOVE, socketEmitSaga);
     yield takeEvery(SOCKET_CHAT_MESSAGE, socketEmitSaga);
+    yield takeEvery(SOCKET_DANCE, socketEmitSaga);
 }

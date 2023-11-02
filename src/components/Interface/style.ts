@@ -21,8 +21,18 @@ export const RouteInterfaceWrapper = styled.div`
     justify-content: space-between;
 `;
 
-export const InterFaceButton = styled(StyledButton)`
+type InterFaceButtonProps = {
+    $toggle?: boolean;
+};
+
+export const InterFaceButton = styled(StyledButton)<InterFaceButtonProps>`
     ${InterfaceLinkButton}
+
+    ${({ $toggle }) =>
+        $toggle &&
+        `
+        background-color: #3730a3
+    `}
 `;
 
 export const InterFaceLink = styled(StyledLink)`
