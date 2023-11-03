@@ -93,10 +93,13 @@ export const socketJoinRoom = (roomId: string, avatarUrl: string) => {
     };
 };
 
-export const socketLoadRoom = (roomId: string) => {
+export const socketLoadRoom = (roomId: string, avatarUrl: string) => {
     return {
         type: SOCKET_LOAD_ROOM,
-        payload: roomId,
+        payload: {
+            roomId,
+            avatarUrl,
+        },
     };
 };
 

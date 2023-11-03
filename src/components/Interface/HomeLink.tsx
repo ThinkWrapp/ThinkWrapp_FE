@@ -4,6 +4,7 @@ import { InterFaceLink } from './style';
 import { socketLeaveRoom } from '@/redux/actions/socketAciton';
 import { useLocation } from 'react-router-dom';
 import { ROUTE_ROOM } from '@/constants/route';
+import { removeRoom } from '@/redux/actions/roomPersistAction';
 
 export default function HomeLink() {
     const avatarButtonDisplay = useSelector((state: RootState) => state.interface.avatarButtonDisplay);
@@ -13,6 +14,7 @@ export default function HomeLink() {
     const moveToHome = () => {
         if (location.pathname.includes(`/${ROUTE_ROOM}/`)) {
             dispatch(socketLeaveRoom());
+            dispatch(removeRoom());
         }
     };
 

@@ -53,6 +53,9 @@ function* socketEmitSaga(action: SocketEmitSagaAction) {
             case SOCKET_DANCE:
                 socket.emit('dance', action.payload);
                 break;
+            case SOCKET_LOAD_ROOM:
+                socket.emit('loadRoom', action.payload);
+                break;
         }
     }
 }
@@ -65,4 +68,5 @@ export function* watchEmitSaga() {
     yield takeEvery(SOCKET_MOVE, socketEmitSaga);
     yield takeEvery(SOCKET_CHAT_MESSAGE, socketEmitSaga);
     yield takeEvery(SOCKET_DANCE, socketEmitSaga);
+    yield takeEvery(SOCKET_LOAD_ROOM, socketEmitSaga);
 }

@@ -10,6 +10,8 @@ import { getDeviceConfig } from '@/utils/getDeviceConfig';
 import Content from './Content';
 import { socketJoinRoom } from '@/redux/actions/socketAciton';
 import { ROUTE_ROOM } from '@/constants/route';
+import { saveRoom } from '@/redux/actions/roomPersistAction';
+import { Room } from '@/types/room';
 
 const Monitor = () => {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
@@ -55,6 +57,7 @@ const Monitor = () => {
 
     const joinRoom = (roomId: string) => {
         dispatch(socketJoinRoom(roomId, avatarUrl));
+        dispatch(saveRoom(roomId));
         navigate(`${ROUTE_ROOM}/${roomId}`);
     };
 
@@ -92,7 +95,7 @@ const Monitor = () => {
                             isSafari={isSafari}
                             modalOpen={openCreateRoomModal}
                             isAuth={isAuth}
-                            rooms={rooms}
+                            rooms={rooms as Room[]}
                             joinRoom={joinRoom}
                         />
                     </Html>

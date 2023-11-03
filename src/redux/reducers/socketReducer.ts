@@ -1,18 +1,16 @@
+import { Character, JoinedRoomData, Room } from '@/types/room';
 import {
     SOCKET_PLAYER_CHAT_MESSAGE,
     SOCKET_PLAYER_CHAT_MESSAGE_RESET,
     SOCKET_PLAYER_DANCE,
-    socketPlayerChatMessage,
-    socketPlayerChatMessageReset,
-    socketPlayerDance,
-} from './../actions/socketAciton';
-import { Character, JoinedRoomData, Room } from '@/types/room';
-import {
     SOCKET_CHARACTER,
     SOCKET_PLAYER_MOVE,
     SOCKET_ROOMS_UPDATE,
     SOCKET_ROOM_JOINED,
     SOCKET_WELCOME,
+    socketPlayerChatMessage,
+    socketPlayerChatMessageReset,
+    socketPlayerDance,
     socketCharacter,
     socketPlayerMove,
     socketRoomJoined,
@@ -32,7 +30,7 @@ type SocketAction =
     | ReturnType<typeof socketPlayerDance>;
 
 type SocketState = {
-    rooms: Room[];
+    rooms: undefined | Room[];
     roomJoined: undefined | JoinedRoomData;
     myCharacter: undefined | Character;
     myChatMessage: undefined | PlayerChatMessage;
@@ -40,7 +38,7 @@ type SocketState = {
 };
 
 const initialState: SocketState = {
-    rooms: [],
+    rooms: undefined,
     roomJoined: undefined,
     myCharacter: undefined,
     myChatMessage: undefined,
