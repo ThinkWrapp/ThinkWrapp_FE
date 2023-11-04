@@ -4,6 +4,7 @@ import { createSocket } from '@/utils/createSocket';
 import { Socket } from 'socket.io-client';
 import {
     socketCharacter,
+    socketMapUpdate,
     socketPlayerChatMessage,
     socketPlayerDance,
     socketPlayerMove,
@@ -11,12 +12,20 @@ import {
     socketRoomsUpdate,
     socketWelcome,
 } from '../actions/socketAciton';
-import { Character, JoinedRoomData, Room } from '@/types/room';
+import { Character, JoinedRoomData, MapUpdateData, Room, WelcomeData } from '@/types/room';
 import { PlayerChatMessage, PlayerDance } from '@/types/character';
 
 type SocketEvent = {
     type: string;
-    payload: Room[] | JoinedRoomData | Character[] | Character | PlayerChatMessage | PlayerDance;
+    payload:
+        | WelcomeData
+        | Room[]
+        | JoinedRoomData
+        | Character[]
+        | Character
+        | PlayerChatMessage
+        | PlayerDance
+        | MapUpdateData;
 };
 
 function* initSocketSaga() {
@@ -30,7 +39,7 @@ function* initSocketSaga() {
 
             switch (socketEvent.type) {
                 case 'welcome':
-                    yield put(socketWelcome(socketEvent.payload as Room[]));
+                    yield put(socketWelcome(socketEvent.payload as WelcomeData));
                     break;
                 case 'roomsUpdate':
                     yield put(socketRoomsUpdate(socketEvent.payload as Room[]));
@@ -50,6 +59,9 @@ function* initSocketSaga() {
                 case 'playerDance':
                     yield put(socketPlayerDance(socketEvent.payload as PlayerDance));
                     break;
+                case 'mapUpdate':
+                    yield put(socketMapUpdate(socketEvent.payload as MapUpdateData));
+                    break;
             }
         }
     }
@@ -57,7 +69,7 @@ function* initSocketSaga() {
 
 function createSocketChannel(socket: Socket) {
     return eventChannel((emit) => {
-        const onWelcome = (welcomeData: Room[]) => {
+        const onWelcome = (welcomeData: WelcomeData) => {
             emit({ type: 'welcome', payload: welcomeData });
         };
 
@@ -85,6 +97,10 @@ function createSocketChannel(socket: Socket) {
             emit({ type: 'playerDance', payload: playerDance });
         };
 
+        const onMapUpdate = (mapUpdateData: MapUpdateData) => {
+            emit({ type: 'mapUpdate', payload: mapUpdateData });
+        };
+
         socket.on('welcome', onWelcome);
         socket.on('roomsUpdate', onRoomsUpdate);
         socket.on('roomJoined', onRoomJoined);
@@ -92,6 +108,7 @@ function createSocketChannel(socket: Socket) {
         socket.on('playerMove', onPlayerMove);
         socket.on('playerChatMessage', onPlayerChatMessage);
         socket.on('playerDance', onPlayerDance);
+        socket.on('mapUpdate', onMapUpdate);
 
         return () => {
             socket.off('welcome', onWelcome);
@@ -101,6 +118,7 @@ function createSocketChannel(socket: Socket) {
             socket.off('playerMove', onPlayerMove);
             socket.off('playerChatMessage', onPlayerChatMessage);
             socket.off('playerDance', onPlayerDance);
+            socket.off('mapUpdate', onMapUpdate);
         };
     });
 }

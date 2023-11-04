@@ -7,11 +7,15 @@ import userReducer from './userReducer';
 import avatarPersistReducer from './avatarPersistReducer';
 import socketReducer from './socketReducer';
 import roomPersistReducer from './roomPersistReducer';
+import modeReducer from './modeReducer';
+import roomItemReducer from './itemReducer';
 
 const rootReducer = combineReducers({
     interface: interfaceReducer,
     modal: modalReducer,
     user: userReducer,
+    mode: modeReducer,
+    item: roomItemReducer,
     avatar: persistReducer(avatarSelectConfig, avatarPersistReducer),
     room: persistReducer(roomConfig, roomPersistReducer),
     socket: socketReducer,

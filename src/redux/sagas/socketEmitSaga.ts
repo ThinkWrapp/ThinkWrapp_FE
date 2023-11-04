@@ -4,6 +4,7 @@ import {
     SOCKET_CHAT_MESSAGE,
     SOCKET_CREATE_ROOM,
     SOCKET_DANCE,
+    SOCKET_ITEMS_UPDATE,
     SOCKET_JOIN_ROOM,
     SOCKET_LEAVE_ROOM,
     SOCKET_LOAD_ROOM,
@@ -11,6 +12,7 @@ import {
     socketChatMessage,
     socketCreateRoom,
     socketDance,
+    socketItemsUpdate,
     socketJoinRoom,
     socketLeaveRoom,
     socketLoadRoom,
@@ -25,7 +27,8 @@ type SocketEmitSagaAction =
     | ReturnType<typeof socketJoinRoom>
     | ReturnType<typeof socketMove>
     | ReturnType<typeof socketChatMessage>
-    | ReturnType<typeof socketDance>;
+    | ReturnType<typeof socketDance>
+    | ReturnType<typeof socketItemsUpdate>;
 
 function* socketEmitSaga(action: SocketEmitSagaAction) {
     const socket: Socket | null = yield call(createSocket);
@@ -56,6 +59,9 @@ function* socketEmitSaga(action: SocketEmitSagaAction) {
             case SOCKET_LOAD_ROOM:
                 socket.emit('loadRoom', action.payload);
                 break;
+            case SOCKET_ITEMS_UPDATE:
+                socket.emit('itemsUpdate', action.payload);
+                break;
         }
     }
 }
@@ -69,4 +75,5 @@ export function* watchEmitSaga() {
     yield takeEvery(SOCKET_CHAT_MESSAGE, socketEmitSaga);
     yield takeEvery(SOCKET_DANCE, socketEmitSaga);
     yield takeEvery(SOCKET_LOAD_ROOM, socketEmitSaga);
+    yield takeEvery(SOCKET_ITEMS_UPDATE, socketEmitSaga);
 }

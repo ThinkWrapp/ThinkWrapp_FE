@@ -10,10 +10,20 @@ import { ROUTE_CHARACTER, ROUTE_ROOM } from '@/constants/route';
 import Chat from './Chat';
 import ChatHistory from './ChatHistory';
 import Dance from './Dance';
+import ShopButton from './ShopButton';
+import BuildButton from './BuildButton';
+import BackButton from './BackButton';
+import CancelButton from './CancelButton';
+import DeleteButton from './DeleteButton';
+import RotateButton from './RotateButton';
+import { BUILD_MODE } from '@/redux/actions/modeAction';
 
 export default function Interface() {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
+    const mode = useSelector((state: RootState) => state.mode.mode);
+    const draggedItem = useSelector((state: RootState) => state.item.draggedItem);
+
     const location = useLocation();
 
     const isLobbyRoute = location.pathname === '/';
@@ -41,7 +51,25 @@ export default function Interface() {
             return (
                 <>
                     <HomeLink />
-                    <Dance />
+                    {mode && draggedItem === null && <BackButton />}
+                    {!mode && (
+                        <>
+                            <Dance />
+                            <BuildButton />
+                        </>
+                    )}
+                    {mode === BUILD_MODE && (
+                        <>
+                            {draggedItem !== null && (
+                                <>
+                                    <CancelButton mode={mode} draggedItem={draggedItem} />
+                                    <DeleteButton mode={mode} />
+                                    <RotateButton mode={mode} draggedItem={draggedItem} />
+                                </>
+                            )}
+                            <ShopButton />
+                        </>
+                    )}
                 </>
             );
         }

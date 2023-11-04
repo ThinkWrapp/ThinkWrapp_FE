@@ -17,7 +17,7 @@ const Dance = () => {
     };
 
     return (
-        <DanceContainer $toggle={toggle}>
+        <DanceContainer $toggle={toggle} title="춤 목록">
             <DanceButtons $toggle={toggle}>
                 <InterFaceButton $fc="light" title="춤1" value="Dance1" onClick={DanceHandler}>
                     <svg

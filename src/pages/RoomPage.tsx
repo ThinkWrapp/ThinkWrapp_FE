@@ -1,13 +1,17 @@
 import Loader from '@/components/Loader';
 import Room from '@/components/MetaRoom/Room';
-import { useProgress } from '@react-three/drei';
+import { SHOP_MODE } from '@/redux/actions/modeAction';
+import { RootState } from '@/redux/reducers';
+import { ScrollControls, useProgress } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, N8AO } from '@react-three/postprocessing';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const RoomPage = () => {
     const [loaded, setLoaded] = useState(false);
     const { progress } = useProgress();
+    const mode = useSelector((state: RootState) => state.mode.mode);
 
     useEffect(() => {
         if (progress === 100) {
@@ -25,7 +29,9 @@ const RoomPage = () => {
                 }}
             >
                 <color attach="background" args={['#ffffff']} />
-                <Room />
+                <ScrollControls pages={mode === SHOP_MODE ? 4 : 0}>
+                    <Room />
+                </ScrollControls>
                 <EffectComposer>
                     <N8AO intensity={0.42} />
                 </EffectComposer>

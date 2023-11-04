@@ -1,4 +1,4 @@
-import { Character, JoinedRoomData, Room } from '@/types/room';
+import { Character, JoinedRoomData, Room, ShopItem } from '@/types/room';
 import {
     SOCKET_PLAYER_CHAT_MESSAGE,
     SOCKET_PLAYER_CHAT_MESSAGE_RESET,
@@ -16,6 +16,8 @@ import {
     socketRoomJoined,
     socketRoomsUpdate,
     socketWelcome,
+    socketMapUpdate,
+    SOCKET_MAP_UPDATE,
 } from '../actions/socketAciton';
 import { PlayerChatMessage, PlayerDance } from '@/types/character';
 
@@ -27,10 +29,12 @@ type SocketAction =
     | ReturnType<typeof socketPlayerMove>
     | ReturnType<typeof socketPlayerChatMessage>
     | ReturnType<typeof socketPlayerChatMessageReset>
-    | ReturnType<typeof socketPlayerDance>;
+    | ReturnType<typeof socketPlayerDance>
+    | ReturnType<typeof socketMapUpdate>;
 
 type SocketState = {
     rooms: undefined | Room[];
+    items: undefined | ShopItem[];
     roomJoined: undefined | JoinedRoomData;
     myCharacter: undefined | Character;
     myChatMessage: undefined | PlayerChatMessage;
@@ -39,6 +43,7 @@ type SocketState = {
 
 const initialState: SocketState = {
     rooms: undefined,
+    items: undefined,
     roomJoined: undefined,
     myCharacter: undefined,
     myChatMessage: undefined,
@@ -50,7 +55,8 @@ const socketReducer = (state = initialState, action: SocketAction) => {
         case SOCKET_WELCOME:
             return {
                 ...state,
-                rooms: action.payload,
+                rooms: action.payload.rooms,
+                items: action.payload.items,
             };
         case SOCKET_ROOMS_UPDATE:
             return {
@@ -92,6 +98,18 @@ const socketReducer = (state = initialState, action: SocketAction) => {
             return {
                 ...state,
                 myDance: action.payload,
+            };
+        case SOCKET_MAP_UPDATE:
+            if (!state.roomJoined) {
+                return state;
+            }
+            return {
+                ...state,
+                roomJoined: {
+                    ...state.roomJoined,
+                    map: action.payload.map,
+                    characters: action.payload.characters,
+                },
             };
         default:
             return state;

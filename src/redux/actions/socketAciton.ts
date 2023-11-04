@@ -1,5 +1,5 @@
 import { PlayerChatMessage, PlayerDance } from '@/types/character';
-import { Character, CreateRoomSchema, JoinedRoomData, Room } from '@/types/room';
+import { Character, CreateRoomSchema, JoinedRoomData, MapUpdateData, Room, ShopItem, WelcomeData } from '@/types/room';
 
 export const SOCKET_WELCOME = 'SOCKET_WELCOME' as const;
 export const SOCKET_ROOMS_UPDATE = 'SOCKET_ROOMS_UPDATE' as const;
@@ -16,9 +16,11 @@ export const SOCKET_PLAYER_CHAT_MESSAGE = 'SOCKET_PLAYER_CHAT_MESSAGE' as const;
 export const SOCKET_PLAYER_CHAT_MESSAGE_RESET = 'SOCKET_PLAYER_CHAT_MESSAGE_RESET' as const;
 export const SOCKET_DANCE = 'SOCKET_DANCE' as const;
 export const SOCKET_PLAYER_DANCE = 'SOCKET_PLAYER_DANCE' as const;
+export const SOCKET_ITEMS_UPDATE = 'SOCKET_ITEMS_UPDATE' as const;
+export const SOCKET_MAP_UPDATE = 'SOCKET_MAP_UPDATE' as const;
 
 // receive
-export const socketWelcome = (payload: Room[]) => {
+export const socketWelcome = (payload: WelcomeData) => {
     return {
         type: SOCKET_WELCOME,
         payload,
@@ -70,6 +72,13 @@ export const socketPlayerChatMessageReset = () => {
 export const socketPlayerDance = (payload: PlayerDance) => {
     return {
         type: SOCKET_PLAYER_DANCE,
+        payload,
+    };
+};
+
+export const socketMapUpdate = (payload: MapUpdateData) => {
+    return {
+        type: SOCKET_MAP_UPDATE,
         payload,
     };
 };
@@ -130,5 +139,12 @@ export const socketDance = (danceName: string) => {
     return {
         type: SOCKET_DANCE,
         payload: danceName,
+    };
+};
+
+export const socketItemsUpdate = (items: ShopItem[]) => {
+    return {
+        type: SOCKET_ITEMS_UPDATE,
+        payload: items,
     };
 };
