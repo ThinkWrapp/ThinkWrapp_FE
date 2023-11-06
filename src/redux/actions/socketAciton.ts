@@ -1,5 +1,15 @@
 import { PlayerChatMessage, PlayerDance } from '@/types/character';
-import { Character, CreateRoomSchema, JoinedRoomData, MapUpdateData, Room, ShopItem, WelcomeData } from '@/types/room';
+import {
+    Character,
+    CreateRoomSchema,
+    JoinedRoomData,
+    MapUpdateData,
+    Room,
+    RoomVideo,
+    ShopItem,
+    UserVideoMute,
+    WelcomeData,
+} from '@/types/room';
 
 export const SOCKET_WELCOME = 'SOCKET_WELCOME' as const;
 export const SOCKET_ROOMS_UPDATE = 'SOCKET_ROOMS_UPDATE' as const;
@@ -18,6 +28,10 @@ export const SOCKET_DANCE = 'SOCKET_DANCE' as const;
 export const SOCKET_PLAYER_DANCE = 'SOCKET_PLAYER_DANCE' as const;
 export const SOCKET_ITEMS_UPDATE = 'SOCKET_ITEMS_UPDATE' as const;
 export const SOCKET_MAP_UPDATE = 'SOCKET_MAP_UPDATE' as const;
+export const SOCKET_ROOM_VIDEO = 'SOCKET_ROOM_VIDEO' as const;
+export const SOCKET_USER_DISCONNECT = 'SOCKET_USER_DISCONNECT' as const;
+export const SOCKET_VIDEO_MUTE = 'SOCKET_VIDEO_MUTE' as const;
+export const SOCKET_USER_VIDEO_MUTE = 'SOCKET_USER_VIDEO_MUTE' as const;
 
 // receive
 export const socketWelcome = (payload: WelcomeData) => {
@@ -44,6 +58,13 @@ export const socketRoomJoined = (payload: JoinedRoomData) => {
 export const socketCharacter = (payload: Character[]) => {
     return {
         type: SOCKET_CHARACTER,
+        payload,
+    };
+};
+
+export const socketVideo = (payload: RoomVideo[]) => {
+    return {
+        type: SOCKET_ROOM_VIDEO,
         payload,
     };
 };
@@ -83,6 +104,14 @@ export const socketMapUpdate = (payload: MapUpdateData) => {
     };
 };
 
+export const socketUserVideoMute = (payload: UserVideoMute) => {
+    console.log(payload);
+    return {
+        type: SOCKET_USER_VIDEO_MUTE,
+        payload,
+    };
+};
+
 // emit
 
 export const socketCreateRoom = (payload: CreateRoomSchema) => {
@@ -92,12 +121,13 @@ export const socketCreateRoom = (payload: CreateRoomSchema) => {
     };
 };
 
-export const socketJoinRoom = (roomId: string, avatarUrl: string) => {
+export const socketJoinRoom = (roomId: string, avatarUrl: string, peerId?: string) => {
     return {
         type: SOCKET_JOIN_ROOM,
         payload: {
             roomId,
             avatarUrl,
+            peerId,
         },
     };
 };
@@ -146,5 +176,19 @@ export const socketItemsUpdate = (items: ShopItem[]) => {
     return {
         type: SOCKET_ITEMS_UPDATE,
         payload: items,
+    };
+};
+
+export const socketUserDisconnect = (peerId: string) => {
+    return {
+        type: SOCKET_USER_DISCONNECT,
+        payload: peerId,
+    };
+};
+
+export const socketVideoMute = (isVideoMuted: boolean) => {
+    return {
+        type: SOCKET_VIDEO_MUTE,
+        payload: isVideoMuted,
     };
 };

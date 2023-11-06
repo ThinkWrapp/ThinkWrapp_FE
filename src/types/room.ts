@@ -26,6 +26,12 @@ export type ShopItem = {
     tmp?: boolean;
 };
 
+export type RoomVideo = {
+    id: string;
+    isVideoMuted: boolean;
+    isPlaying: boolean;
+};
+
 export type JoinedRoomData = {
     map: {
         gridDivision: number;
@@ -34,12 +40,25 @@ export type JoinedRoomData = {
     };
     characters: Character[];
     id: string;
+    videos: RoomVideo[];
     password?: string;
 };
 
-export type MapUpdateData = Omit<JoinedRoomData, 'id' | 'password'>;
+export type MapUpdateData = Omit<JoinedRoomData, 'id' | 'password' | 'videos'>;
 
 export type WelcomeData = {
     rooms: Room[];
     items: ShopItem[];
+};
+
+export type VideoPeer = {
+    id: string;
+    stream: MediaStream;
+    isVideoMuted: boolean;
+    isPlaying: boolean;
+};
+
+export type UserVideoMute = {
+    peerId: string;
+    isVideoMuted: boolean;
 };

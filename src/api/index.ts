@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { refreshToken } from './auth';
 import { userStorage } from '@/utils/userStorage';
-import { AVATAR_SELECT } from '@/constants/auth';
+import { AVATAR_SELECT, ROOM } from '@/constants/auth';
 
 export const instance = axios.create({
     baseURL: import.meta.env.VITE_SEVER_BASE_URL,
@@ -30,6 +30,14 @@ instance.interceptors.response.use(
 
         if (response.data.message === 'Unauthorized') {
             // TODO:  access_token 없거나 만료될 경우 홈으로 이동은 react-route-dom으로 이동 /* utils폴더 -> user.ts -> checkAuthLoader함수 사용예정  */
+            const token = userStorage.get();
+
+            if (!token) {
+                userStorage.remove();
+                window.localStorage.removeItem('persist:' + AVATAR_SELECT);
+                window.localStorage.removeItem('persist:' + ROOM);
+                return Promise.reject(error);
+            }
 
             try {
                 const { access_token } = await refreshToken();

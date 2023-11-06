@@ -17,6 +17,7 @@ import CancelButton from './CancelButton';
 import DeleteButton from './DeleteButton';
 import RotateButton from './RotateButton';
 import { BUILD_MODE } from '@/redux/actions/modeAction';
+import VideoOption from './VideoOption';
 
 export default function Interface() {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
@@ -56,6 +57,7 @@ export default function Interface() {
                         <>
                             <Dance />
                             <BuildButton />
+                            <VideoOption />
                         </>
                     )}
                     {mode === BUILD_MODE && (

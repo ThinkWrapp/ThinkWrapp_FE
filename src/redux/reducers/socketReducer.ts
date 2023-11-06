@@ -1,4 +1,4 @@
-import { Character, JoinedRoomData, Room, ShopItem } from '@/types/room';
+import { Character, JoinedRoomData, Room, ShopItem, UserVideoMute } from '@/types/room';
 import {
     SOCKET_PLAYER_CHAT_MESSAGE,
     SOCKET_PLAYER_CHAT_MESSAGE_RESET,
@@ -18,6 +18,12 @@ import {
     socketWelcome,
     socketMapUpdate,
     SOCKET_MAP_UPDATE,
+    SOCKET_ROOM_VIDEO,
+    socketVideo,
+    socketUserDisconnect,
+    SOCKET_USER_DISCONNECT,
+    SOCKET_USER_VIDEO_MUTE,
+    socketUserVideoMute,
 } from '../actions/socketAciton';
 import { PlayerChatMessage, PlayerDance } from '@/types/character';
 
@@ -30,7 +36,10 @@ type SocketAction =
     | ReturnType<typeof socketPlayerChatMessage>
     | ReturnType<typeof socketPlayerChatMessageReset>
     | ReturnType<typeof socketPlayerDance>
-    | ReturnType<typeof socketMapUpdate>;
+    | ReturnType<typeof socketMapUpdate>
+    | ReturnType<typeof socketVideo>
+    | ReturnType<typeof socketUserDisconnect>
+    | ReturnType<typeof socketUserVideoMute>;
 
 type SocketState = {
     rooms: undefined | Room[];
@@ -39,6 +48,8 @@ type SocketState = {
     myCharacter: undefined | Character;
     myChatMessage: undefined | PlayerChatMessage;
     myDance: undefined | PlayerDance;
+    deletePeerId: undefined | string;
+    updatedVideoMute: undefined | UserVideoMute;
 };
 
 const initialState: SocketState = {
@@ -48,6 +59,8 @@ const initialState: SocketState = {
     myCharacter: undefined,
     myChatMessage: undefined,
     myDance: undefined,
+    deletePeerId: undefined,
+    updatedVideoMute: undefined,
 };
 
 const socketReducer = (state = initialState, action: SocketAction) => {
@@ -77,6 +90,17 @@ const socketReducer = (state = initialState, action: SocketAction) => {
                 roomJoined: {
                     ...state.roomJoined,
                     characters: action.payload,
+                },
+            };
+        case SOCKET_ROOM_VIDEO:
+            if (!state.roomJoined) {
+                return state;
+            }
+            return {
+                ...state,
+                roomJoined: {
+                    ...state.roomJoined,
+                    videos: action.payload,
                 },
             };
         case SOCKET_PLAYER_MOVE:
@@ -110,6 +134,16 @@ const socketReducer = (state = initialState, action: SocketAction) => {
                     map: action.payload.map,
                     characters: action.payload.characters,
                 },
+            };
+        case SOCKET_USER_VIDEO_MUTE:
+            return {
+                ...state,
+                updatedVideoMute: action.payload,
+            };
+        case SOCKET_USER_DISCONNECT:
+            return {
+                ...state,
+                deletePeerId: action.payload,
             };
         default:
             return state;

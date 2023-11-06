@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@react-three/eslint-plugin": "^0.1.1",
+    "@types/peerjs": "^1.1.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/styled-components": "4.0.3",

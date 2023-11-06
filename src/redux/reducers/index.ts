@@ -9,6 +9,7 @@ import socketReducer from './socketReducer';
 import roomPersistReducer from './roomPersistReducer';
 import modeReducer from './modeReducer';
 import roomItemReducer from './itemReducer';
+import videoReducer from './videoReducer';
 
 const rootReducer = combineReducers({
     interface: interfaceReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     user: userReducer,
     mode: modeReducer,
     item: roomItemReducer,
+    video: videoReducer,
     avatar: persistReducer(avatarSelectConfig, avatarPersistReducer),
     room: persistReducer(roomConfig, roomPersistReducer),
     socket: socketReducer,

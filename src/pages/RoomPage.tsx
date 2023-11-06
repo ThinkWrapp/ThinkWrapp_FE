@@ -1,23 +1,78 @@
-import Loader from '@/components/Loader';
 import Room from '@/components/MetaRoom/Room';
 import { SHOP_MODE } from '@/redux/actions/modeAction';
 import { RootState } from '@/redux/reducers';
-import { ScrollControls, useProgress } from '@react-three/drei';
+import { useEffect, useState } from 'react';
+import { ScrollControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, N8AO } from '@react-three/postprocessing';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useVideoContext } from '@/hooks/useVideoContext';
+import { removePeer, setPeers, updateVideoMutePeer } from '@/redux/actions/videoAction';
+import { Container } from '@/components/MetaRoom/Room/VideoPlayer/style';
+import VideoPlayer from '@/components/MetaRoom/Room/VideoPlayer';
+import { MediaConnection } from 'peerjs';
 
 const RoomPage = () => {
-    const [loaded, setLoaded] = useState(false);
-    const { progress } = useProgress();
     const mode = useSelector((state: RootState) => state.mode.mode);
+    const socketVideos = useSelector((state: RootState) => state.socket.roomJoined?.videos);
+    const clientVideos = useSelector((state: RootState) => state.video.peers);
+    const deletePeerId = useSelector((state: RootState) => state.socket.deletePeerId);
+    const updatedVideoMute = useSelector((state: RootState) => state.socket.updatedVideoMute);
+    const { peerId, myPeer, stream, myScreenMuted } = useVideoContext();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (progress === 100) {
-            setLoaded(true);
-        }
-    }, [progress]);
+        if (!updatedVideoMute) return;
+        dispatch(updateVideoMutePeer(updatedVideoMute.peerId, updatedVideoMute.isVideoMuted));
+        console.log(socketVideos, clientVideos, updatedVideoMute);
+    }, [updatedVideoMute]);
+
+    useEffect(() => {
+        if (!deletePeerId) return;
+        dispatch(removePeer(deletePeerId as string));
+    }, [deletePeerId]);
+
+    useEffect(() => {
+        if (!stream || !myPeer) return;
+        const peers = socketVideos?.filter((video) => video.id !== peerId);
+
+        peers?.forEach((peer) => {
+            if (!myPeer.connections[peer.id] || myPeer.connections[peer.id].length !== 0) {
+                const call = myPeer.call(peer.id, stream);
+                call.on('stream', (userVideoStream) => {
+                    dispatch(
+                        setPeers({
+                            id: peer.id,
+                            isVideoMuted: peer.isVideoMuted,
+                            isPlaying: peer.isPlaying,
+                            stream: userVideoStream,
+                        }),
+                    );
+                });
+            }
+        });
+
+        const onCall = (call: MediaConnection) => {
+            call.answer(stream);
+            call.on('stream', (peerStream: MediaStream) => {
+                const playVideo = socketVideos?.find((video) => video.id === call.peer);
+                dispatch(
+                    setPeers({
+                        id: call.peer,
+                        isVideoMuted: playVideo?.isVideoMuted as boolean,
+                        isPlaying: playVideo?.isPlaying as boolean,
+                        stream: peerStream,
+                    }),
+                );
+            });
+        };
+
+        myPeer.on('call', onCall);
+
+        return () => {
+            myPeer.off('call', onCall);
+        };
+    }, [stream, myPeer]);
 
     return (
         <>
@@ -36,7 +91,12 @@ const RoomPage = () => {
                     <N8AO intensity={0.42} />
                 </EffectComposer>
             </Canvas>
-            <Loader loaded={loaded} />
+            <Container>
+                <VideoPlayer stream={stream} isVideoMuted={myScreenMuted} />
+                {Object.values(clientVideos).map((peer, idx) => {
+                    return <VideoPlayer key={idx} stream={peer.stream} isVideoMuted={peer.isVideoMuted} />;
+                })}
+            </Container>
         </>
     );
 };

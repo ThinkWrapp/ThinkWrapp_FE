@@ -12,6 +12,7 @@ import { socketJoinRoom } from '@/redux/actions/socketAciton';
 import { ROUTE_ROOM } from '@/constants/route';
 import { saveRoom } from '@/redux/actions/roomPersistAction';
 import { Room } from '@/types/room';
+import { useVideoContext } from '@/hooks/useVideoContext';
 
 const Monitor = () => {
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
@@ -23,6 +24,7 @@ const Monitor = () => {
     const goldenRatio = Math.min(1, window.innerWidth / 1600);
     const device = useResponsive();
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); // ugly transform position 에 버그가 있어 사파리 수정
+    const { peerId, startMediaStream } = useVideoContext();
 
     const monitorGroupConfig = {
         mobile: {
@@ -56,7 +58,8 @@ const Monitor = () => {
     };
 
     const joinRoom = (roomId: string) => {
-        dispatch(socketJoinRoom(roomId, avatarUrl));
+        startMediaStream();
+        dispatch(socketJoinRoom(roomId, avatarUrl, peerId));
         dispatch(saveRoom(roomId));
         navigate(`${ROUTE_ROOM}/${roomId}`);
     };

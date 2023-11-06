@@ -6,17 +6,20 @@ import { useLocation } from 'react-router-dom';
 import { ROUTE_ROOM } from '@/constants/route';
 import { removeRoom } from '@/redux/actions/roomPersistAction';
 import { resetMode } from '@/redux/actions/modeAction';
+import { useVideoContext } from '@/hooks/useVideoContext';
 
 export default function HomeLink() {
     const avatarButtonDisplay = useSelector((state: RootState) => state.interface.avatarButtonDisplay);
     const location = useLocation();
     const dispatch = useDispatch();
+    const { closeMediaStream } = useVideoContext();
 
     const moveToHome = () => {
         if (location.pathname.includes(`/${ROUTE_ROOM}/`)) {
             dispatch(socketLeaveRoom());
             dispatch(removeRoom());
             dispatch(resetMode());
+            closeMediaStream();
         }
     };
 

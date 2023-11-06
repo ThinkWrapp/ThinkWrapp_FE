@@ -10,9 +10,12 @@ import {
     socketPlayerMove,
     socketRoomJoined,
     socketRoomsUpdate,
+    socketUserDisconnect,
+    socketUserVideoMute,
+    socketVideo,
     socketWelcome,
 } from '../actions/socketAciton';
-import { Character, JoinedRoomData, MapUpdateData, Room, WelcomeData } from '@/types/room';
+import { Character, JoinedRoomData, MapUpdateData, Room, RoomVideo, UserVideoMute, WelcomeData } from '@/types/room';
 import { PlayerChatMessage, PlayerDance } from '@/types/character';
 
 type SocketEvent = {
@@ -25,7 +28,10 @@ type SocketEvent = {
         | Character
         | PlayerChatMessage
         | PlayerDance
-        | MapUpdateData;
+        | MapUpdateData
+        | RoomVideo[]
+        | UserVideoMute
+        | string;
 };
 
 function* initSocketSaga() {
@@ -50,6 +56,9 @@ function* initSocketSaga() {
                 case 'character':
                     yield put(socketCharacter(socketEvent.payload as Character[]));
                     break;
+                case 'video':
+                    yield put(socketVideo(socketEvent.payload as RoomVideo[]));
+                    break;
                 case 'playerMove':
                     yield put(socketPlayerMove(socketEvent.payload as Character));
                     break;
@@ -61,6 +70,12 @@ function* initSocketSaga() {
                     break;
                 case 'mapUpdate':
                     yield put(socketMapUpdate(socketEvent.payload as MapUpdateData));
+                    break;
+                case 'userDisconnect':
+                    yield put(socketUserDisconnect(socketEvent.payload as string));
+                    break;
+                case 'userVideoMute':
+                    yield put(socketUserVideoMute(socketEvent.payload as UserVideoMute));
                     break;
             }
         }
@@ -85,6 +100,10 @@ function createSocketChannel(socket: Socket) {
             emit({ type: 'character', payload: characterData });
         };
 
+        const onVideo = (videoData: RoomVideo[]) => {
+            emit({ type: 'video', payload: videoData });
+        };
+
         const onPlayerMove = (characterData: Character) => {
             emit({ type: 'playerMove', payload: characterData });
         };
@@ -101,6 +120,14 @@ function createSocketChannel(socket: Socket) {
             emit({ type: 'mapUpdate', payload: mapUpdateData });
         };
 
+        const onUserDisconnect = (peerId: string) => {
+            emit({ type: 'userDisconnect', payload: peerId });
+        };
+
+        const onUserVideoMute = (userVideoMuteData: UserVideoMute) => {
+            emit({ type: 'userVideoMute', payload: userVideoMuteData });
+        };
+
         socket.on('welcome', onWelcome);
         socket.on('roomsUpdate', onRoomsUpdate);
         socket.on('roomJoined', onRoomJoined);
@@ -109,6 +136,9 @@ function createSocketChannel(socket: Socket) {
         socket.on('playerChatMessage', onPlayerChatMessage);
         socket.on('playerDance', onPlayerDance);
         socket.on('mapUpdate', onMapUpdate);
+        socket.on('video', onVideo);
+        socket.on('userDisconnect', onUserDisconnect);
+        socket.on('userVideoMute', onUserVideoMute);
 
         return () => {
             socket.off('welcome', onWelcome);
@@ -119,6 +149,9 @@ function createSocketChannel(socket: Socket) {
             socket.off('playerChatMessage', onPlayerChatMessage);
             socket.off('playerDance', onPlayerDance);
             socket.off('mapUpdate', onMapUpdate);
+            socket.off('video', onVideo);
+            socket.off('userDisconnect', onUserDisconnect);
+            socket.off('userVideoMute', onUserVideoMute);
         };
     });
 }

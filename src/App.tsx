@@ -6,6 +6,7 @@ import theme from './theme';
 import LobbyPage from './pages/LobbyPage';
 import CharacterPage from './pages/CharacterPage';
 import RoomPage from './pages/RoomPage';
+import VideoContextProvider from './hooks/context/videoContext';
 
 const router = createBrowserRouter([
     {
@@ -24,7 +25,9 @@ const App = () => {
     return (
         // @ts-ignore
         <ThemeProvider theme={theme}>
-            <RouterProvider router={router} />
+            <VideoContextProvider>
+                <RouterProvider router={router} />
+            </VideoContextProvider>
         </ThemeProvider>
     );
 };

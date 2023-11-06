@@ -17,12 +17,14 @@ import { socketCreateRoom } from '@/redux/actions/socketAciton';
 import { saveRoom } from '@/redux/actions/roomPersistAction';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_ROOM } from '@/constants/route';
+import { useVideoContext } from '@/hooks/useVideoContext';
 
 export default function CreateRoomModal() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const [checkPassword, setCheckPassword] = useState<boolean>(false);
+    const { startMediaStream, peerId } = useVideoContext();
 
     const {
         register,
@@ -35,16 +37,18 @@ export default function CreateRoomModal() {
         resolver: zodResolver(createRoomSchema),
     });
 
-    const onSubmit: SubmitHandler<CreateRoomSchema> = (roomData) => {
+    const onSubmit: SubmitHandler<CreateRoomSchema> = async (roomData) => {
         const roomId = uuidv4();
         roomData.id = roomId;
         roomData.avatarUrl = avatarUrl;
+        roomData.peerId = peerId;
 
         dispatch(socketCreateRoom(roomData));
         reset();
         dispatch(closeModal());
         // TODO: 방 입장
         dispatch(saveRoom(roomId));
+        startMediaStream();
         navigate(`${ROUTE_ROOM}/${roomId}}`);
     };
 
