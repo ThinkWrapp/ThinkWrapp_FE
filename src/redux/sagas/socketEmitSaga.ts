@@ -7,7 +7,6 @@ import {
     SOCKET_ITEMS_UPDATE,
     SOCKET_JOIN_ROOM,
     SOCKET_LEAVE_ROOM,
-    SOCKET_LOAD_ROOM,
     SOCKET_MOVE,
     SOCKET_VIDEO_MUTE,
     socketChatMessage,
@@ -66,7 +65,6 @@ function* socketEmitSaga(action: SocketEmitSagaAction) {
 
 export function* watchEmitSaga() {
     yield takeEvery(SOCKET_CREATE_ROOM, socketEmitSaga);
-    yield takeEvery(SOCKET_LOAD_ROOM, socketEmitSaga);
     yield takeEvery(SOCKET_LEAVE_ROOM, socketEmitSaga);
     yield takeEvery(SOCKET_JOIN_ROOM, socketEmitSaga);
     yield takeEvery(SOCKET_MOVE, socketEmitSaga);

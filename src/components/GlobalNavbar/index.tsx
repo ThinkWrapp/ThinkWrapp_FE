@@ -5,11 +5,10 @@ import { useMutation } from '@tanstack/react-query';
 import { logout } from '@/api/auth';
 import Button from '../@Shared/Button';
 import { openModal } from '@/redux/actions/modalAction';
-import { StyledLink } from '../@Shared/Link/style';
 import { resetAvatar } from '@/redux/actions/avatarPersistAction';
 import { RootState } from '@/redux/reducers';
 import { userLoginChecking } from '@/redux/actions/userAction';
-import { LOGIN } from '@/constants/auth';
+import { LOGIN, REGISTER } from '@/constants/auth';
 import { GlobalNavbarContainer, NavigationLi, NavigationToggleBtn, NavigationUl } from './style';
 
 export default function GlobalNavbar() {
@@ -27,8 +26,8 @@ export default function GlobalNavbar() {
         setToggle((prev) => !prev);
     };
 
-    const openModalHandler = () => {
-        dispatch(openModal(LOGIN));
+    const openModalHandler = (value: string) => {
+        dispatch(openModal(value));
     };
 
     const logoutHandler = () => {
@@ -40,17 +39,19 @@ export default function GlobalNavbar() {
     return (
         <GlobalNavbarContainer>
             <NavigationUl $toggle={toggle}>
-                <NavigationLi>
-                    <StyledLink to="/contact" $fw="bold">
-                        Contact
-                    </StyledLink>
-                </NavigationLi>
                 {!isAuth ? (
-                    <NavigationLi>
-                        <Button $fw="bold" onClick={openModalHandler}>
-                            회원가입/로그인
-                        </Button>
-                    </NavigationLi>
+                    <>
+                        <NavigationLi>
+                            <Button $fw="bold" onClick={() => openModalHandler(REGISTER)}>
+                                회원가입
+                            </Button>
+                        </NavigationLi>
+                        <NavigationLi>
+                            <Button $fw="bold" onClick={() => openModalHandler(LOGIN)}>
+                                로그인
+                            </Button>
+                        </NavigationLi>
+                    </>
                 ) : (
                     <>
                         <NavigationLi>
