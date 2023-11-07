@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { InterFaceButton } from '../style';
 import { DanceButtons, DanceContainer } from './style';
 import { useDispatch } from 'react-redux';

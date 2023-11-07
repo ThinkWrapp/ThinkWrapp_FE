@@ -63,9 +63,7 @@ export default function RegisterModal() {
     return (
         <Modal reset={reset}>
             <AuthHeader>
-                <ModalTitle $fc="light" $fw="bold">
-                    {authState}
-                </ModalTitle>
+                <ModalTitle>{authState}</ModalTitle>
                 <Button $fc="light" onClick={closeModalHandler}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

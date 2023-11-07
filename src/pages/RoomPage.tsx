@@ -1,7 +1,7 @@
 import Room from '@/components/MetaRoom/Room';
 import { SHOP_MODE } from '@/redux/actions/modeAction';
 import { RootState } from '@/redux/reducers';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { ScrollControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, N8AO } from '@react-three/postprocessing';
@@ -37,6 +37,7 @@ const RoomPage = () => {
         const peers = socketVideos?.filter((video) => video.id !== peerId);
 
         peers?.forEach((peer) => {
+            // @ts-ignore
             if (!myPeer.connections[peer.id] || myPeer.connections[peer.id].length !== 0) {
                 const call = myPeer.call(peer.id, stream);
                 call.on('stream', (userVideoStream) => {

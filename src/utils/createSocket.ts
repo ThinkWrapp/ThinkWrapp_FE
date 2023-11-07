@@ -7,13 +7,12 @@ export const createSocket = async () => {
         return socketInstance;
     }
 
-    const userData = await profile();
-
-    if (userData.email) {
+    try {
+        const userData = await profile();
         socketInstance = io('http://localhost:3000', { query: { email: userData.email } });
 
         return socketInstance;
-    }
+    } catch (err) {}
 
     return null;
 };

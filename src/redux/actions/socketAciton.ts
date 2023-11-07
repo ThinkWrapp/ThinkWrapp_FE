@@ -14,7 +14,6 @@ import {
 export const SOCKET_WELCOME = 'SOCKET_WELCOME' as const;
 export const SOCKET_ROOMS_UPDATE = 'SOCKET_ROOMS_UPDATE' as const;
 export const SOCKET_CREATE_ROOM = 'SOCKET_CREATE_ROOM' as const;
-export const SOCKET_LOAD_ROOM = 'SOCKET_LOAD_ROOM' as const;
 export const SOCKET_ROOM_JOINED = 'SOCKET_ROOM_JOINED' as const;
 export const SOCKET_LEAVE_ROOM = 'SOCKET_LEAVE_ROOM' as const;
 export const SOCKET_JOIN_ROOM = 'SOCKET_JOIN_ROOM' as const;
@@ -128,16 +127,6 @@ export const socketJoinRoom = (roomId: string, avatarUrl: string, peerId?: strin
             roomId,
             avatarUrl,
             peerId,
-        },
-    };
-};
-
-export const socketLoadRoom = (roomId: string, avatarUrl: string) => {
-    return {
-        type: SOCKET_LOAD_ROOM,
-        payload: {
-            roomId,
-            avatarUrl,
         },
     };
 };

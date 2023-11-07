@@ -8,7 +8,7 @@ import { AVATAR_SELECT } from '@/constants/auth';
 
 // Get Request
 
-const profileSchema = z.object({
+export const profileSchema = z.object({
     username: z.string(),
     email: emailSchema,
     sub: z.string(),

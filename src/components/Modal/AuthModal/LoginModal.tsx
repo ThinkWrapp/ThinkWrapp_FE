@@ -19,6 +19,7 @@ import { loginSchema } from '@/schemas/auth';
 import { LOGIN, REGISTER } from '@/constants/auth';
 import { ModalTitle } from '../style';
 import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
+import { loginSuccess } from '@/redux/sagas/loginSaga';
 
 export default function LoginModal() {
     const authState = useSelector((state: RootState) => state.modal.modalValueState);
@@ -39,6 +40,8 @@ export default function LoginModal() {
             toast.success(message);
             userStorage.set(access_token);
             dispatch(userLoginChecking(true));
+            console.log('b');
+            dispatch(loginSuccess());
         },
         onError: (error: { response: { data: { message: string } } }) => {
             toast.error(error.response.data.message);

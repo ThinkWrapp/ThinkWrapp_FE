@@ -16,7 +16,6 @@ import {
     socketItemsUpdate,
     socketJoinRoom,
     socketLeaveRoom,
-    socketLoadRoom,
     socketMove,
     socketVideoMute,
 } from '../actions/socketAciton';
@@ -24,7 +23,6 @@ import { createSocket } from '@/utils/createSocket';
 
 type SocketEmitSagaAction =
     | ReturnType<typeof socketCreateRoom>
-    | ReturnType<typeof socketLoadRoom>
     | ReturnType<typeof socketLeaveRoom>
     | ReturnType<typeof socketJoinRoom>
     | ReturnType<typeof socketMove>
@@ -41,9 +39,6 @@ function* socketEmitSaga(action: SocketEmitSagaAction) {
             case SOCKET_CREATE_ROOM:
                 socket.emit('createRoom', action.payload);
                 break;
-            case SOCKET_LOAD_ROOM:
-                socket.emit('loadRoom', action.payload);
-                break;
             case SOCKET_LEAVE_ROOM:
                 socket.emit('leaveRoom');
                 break;
@@ -58,9 +53,6 @@ function* socketEmitSaga(action: SocketEmitSagaAction) {
                 break;
             case SOCKET_DANCE:
                 socket.emit('dance', action.payload);
-                break;
-            case SOCKET_LOAD_ROOM:
-                socket.emit('loadRoom', action.payload);
                 break;
             case SOCKET_ITEMS_UPDATE:
                 socket.emit('itemsUpdate', action.payload);
@@ -80,7 +72,6 @@ export function* watchEmitSaga() {
     yield takeEvery(SOCKET_MOVE, socketEmitSaga);
     yield takeEvery(SOCKET_CHAT_MESSAGE, socketEmitSaga);
     yield takeEvery(SOCKET_DANCE, socketEmitSaga);
-    yield takeEvery(SOCKET_LOAD_ROOM, socketEmitSaga);
     yield takeEvery(SOCKET_ITEMS_UPDATE, socketEmitSaga);
     yield takeEvery(SOCKET_VIDEO_MUTE, socketEmitSaga);
 }

@@ -13,6 +13,7 @@ import { RootState } from '@/redux/reducers';
 import { saveAvatar } from '@/redux/actions/avatarPersistAction';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_CHARACTER } from '@/constants/route';
+import { loginSuccess } from '@/redux/sagas/loginSaga';
 
 type LobbyProps = {
     loaded: boolean;
@@ -29,14 +30,14 @@ const Lobby = ({ loaded }: LobbyProps) => {
         [],
     );
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
-    const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
-            if (isAuth && !avatarUrl) {
+            if (isAuth) {
                 const userData = await profile();
+                dispatch(loginSuccess());
 
                 if (!userData?.avatarUrl) {
                     navigate(ROUTE_CHARACTER);
@@ -47,7 +48,7 @@ const Lobby = ({ loaded }: LobbyProps) => {
                 }
             }
         })();
-    }, [isAuth, avatarUrl]);
+    }, [isAuth]);
 
     return (
         <>
