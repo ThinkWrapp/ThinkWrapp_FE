@@ -31,6 +31,7 @@ const Lobby = ({ loaded }: LobbyProps) => {
         [],
     );
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -40,8 +41,9 @@ const Lobby = ({ loaded }: LobbyProps) => {
                 const userData = await profile();
                 dispatch(loginSuccess());
                 dispatch(userName(userData.username));
+                console.log(userData, avatarUrl);
 
-                if (!userData?.avatarUrl) {
+                if (!avatarUrl && !userData?.avatarUrl) {
                     navigate(ROUTE_CHARACTER);
                 }
 
