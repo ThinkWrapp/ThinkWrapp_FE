@@ -7,6 +7,7 @@ import { socketVideoMute } from '@/redux/actions/socketAciton';
 
 const VideoMuteButton = () => {
     const socketVideos = useSelector((state: RootState) => state.socket.roomJoined?.videos);
+    const userName = useSelector((state: RootState) => state.user.userName);
     const { screenMuteHandler } = useVideoContext();
     const dispatch = useDispatch();
     const [isVideoMuted, setIsVideoMuted] = useState(false);
@@ -16,7 +17,7 @@ const VideoMuteButton = () => {
     const videoMuteHandler = () => {
         setIsVideoMuted((prev) => !prev);
         screenMuteHandler();
-        dispatch(socketVideoMute(isVideoMuted as boolean));
+        dispatch(socketVideoMute(isVideoMuted as boolean, userName as string));
     };
 
     return (

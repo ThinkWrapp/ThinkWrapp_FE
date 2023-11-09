@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,13 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from '..';
 import Button from '@/components/@Shared/Button';
 import CreateRoomLabelInput from './CreateRoomLabelInput';
-import LabelInput from '@/components/@Shared/LabelInput';
+// import LabelInput from '@/components/@Shared/LabelInput';
 import { RootState } from '@/redux/reducers';
 import { closeModal } from '@/redux/actions/modalAction';
 import { createRoomSchema } from '@/schemas/room';
 import { CreateRoomSchema } from '@/types/room';
 import { ModalTitle } from '../style';
-import { CheckPasswordWrapper, CreateRoomButtonGroup, CreateRoomModalForm, CreateRoomModalHeader } from './style';
+import { CreateRoomButtonGroup, CreateRoomModalForm, CreateRoomModalHeader } from './style';
 import { socketCreateRoom } from '@/redux/actions/socketAciton';
 import { saveRoom } from '@/redux/actions/roomPersistAction';
 import { useNavigate } from 'react-router-dom';
@@ -24,14 +24,14 @@ export default function CreateRoomModal() {
     const navigate = useNavigate();
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const userName = useSelector((state: RootState) => state.user.userName);
-    const [checkPassword, setCheckPassword] = useState<boolean>(false);
+    // const [checkPassword, setCheckPassword] = useState<boolean>(false);
     const { startMediaStream, peerId } = useVideoContext();
 
     const {
         register,
         handleSubmit,
         reset,
-        unregister,
+        // unregister,
         formState: { errors },
     } = useForm<CreateRoomSchema>({
         mode: 'onChange',
@@ -59,12 +59,12 @@ export default function CreateRoomModal() {
         reset();
     };
 
-    const checkPasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (checkPassword) {
-            unregister('password');
-        }
-        setCheckPassword(e.target.checked);
-    };
+    // const checkPasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     if (checkPassword) {
+    //         unregister('password');
+    //     }
+    //     setCheckPassword(e.target.checked);
+    // };
 
     return (
         <Modal>
@@ -88,7 +88,7 @@ export default function CreateRoomModal() {
                     errors={errors}
                     required
                 />
-                <CheckPasswordWrapper>
+                {/* <CheckPasswordWrapper>
                     <LabelInput
                         id="checkPassword"
                         type="checkbox"
@@ -104,7 +104,7 @@ export default function CreateRoomModal() {
                         register={register}
                         errors={errors}
                     />
-                )}
+                )} */}
                 <CreateRoomButtonGroup>
                     <Button type="submit" $bg="point" $size="md" $fc="light" style={{ flex: 2 }}>
                         생성

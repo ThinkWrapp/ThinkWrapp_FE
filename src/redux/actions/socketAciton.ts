@@ -178,9 +178,12 @@ export const socketUserDisconnect = (peerId: string) => {
     };
 };
 
-export const socketVideoMute = (isVideoMuted: boolean) => {
+export const socketVideoMute = (isVideoMuted: boolean, userName: string) => {
     return {
         type: SOCKET_VIDEO_MUTE,
-        payload: isVideoMuted,
+        payload: {
+            isVideoMuted,
+            userName,
+        },
     };
 };

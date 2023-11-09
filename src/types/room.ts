@@ -30,7 +30,7 @@ export type ShopItem = {
 export type RoomVideo = {
     id: string;
     isVideoMuted: boolean;
-    isPlaying: boolean;
+    userName: string;
 };
 
 export type JoinedRoomData = {
@@ -56,10 +56,11 @@ export type VideoPeer = {
     id: string;
     stream: MediaStream;
     isVideoMuted: boolean;
-    isPlaying: boolean;
+    userName: string;
 };
 
 export type UserVideoMute = {
     peerId: string;
     isVideoMuted: boolean;
+    userName: string;
 };

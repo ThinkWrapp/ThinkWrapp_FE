@@ -20,6 +20,7 @@ const RoomPage = () => {
     const clientVideos = useSelector((state: RootState) => state.video.peers);
     const deletePeerId = useSelector((state: RootState) => state.socket.deletePeerId);
     const updatedVideoMute = useSelector((state: RootState) => state.socket.updatedVideoMute);
+    const userName = useSelector((state: RootState) => state.user.userName);
     const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
     const { peerId, myPeer, stream, myScreenMuted } = useVideoContext();
@@ -46,12 +47,11 @@ const RoomPage = () => {
                 const call = myPeer.call(peer.id, stream);
                 connectedPeers.set(peer.id, call);
                 call?.on('stream', (userVideoStream) => {
-                    console.log(userVideoStream);
                     dispatch(
                         setPeers({
                             id: peer.id,
                             isVideoMuted: peer.isVideoMuted,
-                            isPlaying: peer.isPlaying,
+                            userName: peer.userName,
                             stream: userVideoStream,
                         }),
                     );
@@ -62,13 +62,12 @@ const RoomPage = () => {
         const onCall = (call: MediaConnection) => {
             call.answer(stream);
             call?.on('stream', (peerStream: MediaStream) => {
-                console.log(peerStream);
                 const playVideo = socketVideos?.find((video) => video.id === call.peer);
                 dispatch(
                     setPeers({
                         id: call.peer,
                         isVideoMuted: playVideo?.isVideoMuted as boolean,
-                        isPlaying: playVideo?.isPlaying as boolean,
+                        userName: playVideo?.userName as string,
                         stream: peerStream,
                     }),
                 );
@@ -104,13 +103,17 @@ const RoomPage = () => {
                 </EffectComposer>
             </Canvas>
             <Container>
-                {stream && <VideoPlayer stream={stream} isVideoMuted={myScreenMuted} />}
+                {stream && <VideoPlayer stream={stream} isVideoMuted={myScreenMuted} userName={userName as string} />}
                 {Object.values(clientVideos)
                     .filter((peer) => peer.stream)
                     .map((peer, idx) => {
                         return (
                             <OtherVideoPlayerWrapper key={idx} idx={idx}>
-                                <VideoPlayer stream={peer.stream} isVideoMuted={peer.isVideoMuted} />
+                                <VideoPlayer
+                                    stream={peer.stream}
+                                    isVideoMuted={peer.isVideoMuted}
+                                    userName={peer.userName}
+                                />
                             </OtherVideoPlayerWrapper>
                         );
                     })}

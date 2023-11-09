@@ -34,7 +34,7 @@ const videoReducer = (state = initialState, action: VideoActionType) => {
                     [action.payload.id]: {
                         stream: action.payload.stream,
                         isVideoMuted: action.payload.isVideoMuted,
-                        isPlaying: action.payload.isPlaying,
+                        userName: action.payload.userName,
                     },
                 },
             };
