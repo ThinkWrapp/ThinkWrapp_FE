@@ -1,11 +1,15 @@
 import { RootState } from '@/redux/reducers';
 import { PlayerChatMessage } from '@/types/character';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, ComponentProps, forwardRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ChatHistoryButton, ChatHistoryContainer, ChatHistoryWrapper, ChatLog, Dialog } from './style';
 import { useLocation } from 'react-router-dom';
 import { socketPlayerChatMessageReset } from '@/redux/actions/socketAciton';
 import { ROUTE_ROOM } from '@/constants/route';
+
+const ForwardedChatLog = forwardRef<HTMLDivElement, ComponentProps<any>>((props, ref) => (
+    <ChatLog ref={ref} {...props} />
+));
 
 const ChatHistory = () => {
     const [chatHistoryHeight, setChatHistoryHeight] = useState(false);
@@ -20,16 +24,17 @@ const ChatHistory = () => {
         setChatHistoryHeight((prevValue) => !prevValue);
     };
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
     useEffect(() => {
         if (!playerChatMessage) return;
         setMessageHistory((prevMessages: PlayerChatMessage[]) => [...prevMessages, playerChatMessage]);
     }, [playerChatMessage]);
 
-    useEffect(scrollToBottom, [messageHistory]);
+    useEffect(() => {
+        const element = messagesEndRef.current;
+        if (element) {
+            element.scrollTop = element.scrollHeight;
+        }
+    }, [messageHistory]);
 
     useEffect(() => {
         if (location.pathname.includes(`/${ROUTE_ROOM}/`)) {
@@ -50,15 +55,14 @@ const ChatHistory = () => {
                     onClick={chatHistoryHeightHandler}
                     $chatHistoryHeight={chatHistoryHeight}
                 />
-                <ChatLog>
+                <ForwardedChatLog ref={messagesEndRef}>
                     {(messageHistory as PlayerChatMessage[])?.map((msg, idx) => (
                         <Dialog key={idx} $id={msg.id} $user={roomJoined?.id as string}>
                             {msg.id === roomJoined?.id ? '나: ' : ''}
                             {msg.message}
                         </Dialog>
                     ))}
-                    <div ref={messagesEndRef} />
-                </ChatLog>
+                </ForwardedChatLog>
             </ChatHistoryWrapper>
         </ChatHistoryContainer>
     );

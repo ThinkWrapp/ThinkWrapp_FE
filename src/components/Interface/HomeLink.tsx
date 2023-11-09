@@ -7,6 +7,7 @@ import { ROUTE_ROOM } from '@/constants/route';
 import { removeRoom } from '@/redux/actions/roomPersistAction';
 import { resetMode } from '@/redux/actions/modeAction';
 import { useVideoContext } from '@/hooks/useVideoContext';
+import { resetPeers } from '@/redux/actions/videoAction';
 
 export default function HomeLink() {
     const avatarButtonDisplay = useSelector((state: RootState) => state.interface.avatarButtonDisplay);
@@ -19,6 +20,7 @@ export default function HomeLink() {
             dispatch(socketLeaveRoom());
             dispatch(removeRoom());
             dispatch(resetMode());
+            dispatch(resetPeers());
             closeMediaStream();
         }
     };

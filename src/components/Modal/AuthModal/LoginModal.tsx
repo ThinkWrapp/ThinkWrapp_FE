@@ -40,7 +40,6 @@ export default function LoginModal() {
             toast.success(message);
             userStorage.set(access_token);
             dispatch(userLoginChecking(true));
-            console.log('b');
             dispatch(loginSuccess());
         },
         onError: (error: { response: { data: { message: string } } }) => {

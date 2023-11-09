@@ -24,6 +24,8 @@ import {
     SOCKET_USER_DISCONNECT,
     SOCKET_USER_VIDEO_MUTE,
     socketUserVideoMute,
+    SOCKET_LEAVE_ROOM,
+    socketLeaveRoom,
 } from '../actions/socketAciton';
 import { PlayerChatMessage, PlayerDance } from '@/types/character';
 
@@ -39,7 +41,8 @@ type SocketAction =
     | ReturnType<typeof socketMapUpdate>
     | ReturnType<typeof socketVideo>
     | ReturnType<typeof socketUserDisconnect>
-    | ReturnType<typeof socketUserVideoMute>;
+    | ReturnType<typeof socketUserVideoMute>
+    | ReturnType<typeof socketLeaveRoom>;
 
 type SocketState = {
     rooms: undefined | Room[];
@@ -144,6 +147,16 @@ const socketReducer = (state = initialState, action: SocketAction) => {
             return {
                 ...state,
                 deletePeerId: action.payload,
+            };
+        case SOCKET_LEAVE_ROOM:
+            return {
+                ...state,
+                roomJoined: undefined,
+                myCharacter: undefined,
+                myChatMessage: undefined,
+                myDance: undefined,
+                deletePeerId: undefined,
+                updatedVideoMute: undefined,
             };
         default:
             return state;

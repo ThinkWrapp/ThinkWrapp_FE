@@ -21,6 +21,7 @@ const VideoContextProvider = ({ children }: PropsWithChildren) => {
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [screenSharingId, setScreenSharingId] = useState('');
     const [myScreenMuted, setMyScreenMuted] = useState(true);
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
     const screenMuteHandler = () => {
         setMyScreenMuted((prev) => !prev);
@@ -28,7 +29,7 @@ const VideoContextProvider = ({ children }: PropsWithChildren) => {
 
     const startMediaStream = async () => {
         try {
-            const constraints = { audio: true, video: { facingMode: 'user' } || true };
+            const constraints = { audio: true, video: isMobile ? { facingMode: 'user' } : true };
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
             setStream(stream);
@@ -91,7 +92,24 @@ const VideoContextProvider = ({ children }: PropsWithChildren) => {
 
     useEffect(() => {
         const myPeerId = uuidv4();
-        const peer = new Peer(myPeerId);
+        const peer = new Peer(myPeerId, {
+            host: import.meta.env.VITE_PEER_HOST,
+            port: import.meta.env.VITE_PEER_PORT,
+            path: import.meta.env.VITE_PEER_PATH,
+            config: {
+                iceServers: [
+                    {
+                        urls: [
+                            'stun:stun.l.google.com:19302',
+                            'stun:stun1.l.google.com:19302',
+                            'stun:stun2.l.google.com:19302',
+                            'stun:stun3.l.google.com:19302',
+                            'stun:stun4.l.google.com:19302',
+                        ],
+                    },
+                ],
+            },
+        });
         setMyPeer(peer);
         setPeerId(myPeerId);
     }, []);

@@ -9,7 +9,7 @@ export const createSocket = async () => {
 
     try {
         const userData = await profile();
-        socketInstance = io('http://localhost:3000', { query: { email: userData.email } });
+        socketInstance = io(import.meta.env.VITE_SOCKTE_URL, { query: { email: userData.email } });
 
         return socketInstance;
     } catch (err) {}

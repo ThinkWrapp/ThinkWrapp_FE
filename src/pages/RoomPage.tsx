@@ -13,6 +13,7 @@ import VideoPlayer from '@/components/MetaRoom/Room/VideoPlayer';
 import { MediaConnection } from 'peerjs';
 
 const RoomPage = () => {
+    const connectedPeers = new Map();
     const mode = useSelector((state: RootState) => state.mode.mode);
     const socketVideos = useSelector((state: RootState) => state.socket.roomJoined?.videos);
     const clientVideos = useSelector((state: RootState) => state.video.peers);
@@ -24,7 +25,7 @@ const RoomPage = () => {
     useEffect(() => {
         if (!updatedVideoMute) return;
         dispatch(updateVideoMutePeer(updatedVideoMute.peerId, updatedVideoMute.isVideoMuted));
-        console.log(socketVideos, clientVideos, updatedVideoMute);
+        console.log(clientVideos);
     }, [updatedVideoMute]);
 
     useEffect(() => {
@@ -35,11 +36,10 @@ const RoomPage = () => {
     useEffect(() => {
         if (!stream || !myPeer) return;
         const peers = socketVideos?.filter((video) => video.id !== peerId);
-
         peers?.forEach((peer) => {
-            // @ts-ignore
-            if (!myPeer.connections[peer.id] || myPeer.connections[peer.id].length !== 0) {
+            if (!connectedPeers.has(peer.id)) {
                 const call = myPeer.call(peer.id, stream);
+                connectedPeers.set(peer.id, call);
                 call.on('stream', (userVideoStream) => {
                     dispatch(
                         setPeers({
@@ -73,7 +73,7 @@ const RoomPage = () => {
         return () => {
             myPeer.off('call', onCall);
         };
-    }, [stream, myPeer]);
+    }, [stream, myPeer, socketVideos]);
 
     return (
         <>

@@ -104,7 +104,6 @@ export const socketMapUpdate = (payload: MapUpdateData) => {
 };
 
 export const socketUserVideoMute = (payload: UserVideoMute) => {
-    console.log(payload);
     return {
         type: SOCKET_USER_VIDEO_MUTE,
         payload,
