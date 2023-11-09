@@ -1,9 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { ComponentProps, forwardRef, useEffect, useRef } from 'react';
+import { StyledImg, StyledVideo } from './style';
 
 type VideoProps = {
     stream: MediaStream | null;
     isVideoMuted: boolean;
 };
+
+const ForwardedStyledVideo = forwardRef<HTMLVideoElement, ComponentProps<any>>((props, ref) => (
+    <StyledVideo ref={ref} {...props} />
+));
 
 const VideoPlayer = ({ stream, isVideoMuted }: VideoProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -17,13 +22,9 @@ const VideoPlayer = ({ stream, isVideoMuted }: VideoProps) => {
     return (
         <>
             {isVideoMuted ? (
-                <img
-                    src="https://ui-avatars.com/api/?name=seungmin&background=36393e&color=666&font-size=0.33"
-                    style={{ width: '36%', height: '75%', objectFit: 'cover' }}
-                />
+                <StyledImg src="https://ui-avatars.com/api/?name=seungmin&background=36393e&color=666&font-size=0.33" />
             ) : null}
-            <video
-                width="36%"
+            <ForwardedStyledVideo
                 ref={videoRef}
                 style={{ display: isVideoMuted ? 'none' : 'block' }}
                 autoPlay

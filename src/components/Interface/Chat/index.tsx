@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { ChatButton, ChatContainer, ChatInput } from './style';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { socketChatMessage } from '@/redux/actions/socketAciton';
+import { RootState } from '@/redux/reducers';
 
 const Chat = () => {
     const [chatMessage, setChatMessage] = useState('');
+    const userName = useSelector((state: RootState) => state.user.userName);
     const dispatch = useDispatch();
     const sendChatMessage = () => {
         if (chatMessage.length > 0) {
-            dispatch(socketChatMessage(chatMessage));
+            dispatch(socketChatMessage(chatMessage, userName));
             setChatMessage('');
         }
     };

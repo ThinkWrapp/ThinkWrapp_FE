@@ -58,7 +58,7 @@ const ChatHistory = () => {
                 <ForwardedChatLog ref={messagesEndRef}>
                     {(messageHistory as PlayerChatMessage[])?.map((msg, idx) => (
                         <Dialog key={idx} $id={msg.id} $user={roomJoined?.id as string}>
-                            {msg.id === roomJoined?.id ? '나: ' : ''}
+                            {msg.id === roomJoined?.id ? '나: ' : `${msg.userName}: `}
                             {msg.message}
                         </Dialog>
                     ))}

@@ -7,6 +7,7 @@ export type CharacterProps = {
 export type PlayerChatMessage = {
     id: string;
     message: string;
+    userName: string;
 };
 
 export type PlayerDance = {

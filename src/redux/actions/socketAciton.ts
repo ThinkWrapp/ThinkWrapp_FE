@@ -119,13 +119,14 @@ export const socketCreateRoom = (payload: CreateRoomSchema) => {
     };
 };
 
-export const socketJoinRoom = (roomId: string, avatarUrl: string, peerId?: string) => {
+export const socketJoinRoom = (roomId: string, avatarUrl: string, peerId?: string, userName?: string) => {
     return {
         type: SOCKET_JOIN_ROOM,
         payload: {
             roomId,
             avatarUrl,
             peerId,
+            userName,
         },
     };
 };
@@ -146,10 +147,13 @@ export const socketMove = (from: number[], to: number[]) => {
     };
 };
 
-export const socketChatMessage = (message: string) => {
+export const socketChatMessage = (message: string, userName: string) => {
     return {
         type: SOCKET_CHAT_MESSAGE,
-        payload: message,
+        payload: {
+            message,
+            userName,
+        },
     };
 };
 

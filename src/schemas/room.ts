@@ -10,4 +10,5 @@ export const createRoomSchema = z.object({
         .refine((n) => !Number.isNaN(n) && n > 0 && n <= 6 && Number.isInteger(n)),
     avatarUrl: z.string().optional(),
     peerId: z.string().uuid().optional(),
+    userName: z.string().optional(),
 });

@@ -19,6 +19,7 @@ const Monitor = () => {
     const monitorState = useSelector((state: RootState) => state.interface.monitorState);
     const rooms = useSelector((state: RootState) => state.socket.rooms);
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
+    const userName = useSelector((state: RootState) => state.user.userName);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const goldenRatio = Math.min(1, window.innerWidth / 1600);
@@ -59,7 +60,7 @@ const Monitor = () => {
 
     const joinRoom = (roomId: string) => {
         startMediaStream();
-        dispatch(socketJoinRoom(roomId, avatarUrl, peerId));
+        dispatch(socketJoinRoom(roomId, avatarUrl, peerId, userName));
         dispatch(saveRoom(roomId));
         navigate(`${ROUTE_ROOM}/${roomId}`);
     };

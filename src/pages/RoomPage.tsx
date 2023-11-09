@@ -8,9 +8,10 @@ import { EffectComposer, N8AO } from '@react-three/postprocessing';
 import { useDispatch, useSelector } from 'react-redux';
 import { useVideoContext } from '@/hooks/useVideoContext';
 import { removePeer, setPeers, updateVideoMutePeer } from '@/redux/actions/videoAction';
-import { Container } from '@/components/MetaRoom/Room/VideoPlayer/style';
+import { Container, OtherVideoPlayerWrapper } from '@/components/MetaRoom/Room/VideoPlayer/style';
 import VideoPlayer from '@/components/MetaRoom/Room/VideoPlayer';
 import { MediaConnection } from 'peerjs';
+import RoomMobile from '@/components/MetaRoom/Room/RoomMobile';
 
 const RoomPage = () => {
     const connectedPeers = new Map();
@@ -19,13 +20,17 @@ const RoomPage = () => {
     const clientVideos = useSelector((state: RootState) => state.video.peers);
     const deletePeerId = useSelector((state: RootState) => state.socket.deletePeerId);
     const updatedVideoMute = useSelector((state: RootState) => state.socket.updatedVideoMute);
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
     const { peerId, myPeer, stream, myScreenMuted } = useVideoContext();
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!updatedVideoMute) return;
-        dispatch(updateVideoMutePeer(updatedVideoMute.peerId, updatedVideoMute.isVideoMuted));
-        console.log(clientVideos);
+        const peer = clientVideos[updatedVideoMute.peerId];
+        if (peer) {
+            dispatch(updateVideoMutePeer(updatedVideoMute.peerId, updatedVideoMute.isVideoMuted));
+        }
     }, [updatedVideoMute]);
 
     useEffect(() => {
@@ -34,13 +39,14 @@ const RoomPage = () => {
     }, [deletePeerId]);
 
     useEffect(() => {
-        if (!stream || !myPeer) return;
+        if (!stream || !myPeer || isMobile) return;
         const peers = socketVideos?.filter((video) => video.id !== peerId);
         peers?.forEach((peer) => {
             if (!connectedPeers.has(peer.id)) {
                 const call = myPeer.call(peer.id, stream);
                 connectedPeers.set(peer.id, call);
-                call.on('stream', (userVideoStream) => {
+                call?.on('stream', (userVideoStream) => {
+                    console.log(userVideoStream);
                     dispatch(
                         setPeers({
                             id: peer.id,
@@ -55,7 +61,8 @@ const RoomPage = () => {
 
         const onCall = (call: MediaConnection) => {
             call.answer(stream);
-            call.on('stream', (peerStream: MediaStream) => {
+            call?.on('stream', (peerStream: MediaStream) => {
+                console.log(peerStream);
                 const playVideo = socketVideos?.find((video) => video.id === call.peer);
                 dispatch(
                     setPeers({
@@ -68,12 +75,16 @@ const RoomPage = () => {
             });
         };
 
-        myPeer.on('call', onCall);
+        myPeer?.on('call', onCall);
 
         return () => {
             myPeer.off('call', onCall);
         };
     }, [stream, myPeer, socketVideos]);
+
+    if (isMobile) {
+        return <RoomMobile />;
+    }
 
     return (
         <>
@@ -93,10 +104,16 @@ const RoomPage = () => {
                 </EffectComposer>
             </Canvas>
             <Container>
-                <VideoPlayer stream={stream} isVideoMuted={myScreenMuted} />
-                {Object.values(clientVideos).map((peer, idx) => {
-                    return <VideoPlayer key={idx} stream={peer.stream} isVideoMuted={peer.isVideoMuted} />;
-                })}
+                {stream && <VideoPlayer stream={stream} isVideoMuted={myScreenMuted} />}
+                {Object.values(clientVideos)
+                    .filter((peer) => peer.stream)
+                    .map((peer, idx) => {
+                        return (
+                            <OtherVideoPlayerWrapper key={idx} idx={idx}>
+                                <VideoPlayer stream={peer.stream} isVideoMuted={peer.isVideoMuted} />
+                            </OtherVideoPlayerWrapper>
+                        );
+                    })}
             </Container>
         </>
     );

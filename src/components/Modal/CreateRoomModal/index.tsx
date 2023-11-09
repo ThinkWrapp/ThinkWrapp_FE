@@ -23,6 +23,7 @@ export default function CreateRoomModal() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
+    const userName = useSelector((state: RootState) => state.user.userName);
     const [checkPassword, setCheckPassword] = useState<boolean>(false);
     const { startMediaStream, peerId } = useVideoContext();
 
@@ -42,6 +43,7 @@ export default function CreateRoomModal() {
         roomData.id = roomId;
         roomData.avatarUrl = avatarUrl;
         roomData.peerId = peerId;
+        roomData.userName = userName;
 
         dispatch(socketCreateRoom(roomData));
         reset();

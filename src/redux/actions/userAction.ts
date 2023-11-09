@@ -1,4 +1,5 @@
 export const IS_AUTH = 'IS_AUTH' as const;
+export const USER_NAME = 'USER_NAME' as const;
 
 export const userLoginChecking = (checkAuth: boolean | undefined) => {
     return {
@@ -6,5 +7,12 @@ export const userLoginChecking = (checkAuth: boolean | undefined) => {
         payload: {
             isAuth: checkAuth,
         },
+    };
+};
+
+export const userName = (userName: string) => {
+    return {
+        type: USER_NAME,
+        payload: userName,
     };
 };

@@ -14,6 +14,7 @@ import { saveAvatar } from '@/redux/actions/avatarPersistAction';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_CHARACTER } from '@/constants/route';
 import { loginSuccess } from '@/redux/sagas/loginSaga';
+import { userName } from '@/redux/actions/userAction';
 
 type LobbyProps = {
     loaded: boolean;
@@ -38,6 +39,7 @@ const Lobby = ({ loaded }: LobbyProps) => {
             if (isAuth) {
                 const userData = await profile();
                 dispatch(loginSuccess());
+                dispatch(userName(userData.username));
 
                 if (!userData?.avatarUrl) {
                     navigate(ROUTE_CHARACTER);

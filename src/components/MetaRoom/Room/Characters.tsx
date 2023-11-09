@@ -21,6 +21,7 @@ const Characters = () => {
                             id={character.id}
                             position={gridToVector3(character.position as number[]) as THREE.Vector3}
                             avatarUrl={character.avatarUrl}
+                            userName={character.userName}
                         />
                     </group>
                 </Suspense>
