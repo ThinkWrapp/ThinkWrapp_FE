@@ -10,7 +10,7 @@ const Chat = () => {
     const dispatch = useDispatch();
     const sendChatMessage = () => {
         if (chatMessage.length > 0) {
-            dispatch(socketChatMessage(chatMessage, userName));
+            dispatch(socketChatMessage(chatMessage, userName as string));
             setChatMessage('');
         }
     };
