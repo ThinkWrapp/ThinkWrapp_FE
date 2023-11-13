@@ -14,9 +14,10 @@ import DivideLogInType from './DivideLogInType';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { register as userRegister } from '@/api/auth';
-import { AUTH, LOGIN, REGISTER } from '@/constants/auth';
+import { AUTH } from '@/constants/auth';
 import AuthLabelInput from './AuthLabelInput';
 import { ModalTitle } from '../style';
+import { LOGIN, REGISTER } from '@/constants/modal';
 
 export default function RegisterModal() {
     const authState = useSelector((state: RootState) => state.modal.modalValueState);
@@ -85,12 +86,13 @@ export default function RegisterModal() {
                 <SocialLogInBtns />
             </SocialLogin>
             <DivideLogInType authState={authState as string} />
-            <AuthFormContainer>
+            <AuthFormContainer onSubmit={handleSubmit(onSubmit)}>
                 <AuthLabelInput
                     id="username"
                     type="text"
                     register={register as UseFormRegister<RegisterSchema | LoginSchema>}
                     errors={errors}
+                    disabled={isSubmitting}
                     required
                     labelText="닉네임"
                 />
@@ -99,6 +101,7 @@ export default function RegisterModal() {
                     type="text"
                     register={register as UseFormRegister<RegisterSchema | LoginSchema>}
                     errors={errors}
+                    disabled={isSubmitting}
                     required
                     labelText="이메일"
                 />
@@ -107,6 +110,7 @@ export default function RegisterModal() {
                     type="password"
                     register={register as UseFormRegister<RegisterSchema | LoginSchema>}
                     errors={errors}
+                    disabled={isSubmitting}
                     required
                     labelText="비밀번호확인"
                 />
@@ -115,30 +119,24 @@ export default function RegisterModal() {
                     type="password"
                     register={register as UseFormRegister<RegisterSchema | LoginSchema>}
                     errors={errors}
+                    disabled={isSubmitting}
                     required
                     labelText="비밀번호"
                 />
-            </AuthFormContainer>
-            <AuthFooter>
-                <HasAccount>
-                    <P $fs="sm" $fc="light" $fw="thin">
-                        이미 계정이 있으신가요?
-                    </P>
-                    <Button $fs="sm" $fc="light" $fw="bold" onClick={authStateHandler}>
-                        {authState === REGISTER && LOGIN}
+                <AuthFooter>
+                    <HasAccount>
+                        <P $fs="sm" $fc="light" $fw="thin">
+                            이미 계정이 있으신가요?
+                        </P>
+                        <Button $fs="sm" $fc="light" $fw="bold" disabled={isSubmitting} onClick={authStateHandler}>
+                            {authState === REGISTER && LOGIN}
+                        </Button>
+                    </HasAccount>
+                    <Button type="submit" disabled={isSubmitting} $bg="point" $fc="light" $size="md">
+                        {authState}
                     </Button>
-                </HasAccount>
-                <Button
-                    type="submit"
-                    onClick={handleSubmit(onSubmit)}
-                    disabled={isSubmitting}
-                    $bg="point"
-                    $fc="light"
-                    $size="md"
-                >
-                    {authState}
-                </Button>
-            </AuthFooter>
+                </AuthFooter>
+            </AuthFormContainer>
         </Modal>
     );
 }

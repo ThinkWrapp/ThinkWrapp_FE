@@ -10,7 +10,7 @@ export const emailSchema = z
 
 export const registerSchema = z
     .object({
-        username: z.string().trim().nonempty(AUTH.username.requireMessage),
+        username: z.string().trim().max(8, '8글자 이하로 작성해주세요').nonempty(AUTH.username.requireMessage),
         email: emailSchema,
         password: z.string().regex(AUTH.password.regex, AUTH.password.regexMessage),
         confirmPassword: z.string().regex(AUTH.password.regex, AUTH.password.regexMessage),
@@ -21,3 +21,7 @@ export const registerSchema = z
     });
 
 export const loginSchema = registerSchema._def.schema.pick({ email: true, password: true });
+
+export const changeUsernameSchema = z.object({
+    username: z.string().trim().max(8, '8글자 이하로 작성해주세요').nonempty(AUTH.username.requireMessage),
+});

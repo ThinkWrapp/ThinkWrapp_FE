@@ -9,6 +9,7 @@ import { Woman } from '@/components/3DModels/Woman';
 import SelectBox from './SelectBox';
 import { AVATAR } from '@/constants/auth';
 import { SELECTBOX_BEAUTIFUL_BACKGROUND, SELECTBOX_NICE_BACKGROUND } from '@/constants/route';
+import { useResponsive } from '@/hooks/useResponsive';
 
 type CharactersProps = {
     cameraControl: React.RefObject<CameraControls>;
@@ -18,8 +19,9 @@ const Characters = ({ cameraControl }: CharactersProps) => {
     const [hovered, setHovered] = useState<string | null>(null);
     const avatarButtonDisplay = useSelector((state: RootState) => state.interface.avatarButtonDisplay);
     const scene = useThree((state) => state.scene);
+    const device = useResponsive();
 
-    useCursor(!!hovered);
+    useCursor(!!hovered && !avatarButtonDisplay);
 
     const hoverHandler = (value: string | null) => {
         setHovered(value);
@@ -56,36 +58,78 @@ const Characters = ({ cameraControl }: CharactersProps) => {
 
     return (
         <>
-            <SelectBox
-                name={AVATAR.gender.male}
-                texture={SELECTBOX_NICE_BACKGROUND}
-                active={avatarButtonDisplay as unknown as string}
-                setHovered={hoverHandler}
-                position-x={-1.5}
-            >
-                <Man
-                    nameSpace="select"
-                    scale={1}
-                    position-y={-1}
-                    hovered={hovered === AVATAR.gender.male}
-                    avatarButtonDisplay={avatarButtonDisplay === AVATAR.gender.male}
-                />
-            </SelectBox>
-            <SelectBox
-                name={AVATAR.gender.female}
-                texture={SELECTBOX_BEAUTIFUL_BACKGROUND}
-                active={avatarButtonDisplay as unknown as string}
-                setHovered={hoverHandler}
-                position-x={1.5}
-            >
-                <Woman
-                    nameSpace="select"
-                    scale={1}
-                    position-y={-1}
-                    hovered={hovered === AVATAR.gender.female}
-                    avatarButtonDisplay={avatarButtonDisplay === AVATAR.gender.female}
-                />
-            </SelectBox>
+            {(device === 'mobile' || device === 'tablet') && (
+                <>
+                    <SelectBox
+                        name={AVATAR.gender.male}
+                        texture={SELECTBOX_NICE_BACKGROUND}
+                        active={avatarButtonDisplay as unknown as string}
+                        setHovered={hoverHandler}
+                        position-y={1}
+                        scale-x={0.85}
+                        scale-y={0.65}
+                    >
+                        <Man
+                            nameSpace="select"
+                            scale={1.1}
+                            position-y={-1}
+                            hovered={hovered === AVATAR.gender.male}
+                            avatarButtonDisplay={avatarButtonDisplay === AVATAR.gender.male}
+                        />
+                    </SelectBox>
+                    <SelectBox
+                        name={AVATAR.gender.female}
+                        texture={SELECTBOX_BEAUTIFUL_BACKGROUND}
+                        active={avatarButtonDisplay as unknown as string}
+                        setHovered={hoverHandler}
+                        position-y={-1}
+                        scale-x={0.85}
+                        scale-y={0.65}
+                    >
+                        <Woman
+                            nameSpace="select"
+                            scale={1}
+                            position-y={-1}
+                            hovered={hovered === AVATAR.gender.female}
+                            avatarButtonDisplay={avatarButtonDisplay === AVATAR.gender.female}
+                        />
+                    </SelectBox>
+                </>
+            )}
+            {device === 'desktop' && (
+                <>
+                    <SelectBox
+                        name={AVATAR.gender.male}
+                        texture={SELECTBOX_NICE_BACKGROUND}
+                        active={avatarButtonDisplay as unknown as string}
+                        setHovered={hoverHandler}
+                        position-x={-1.5}
+                    >
+                        <Man
+                            nameSpace="select"
+                            scale={1}
+                            position-y={-1}
+                            hovered={hovered === AVATAR.gender.male}
+                            avatarButtonDisplay={avatarButtonDisplay === AVATAR.gender.male}
+                        />
+                    </SelectBox>
+                    <SelectBox
+                        name={AVATAR.gender.female}
+                        texture={SELECTBOX_BEAUTIFUL_BACKGROUND}
+                        active={avatarButtonDisplay as unknown as string}
+                        setHovered={hoverHandler}
+                        position-x={1.5}
+                    >
+                        <Woman
+                            nameSpace="select"
+                            scale={1}
+                            position-y={-1}
+                            hovered={hovered === AVATAR.gender.female}
+                            avatarButtonDisplay={avatarButtonDisplay === AVATAR.gender.female}
+                        />
+                    </SelectBox>
+                </>
+            )}
         </>
     );
 };

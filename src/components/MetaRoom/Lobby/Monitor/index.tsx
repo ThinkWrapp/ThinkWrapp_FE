@@ -20,6 +20,7 @@ const Monitor = () => {
     const rooms = useSelector((state: RootState) => state.socket.rooms);
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const userName = useSelector((state: RootState) => state.user.userName);
+    const saveUserName = useSelector((state: RootState) => state.avatar.saveUserName);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const goldenRatio = Math.min(1, window.innerWidth / 1600);
@@ -101,6 +102,8 @@ const Monitor = () => {
                             isAuth={isAuth}
                             rooms={rooms as Room[]}
                             joinRoom={joinRoom}
+                            userName={userName}
+                            saveUserName={saveUserName}
                         />
                     </Html>
                 </motion.group>

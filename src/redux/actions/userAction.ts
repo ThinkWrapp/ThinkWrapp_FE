@@ -10,7 +10,7 @@ export const userLoginChecking = (checkAuth: boolean | undefined) => {
     };
 };
 
-export const userName = (userName: string) => {
+export const userName = (userName: string | undefined) => {
     return {
         type: USER_NAME,
         payload: userName,

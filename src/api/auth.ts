@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { instance } from '.';
 import { userStorage } from '@/utils/userStorage';
 import { messageSchema } from '@/schemas/@Share';
-import { LoginSchema, RegisterSchema, UpdateAvatarSchema } from '@/types/auth';
+import { ChangeUsernameSchema, LoginSchema, RegisterSchema, UpdateAvatarSchema } from '@/types/auth';
 import { emailSchema } from '@/schemas/auth';
 import { AVATAR_SELECT } from '@/constants/auth';
 
@@ -62,4 +62,11 @@ const avatarSchema = z.string();
 export const updateAvatar = async (avatarUrl: UpdateAvatarSchema) => {
     const response = await instance.patch('/auth/avatarUrl', avatarUrl);
     return avatarSchema.parse(response.data);
+};
+
+const usernameSchema = z.string();
+
+export const updateUsername = async (username: ChangeUsernameSchema) => {
+    const response = await instance.patch('/auth/username', username);
+    return usernameSchema.parse(response.data);
 };

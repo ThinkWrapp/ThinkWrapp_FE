@@ -42,6 +42,10 @@ export const Title = styled.h1`
     text-align: center;
     color: #ffd700;
     text-shadow: 0px 3px 2px rgba(51, 44, 7, 1);
+
+    span {
+        text-decoration: underline wavy;
+    }
 `;
 
 export const ChooseRoom = styled.p`

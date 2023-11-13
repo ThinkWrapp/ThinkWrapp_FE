@@ -1,6 +1,6 @@
 import RoomLists from '../RoomLists';
-import { LOGIN } from '@/constants/auth';
 import { CREATE_ROOM } from '@/constants/room';
+import { LOGIN } from '@/constants/modal';
 import { Room } from '@/types/room';
 import { ChooseRoom, Container, CreateRoomButton, NoAuthMonitor, NoRoomMonitor, Title, Wrapper } from './style';
 
@@ -10,13 +10,18 @@ type ContentProps = {
     modalOpen: (modalKeyword: string) => void;
     rooms: Room[];
     joinRoom: (roomId: string) => void;
+    userName?: string;
+    saveUserName?: string;
 };
 
-const Content = ({ isSafari, modalOpen, isAuth, rooms, joinRoom }: ContentProps) => {
+const Content = ({ isSafari, modalOpen, isAuth, rooms, joinRoom, userName, saveUserName }: ContentProps) => {
     return (
         <Container $isSafari={isSafari}>
             <Wrapper>
                 <Title>
+                    <span>
+                        {(userName !== undefined && `${userName}님`) || (saveUserName !== '' && `${saveUserName}님`)}
+                    </span>{' '}
                     ThinkWrapp에 오신 것을
                     <br />
                     환영합니다.

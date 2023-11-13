@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ButtonProps } from '.';
+import { darken } from 'polished';
 import { commonAttributes } from '@/styles';
 
 type ButtonStyleProps = {
@@ -11,6 +12,18 @@ export const StyledButton = styled(CommonButton)<ButtonStyleProps>`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &:hover {
+        ${({ $bg, theme }) => {
+            const hoverColor = theme.bg[$bg!] || $bg;
+            if (!hoverColor) return;
+            return `background-color: ${darken(0.1, hoverColor)};`;
+        }};
+    }
+
+    &:disabled {
+        background-color: ${({ theme }) => theme.bg.secondary};
+    }
 
     ${({ $size }) => {
         switch ($size) {

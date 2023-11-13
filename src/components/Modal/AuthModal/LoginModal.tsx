@@ -16,10 +16,10 @@ import { changeAuthState, closeModal, openModal } from '@/redux/actions/modalAct
 import { userStorage } from '@/utils/userStorage';
 import { LoginSchema, RegisterSchema } from '@/types/auth';
 import { loginSchema } from '@/schemas/auth';
-import { LOGIN, REGISTER } from '@/constants/auth';
 import { ModalTitle } from '../style';
 import { AuthFooter, AuthFormContainer, AuthHeader, HasAccount, SocialLogin } from './style';
 import { loginSuccess } from '@/redux/sagas/loginSaga';
+import { LOGIN, REGISTER } from '@/constants/modal';
 
 export default function LoginModal() {
     const authState = useSelector((state: RootState) => state.modal.modalValueState);
@@ -92,13 +92,14 @@ export default function LoginModal() {
                 <SocialLogInBtns />
             </SocialLogin>
             <DivideLogInType authState={authState as string} />
-            <AuthFormContainer>
+            <AuthFormContainer onSubmit={handleSubmit(onSubmit)}>
                 <AuthLabelInput
                     id="email"
                     type="text"
                     register={register as UseFormRegister<LoginSchema | RegisterSchema>}
                     errors={errors}
                     labelText="이메일"
+                    disabled={isSubmitting}
                     required
                 />
                 <AuthLabelInput
@@ -107,29 +108,23 @@ export default function LoginModal() {
                     register={register as UseFormRegister<LoginSchema | RegisterSchema>}
                     errors={errors}
                     labelText="비밀번호"
+                    disabled={isSubmitting}
                     required
                 />
-            </AuthFormContainer>
-            <AuthFooter>
-                <HasAccount>
-                    <P $fs="sm" $fc="light" $fw="thin">
-                        아직 계정이 없으신가요?
-                    </P>
-                    <Button $fs="sm" $fc="light" $fw="bold" onClick={authStateHandler}>
-                        {authState === LOGIN && REGISTER}
+                <AuthFooter>
+                    <HasAccount>
+                        <P $fs="sm" $fc="light" $fw="thin">
+                            아직 계정이 없으신가요?
+                        </P>
+                        <Button $fs="sm" $fc="light" $fw="bold" disabled={isSubmitting} onClick={authStateHandler}>
+                            {authState === LOGIN && REGISTER}
+                        </Button>
+                    </HasAccount>
+                    <Button type="submit" disabled={isSubmitting} $bg="point" $fc="light" $size="md">
+                        {authState}
                     </Button>
-                </HasAccount>
-                <Button
-                    type="submit"
-                    onClick={handleSubmit(onSubmit)}
-                    disabled={isSubmitting}
-                    $bg="point"
-                    $fc="light"
-                    $size="md"
-                >
-                    {authState}
-                </Button>
-            </AuthFooter>
+                </AuthFooter>
+            </AuthFormContainer>
         </Modal>
     );
 }

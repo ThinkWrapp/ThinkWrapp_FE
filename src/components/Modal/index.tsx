@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UseFormReset } from 'react-hook-form';
 import { RootState } from '@/redux/reducers';
 import { closeModal } from '@/redux/actions/modalAction';
-import { LOGIN } from '@/constants/auth';
+import { LOGIN } from '@/constants/modal';
 import { LoginSchema, RegisterSchema } from '@/types/auth';
 import { ModalContainer, ModalWrapper, Dimmed } from './style';
 

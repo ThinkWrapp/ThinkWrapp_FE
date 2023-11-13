@@ -1,7 +1,7 @@
 import Loader from '@/components/Loader';
 import SelectAvatar from '@/components/MetaRoom/SelectAvatar';
+import CanvasLayout from '@/layout/canvas';
 import { useProgress } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
 import { useEffect, useState } from 'react';
 
 const CharacterPage = () => {
@@ -15,9 +15,9 @@ const CharacterPage = () => {
     }, [progress]);
     return (
         <>
-            <Canvas shadows camera={{ position: [0, 0, 10], fov: 30 }}>
+            <CanvasLayout position={[0, 0, 10]}>
                 <SelectAvatar />
-            </Canvas>
+            </CanvasLayout>
             <Loader loaded={loaded} />
         </>
     );

@@ -10,9 +10,18 @@ type AuthLabelInputProps = {
     id: 'email' | 'password' | 'username' | 'confirmPassword';
     required?: boolean;
     errors: FieldErrors<FieldValues>;
+    disabled?: boolean;
 };
 
-export default function AuthLabelInput({ labelText, type, register, id, required, errors }: AuthLabelInputProps) {
+export default function AuthLabelInput({
+    labelText,
+    type,
+    register,
+    id,
+    required,
+    errors,
+    disabled,
+}: AuthLabelInputProps) {
     const splitLabelText = labelText.split('').map((char, idx) => (
         <span key={idx} style={{ transitionDelay: idx * 30 + 'ms', filter: `hue-rotate(${idx * 60}deg)` }}>
             {char}
@@ -20,7 +29,7 @@ export default function AuthLabelInput({ labelText, type, register, id, required
     ));
     return (
         <LabelInputContainer>
-            <Input id={id} type={type} required {...register(id, { required })} />
+            <Input id={id} type={type} disabled={disabled} required {...register(id, { required })} />
             <Label htmlFor={id}>{splitLabelText}</Label>
             {errors[id] && <P $fc="danger" $fs="sm" $fw="bold">{`${errors[id]?.message}`}</P>}
         </LabelInputContainer>

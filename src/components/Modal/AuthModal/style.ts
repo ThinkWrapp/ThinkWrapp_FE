@@ -34,5 +34,6 @@ export const AuthFooter = styled.div`
     justify-content: space-between;
     align-items: center;
     position: relative;
+    width: 100%;
     padding: 3.2rem 0 0.8rem;
 `;

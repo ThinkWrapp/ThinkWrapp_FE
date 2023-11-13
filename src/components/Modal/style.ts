@@ -113,3 +113,9 @@ export const ModalTitle = styled.h2`
     font-size: ${({ theme }) => theme.fs.md};
     font-weight: ${({ theme }) => theme.fw.bold};
 `;
+
+export const ModalDescription = styled.h3`
+    color: ${({ theme }) => theme.fc.secondary};
+    font-size: ${({ theme }) => theme.fs.md};
+    font-weight: ${({ theme }) => theme.fw.normal};
+`;

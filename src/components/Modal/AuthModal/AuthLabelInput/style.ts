@@ -38,6 +38,10 @@ export const Input = styled.input`
     &:valid {
         border-bottom: 2px solid #fff;
     }
+
+    &:disabled {
+        background-color: ${({ theme }) => theme.bg.secondary};
+    }
 `;
 
 export const Label = styled.label`

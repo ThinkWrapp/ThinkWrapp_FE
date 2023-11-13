@@ -32,6 +32,7 @@ const Lobby = ({ loaded }: LobbyProps) => {
     );
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
+    const saveUserName = useSelector((state: RootState) => state.avatar.saveUserName);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -40,14 +41,16 @@ const Lobby = ({ loaded }: LobbyProps) => {
             if (isAuth) {
                 const userData = await profile();
                 dispatch(loginSuccess());
-                dispatch(userName(userData.username));
-                console.log(userData, avatarUrl);
+
+                if (!saveUserName) {
+                    dispatch(userName(userData.username));
+                }
 
                 if (!avatarUrl && !userData?.avatarUrl) {
                     navigate(ROUTE_CHARACTER);
                 }
 
-                if (userData.avatarUrl) {
+                if (!avatarUrl && userData.avatarUrl) {
                     dispatch(saveAvatar(userData.avatarUrl));
                 }
             }

@@ -10,3 +10,5 @@ export const checkAuthLoader = () => {
 };
 
 export const checkAuth = (): boolean | undefined => !!userStorage.get();
+
+export const redirectHome = () => redirect('/');

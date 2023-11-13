@@ -48,7 +48,6 @@ export default function CreateRoomModal() {
         dispatch(socketCreateRoom(roomData));
         reset();
         dispatch(closeModal());
-        // TODO: 방 입장
         dispatch(saveRoom(roomId));
         startMediaStream();
         navigate(`${ROUTE_ROOM}/${roomId}}`);

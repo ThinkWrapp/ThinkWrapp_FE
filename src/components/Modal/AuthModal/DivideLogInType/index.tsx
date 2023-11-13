@@ -1,5 +1,5 @@
 import Span from '@/components/@Shared/Span';
-import { LOGIN } from '@/constants/auth';
+import { LOGIN } from '@/constants/modal';
 import { DivideLogInTypeContainer } from './style';
 
 type DivideLogInTypeProps = {

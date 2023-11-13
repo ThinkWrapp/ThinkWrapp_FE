@@ -1,17 +1,15 @@
-import Room from '@/components/MetaRoom/Room';
-import { SHOP_MODE } from '@/redux/actions/modeAction';
-import { RootState } from '@/redux/reducers';
 import { useEffect } from 'react';
+import { MediaConnection } from 'peerjs';
 import { ScrollControls } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import { EffectComposer, N8AO } from '@react-three/postprocessing';
 import { useDispatch, useSelector } from 'react-redux';
-import { useVideoContext } from '@/hooks/useVideoContext';
+import { SHOP_MODE } from '@/redux/actions/modeAction';
 import { removePeer, setPeers, updateVideoMutePeer } from '@/redux/actions/videoAction';
+import { RootState } from '@/redux/reducers';
+import Room from '@/components/MetaRoom/Room';
 import { Container, OtherVideoPlayerWrapper } from '@/components/MetaRoom/Room/VideoPlayer/style';
 import VideoPlayer from '@/components/MetaRoom/Room/VideoPlayer';
-import { MediaConnection } from 'peerjs';
-import RoomMobile from '@/components/MetaRoom/Room/RoomMobile';
+import { useVideoContext } from '@/hooks/useVideoContext';
+import CanvasLayout from '@/layout/canvas';
 
 const RoomPage = () => {
     const connectedPeers = new Map();
@@ -60,6 +58,7 @@ const RoomPage = () => {
         });
 
         const onCall = (call: MediaConnection) => {
+            if (!stream || isMobile) return;
             call.answer(stream);
             call?.on('stream', (peerStream: MediaStream) => {
                 const playVideo = socketVideos?.find((video) => video.id === call.peer);
@@ -81,27 +80,14 @@ const RoomPage = () => {
         };
     }, [stream, myPeer, socketVideos]);
 
-    if (isMobile) {
-        return <RoomMobile />;
-    }
-
     return (
         <>
-            <Canvas
-                shadows
-                camera={{
-                    position: [0, 8, 2],
-                    fov: 30,
-                }}
-            >
+            <CanvasLayout>
                 <color attach="background" args={['#ffffff']} />
                 <ScrollControls pages={mode === SHOP_MODE ? 4 : 0}>
                     <Room />
                 </ScrollControls>
-                <EffectComposer>
-                    <N8AO intensity={0.42} />
-                </EffectComposer>
-            </Canvas>
+            </CanvasLayout>
             <Container>
                 {stream && <VideoPlayer stream={stream} isVideoMuted={myScreenMuted} userName={userName as string} />}
                 {Object.values(clientVideos)
