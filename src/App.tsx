@@ -1,13 +1,15 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { checkAuthLoader, redirectHome } from './utils/user';
 import GoogleLogin from './pages/GoogleLogin';
 import RootLayOut from './layout/RootLayout';
 import LobbyPage from './pages/LobbyPage';
-import CharacterPage from './pages/CharacterPage';
-import RoomPage from './pages/RoomPage';
 import VideoContextProvider from './hooks/context/videoContext';
 import theme from './theme';
+
+const CharacterPage = lazy(() => import('@/pages/CharacterPage'));
+const RoomPage = lazy(() => import('@/pages/RoomPage'));
 
 const router = createBrowserRouter([
     {
@@ -28,7 +30,9 @@ const App = () => {
         // @ts-ignore
         <ThemeProvider theme={theme}>
             <VideoContextProvider>
-                <RouterProvider router={router} />
+                <Suspense>
+                    <RouterProvider router={router} />
+                </Suspense>
             </VideoContextProvider>
         </ThemeProvider>
     );

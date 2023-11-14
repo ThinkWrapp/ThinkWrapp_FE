@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
+import { useProgress } from '@react-three/drei';
 import Loader from '@/components/Loader';
 import SelectAvatar from '@/components/MetaRoom/SelectAvatar';
 import CanvasLayout from '@/layout/canvas';
-import { useProgress } from '@react-three/drei';
-import { useEffect, useState } from 'react';
 
 const CharacterPage = () => {
     const [loaded, setLoaded] = useState(false);
