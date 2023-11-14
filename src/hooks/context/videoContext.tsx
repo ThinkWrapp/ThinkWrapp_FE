@@ -1,6 +1,7 @@
 import Peer, { MediaConnection } from 'peerjs';
 import { PropsWithChildren, createContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { isMobile } from '@/utils/getDeviceConfig';
 
 type VideoContextType = {
     stream: MediaStream | null;
@@ -21,7 +22,7 @@ const VideoContextProvider = ({ children }: PropsWithChildren) => {
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [screenSharingId, setScreenSharingId] = useState('');
     const [myScreenMuted, setMyScreenMuted] = useState(true);
-    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    const mobile = isMobile();
 
     const screenMuteHandler = () => {
         setMyScreenMuted((prev) => !prev);
@@ -29,7 +30,7 @@ const VideoContextProvider = ({ children }: PropsWithChildren) => {
 
     const startMediaStream = async () => {
         try {
-            const constraints = { audio: true, video: isMobile ? { facingMode: 'user' } : true };
+            const constraints = { audio: true, video: mobile ? { facingMode: 'user' } : true };
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
             setStream(stream);

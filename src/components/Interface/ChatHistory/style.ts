@@ -9,6 +9,11 @@ export const ChatHistoryContainer = styled.div`
     pointer-events: none;
     user-select: none;
     inset: 2rem;
+
+    @media screen and (max-width: 768px) {
+        align-items: center;
+        inset: 2rem 2rem 17rem;
+    }
 `;
 
 type ChatHistoryWrapperAndButtonProps = {
@@ -29,6 +34,14 @@ export const ChatHistoryWrapper = styled.div<ChatHistoryWrapperAndButtonProps>`
         0 0.2rem 0.4rem -0.1rem rgba(0, 0, 0, 0.06);
     pointer-events: auto;
     background-color: rgba(15, 23, 42, 0.5);
+
+    @media screen and (max-width: 768px) {
+        width: 60%;
+    }
+
+    @media screen and (max-width: 360px) {
+        width: 90%;
+    }
 `;
 
 export const ChatHistoryButton = styled.button<ChatHistoryWrapperAndButtonProps>`

@@ -13,15 +13,20 @@ const RoomList = ({ rooms, joinRoom }: RoomListProps) => {
 
     return (
         <>
-            {rooms?.map((room) => (
-                <List key={room.id} onClick={() => moveLinkHandler(room.id)}>
-                    <Title>{room.name}</Title>
-                    <PersonnelDescription>
-                        <CharacterCheckCircle $nbCharacters={room.nbCharacters} />
-                        {room.nbCharacters}명 참여중 ({room.nbCharacters}/{room.roomLimitPeople})
-                    </PersonnelDescription>
-                </List>
-            ))}
+            {rooms?.map(
+                (room, index) =>
+                    room.nbCharacters < room.roomLimitPeople && (
+                        <List tabIndex={index} key={room.id} onClick={() => moveLinkHandler(room.id)}>
+                            <div role="link">
+                                <Title>{room.name}</Title>
+                                <PersonnelDescription>
+                                    <CharacterCheckCircle $nbCharacters={room.nbCharacters} />
+                                    {room.nbCharacters}명 참여중 ({room.nbCharacters}/{room.roomLimitPeople})
+                                </PersonnelDescription>
+                            </div>
+                        </List>
+                    ),
+            )}
         </>
     );
 };

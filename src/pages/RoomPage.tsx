@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SHOP_MODE } from '@/redux/actions/modeAction';
 import { removePeer, setPeers, updateVideoMutePeer } from '@/redux/actions/videoAction';
 import { RootState } from '@/redux/reducers';
+import { isMobile } from '@/utils/getDeviceConfig';
 import Room from '@/components/MetaRoom/Room';
 import { Container, OtherVideoPlayerWrapper } from '@/components/MetaRoom/Room/VideoPlayer/style';
 import VideoPlayer from '@/components/MetaRoom/Room/VideoPlayer';
-import { useVideoContext } from '@/hooks/useVideoContext';
 import CanvasLayout from '@/layout/canvas';
+import { useVideoContext } from '@/hooks/useVideoContext';
 
 const RoomPage = () => {
     const connectedPeers = new Map();
@@ -19,13 +20,14 @@ const RoomPage = () => {
     const deletePeerId = useSelector((state: RootState) => state.socket.deletePeerId);
     const updatedVideoMute = useSelector((state: RootState) => state.socket.updatedVideoMute);
     const userName = useSelector((state: RootState) => state.user.userName);
-    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    const mobile = isMobile();
 
     const { peerId, myPeer, stream, myScreenMuted } = useVideoContext();
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!updatedVideoMute) return;
+        if (!mobile) return;
         const peer = clientVideos[updatedVideoMute.peerId];
         if (peer) {
             dispatch(updateVideoMutePeer(updatedVideoMute.peerId, updatedVideoMute.isVideoMuted));
@@ -34,11 +36,13 @@ const RoomPage = () => {
 
     useEffect(() => {
         if (!deletePeerId) return;
+        if (!mobile) return;
         dispatch(removePeer(deletePeerId as string));
     }, [deletePeerId]);
 
     useEffect(() => {
-        if (!stream || !myPeer || isMobile) return;
+        if (!stream || !myPeer) return;
+        if (!mobile) return;
         const peers = socketVideos?.filter((video) => video.id !== peerId);
         peers?.forEach((peer) => {
             if (!connectedPeers.has(peer.id)) {
@@ -58,7 +62,8 @@ const RoomPage = () => {
         });
 
         const onCall = (call: MediaConnection) => {
-            if (!stream || isMobile) return;
+            if (!stream) return;
+            if (!mobile) return;
             call.answer(stream);
             call?.on('stream', (peerStream: MediaStream) => {
                 const playVideo = socketVideos?.find((video) => video.id === call.peer);
@@ -88,22 +93,26 @@ const RoomPage = () => {
                     <Room />
                 </ScrollControls>
             </CanvasLayout>
-            <Container>
-                {stream && <VideoPlayer stream={stream} isVideoMuted={myScreenMuted} userName={userName as string} />}
-                {Object.values(clientVideos)
-                    .filter((peer) => peer.stream)
-                    .map((peer, idx) => {
-                        return (
-                            <OtherVideoPlayerWrapper key={idx} idx={idx}>
-                                <VideoPlayer
-                                    stream={peer.stream}
-                                    isVideoMuted={peer.isVideoMuted}
-                                    userName={peer.userName}
-                                />
-                            </OtherVideoPlayerWrapper>
-                        );
-                    })}
-            </Container>
+            {!mobile && (
+                <Container>
+                    {stream && (
+                        <VideoPlayer stream={stream} isVideoMuted={myScreenMuted} userName={userName as string} />
+                    )}
+                    {Object.values(clientVideos)
+                        .filter((peer) => peer.stream)
+                        .map((peer, idx) => {
+                            return (
+                                <OtherVideoPlayerWrapper key={idx} idx={idx}>
+                                    <VideoPlayer
+                                        stream={peer.stream}
+                                        isVideoMuted={peer.isVideoMuted}
+                                        userName={peer.userName}
+                                    />
+                                </OtherVideoPlayerWrapper>
+                            );
+                        })}
+                </Container>
+            )}
         </>
     );
 };

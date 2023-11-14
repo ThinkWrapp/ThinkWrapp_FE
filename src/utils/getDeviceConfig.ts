@@ -4,3 +4,7 @@ export const getDeviceConfig = (device: string, config: Record<string, any>, use
     }
     return device in config ? config[device] : config.desktop;
 };
+
+export const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
