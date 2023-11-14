@@ -16,9 +16,6 @@ export default defineConfig({
                     ) {
                         return 'reactVendor';
                     }
-                    if (id.includes('node_modules/axios') || id.includes('node_modules/@tanstack')) {
-                        return 'axiosAndReactQueryVendor';
-                    }
                     if (id.includes('node_modules/three') || id.includes('node_modules/@react-three')) {
                         return 'threeVendor';
                     }
