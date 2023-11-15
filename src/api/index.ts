@@ -30,6 +30,12 @@ instance.interceptors.response.use(
 
         if (response.data.message === 'Unauthorized') {
             // TODO:  access_token 없거나 만료될 경우 홈으로 이동은 react-route-dom으로 이동 /* utils폴더 -> user.ts -> checkAuthLoader함수 사용예정  */
+            const token = userStorage.get();
+
+            if (!token) {
+                window.localStorage.removeItem('persist:' + AVATAR_SELECT);
+                window.location.replace('/');
+            }
 
             try {
                 const { access_token } = await refreshToken();
@@ -39,6 +45,7 @@ instance.interceptors.response.use(
             } catch (error) {
                 userStorage.remove();
                 window.localStorage.removeItem('persist:' + AVATAR_SELECT);
+                window.location.replace('/');
             }
         }
 

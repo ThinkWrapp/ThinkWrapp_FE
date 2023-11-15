@@ -1,5 +1,5 @@
 import { takeEvery } from 'redux-saga/effects';
-import { initSocketSaga } from './socketSaga';
+import initSocketSaga from './socketSaga';
 
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 

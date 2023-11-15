@@ -34,7 +34,7 @@ type SocketEvent = {
         | string;
 };
 
-export function* initSocketSaga() {
+function* initSocketSaga() {
     const socket: Socket | null = yield call(createSocket);
 
     if (socket) {
