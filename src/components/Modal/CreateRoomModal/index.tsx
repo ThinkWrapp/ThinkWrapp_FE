@@ -16,12 +16,14 @@ import { CreateRoomButtonGroup, CreateRoomModalForm, CreateRoomModalHeader } fro
 import { socketCreateRoom } from '@/redux/actions/socketAciton';
 import { saveRoom } from '@/redux/actions/roomPersistAction';
 import { useNavigate } from 'react-router-dom';
+import { isMobile } from '@/utils/getDeviceConfig';
 import { ROUTE_ROOM } from '@/constants/route';
 import { useVideoContext } from '@/hooks/useVideoContext';
 
 export default function CreateRoomModal() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const mobile = isMobile();
     const avatarUrl = useSelector((state: RootState) => state.avatar.avatarUrl);
     const userName = useSelector((state: RootState) => state.user.userName);
     // const [checkPassword, setCheckPassword] = useState<boolean>(false);
@@ -45,11 +47,13 @@ export default function CreateRoomModal() {
         roomData.peerId = peerId;
         roomData.userName = userName;
 
+        if (!mobile) {
+            startMediaStream();
+        }
         dispatch(socketCreateRoom(roomData));
         reset();
         dispatch(closeModal());
         dispatch(saveRoom(roomId));
-        startMediaStream();
         navigate(`${ROUTE_ROOM}/${roomId}}`);
     };
 

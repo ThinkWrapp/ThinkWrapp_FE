@@ -6,5 +6,6 @@ export const getDeviceConfig = (device: string, config: Record<string, any>, use
 };
 
 export const isMobile = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    return window.innerWidth < 768;
 };

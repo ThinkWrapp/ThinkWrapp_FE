@@ -6,7 +6,7 @@ import { RootState } from '@/redux/reducers';
 import { openModal } from '@/redux/actions/modalAction';
 import { Monitor as LobbyMonitor } from '@/components/3DModels/Monitor';
 import { useResponsive } from '@/hooks/useResponsive';
-import { getDeviceConfig } from '@/utils/getDeviceConfig';
+import { getDeviceConfig, isMobile } from '@/utils/getDeviceConfig';
 import Content from './Content';
 import { socketJoinRoom } from '@/redux/actions/socketAciton';
 import { ROUTE_ROOM } from '@/constants/route';
@@ -26,6 +26,7 @@ const Monitor = () => {
     const goldenRatio = Math.min(1, window.innerWidth / 1600);
     const device = useResponsive();
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); // ugly transform position 에 버그가 있어 사파리 수정
+    const mobile = isMobile();
     const { peerId, startMediaStream } = useVideoContext();
 
     const monitorGroupConfig = {
@@ -60,7 +61,9 @@ const Monitor = () => {
     };
 
     const joinRoom = (roomId: string) => {
-        startMediaStream();
+        if (!mobile) {
+            startMediaStream();
+        }
         dispatch(socketJoinRoom(roomId, avatarUrl, peerId, userName));
         dispatch(saveRoom(roomId));
         navigate(`${ROUTE_ROOM}/${roomId}`);

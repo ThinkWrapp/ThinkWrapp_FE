@@ -92,6 +92,7 @@ const VideoContextProvider = ({ children }: PropsWithChildren) => {
     };
 
     useEffect(() => {
+        if (!mobile) return;
         const myPeerId = uuidv4();
         const peer = new Peer(myPeerId, {
             host: import.meta.env.VITE_PEER_HOST,
